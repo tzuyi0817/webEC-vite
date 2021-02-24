@@ -1,7 +1,8 @@
-const { resolve } = require('path')
+const path = require('path')
 
 module.exports = {
   alias: {
-    '/@/': resolve(__dirname, 'src')
-  }
+    '/@/': path.resolve(__dirname, './src')
+  },
+  port: '8080'
 }

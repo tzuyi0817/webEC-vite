@@ -1,10 +1,20 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 
-const routes: [] = [
-
+const routes: any[] = [
+  {
+    path: '/',
+    redirect: '/index'
+  },
+  {
+    path: '/index',
+    name: 'Index',
+    component: () => import('/@/views/index.vue')
+  },
 ]
 
-export default createRouter({
-  history: createWebHashHistory(),
-  routes: routes
+const router = createRouter({
+  history: createWebHistory(),
+  routes
 })
+
+export default router

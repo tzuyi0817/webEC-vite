@@ -1,18 +1,18 @@
 <template>
-  <img alt="Vue logo" src="/@/assets/logo.png" />
-  <HelloWorld :msg="test" />
+  <div id="app">
+    <router-view />
+  </div>
 </template>
 
 <script lang="ts">
-import HelloWorld from "/@/components/HelloWorld.vue";
-const test: string = '123'
+import { getCurrentInstance } from 'vue'
+import { useStore } from 'vuex'
 
 export default {
-  components: {
-    HelloWorld,
-  },
   setup() {
-    return { test }
+    const { ctx }: any = getCurrentInstance()
+    const store = useStore()
+    store.commit('updateGroupPath', ctx.$apiPrefixes)
   }
 };
 </script>
