@@ -19,7 +19,7 @@ a {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
   list-style: none;
-  font-family: "Microsoft Yahei", Arial, Helvetica, sans-serif;
+  font-family: system-ui;
 }
 
 html {
@@ -47,7 +47,7 @@ body {
   width: 100%;
   overflow: scroll;
   height: calc(100vh - 50px);
-  padding: 10px 7% 80px 7%;
+  padding: 10px 5% 80px 5%;
   margin-top: 10px;
   -webkit-overflow-scrolling: touch;
 
@@ -95,6 +95,15 @@ button {
   border: 1px solid transparent; 
   overflow: hidden;
   outline: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  border-radius: 5px;
+  font-weight: bold;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.8;
+  }
 }
 
 .selUnderLine {
