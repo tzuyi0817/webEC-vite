@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import App from '/@/App.vue'
-import '/@/index.scss'
+import '/@/scss/common.scss'
 import router from '/@/router/index'
 import store from '/@/store/index'
 import * as common from '/@/utils/common'
