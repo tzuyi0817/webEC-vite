@@ -1,6 +1,8 @@
 <template>
-  <div v-for="item in categories" :key="item.id">
-    <img :src="item.image">
+  <div class="container">
+    <div v-for="item in categories" :key="item.id">
+      <img :src="item.image">
+    </div>
   </div>
 </template>
 
