@@ -5,25 +5,25 @@
 </template>
 
 <script lang="ts">
-import { getCurrentInstance } from 'vue'
+import { defineComponent, getCurrentInstance } from 'vue'
 import { useStore } from 'vuex'
 
-export default {
+export default defineComponent ({
   setup() {
     const { ctx }: any = getCurrentInstance()
     const store = useStore()
     store.commit('updateGroupPath', ctx.$apiPrefixes)
   }
-};
+})
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: system-ui;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  overflow: hidden;
 }
 </style>

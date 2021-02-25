@@ -1,31 +1,45 @@
 <template>
   <div class="container">
-    <div v-for="item in categories" :key="item.id">
-      <img :src="item.image">
-    </div>
+    <index-banner />
+    <nav-tabs :options="categories" @getId="getId" />
+    <index-content :category="nowCategory" />
   </div>
 </template>
 
 <script lang="ts">
-import { getCurrentInstance, onMounted, reactive, toRefs } from 'vue'
+import { defineComponent, getCurrentInstance, onMounted, reactive, toRefs, computed } from 'vue'
 import { useStore } from 'vuex'
+import IndexBanner from '/@/components/IndexBanner.vue'
+import NavTabs from '/@/components/NavTabs.vue'
+import IndexContent from '/@/components/IndexContent.vue'
 
-export default {
+export default defineComponent ({
+  components: {
+    IndexBanner,
+    NavTabs,
+    IndexContent
+  },
   setup() {
     const { ctx }: any = getCurrentInstance()
     const groupPath = useStore().state.groupPath
-    const data = reactive({ categories: [] })
-    const ajax: object = ctx.common.ajax(groupPath.platform + '/index', 'get')
+    const data = reactive({ 
+      categories: [],
+      nowId: 1 
+    })
 
-    const getData = (): void => {
+    const nowCategory = computed(() => data.categories[data.nowId - 1])
+    const getId = (id: number) => data.nowId = id
+ 
+    const ajax: object = ctx.common.ajax(groupPath.platform + '/index', 'get')
+    const getCategories = (): void => {
       ctx.common.getAjax(ajax).then((result: any) => {
         data.categories = result.categories
       })
     }
 
-    onMounted(() => getData())
+    onMounted(() => getCategories())
     const resData = toRefs(data)
-    return { ...resData }
+    return { ...resData, getId, nowCategory }
   }
-}
+})
 </script>
