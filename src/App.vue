@@ -1,18 +1,23 @@
 <template>
   <div id="app">
     <router-view />
+    <show-toast />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, getCurrentInstance } from 'vue'
+import { defineComponent, inject } from 'vue'
 import { useStore } from 'vuex'
+import ShowToast from './components/ShowToast.vue';
 
 export default defineComponent ({
+  components: {
+    ShowToast
+  },
   setup() {
-    const { ctx }: any = getCurrentInstance()
+    const $apiPrefixes = inject('$apiPrefixes')
     const store = useStore()
-    store.commit('updateGroupPath', ctx.$apiPrefixes)
+    store.commit('updateGroupPath', $apiPrefixes)
   }
 })
 </script>

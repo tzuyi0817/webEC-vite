@@ -160,6 +160,15 @@ input {
   }
 }
 
+.fade {
+  animation: fade-in 2s;
+}
+
+@keyframes fade-in { 
+  0% { opacity: 0; } 
+  100% { opacity: 1; } 
+}
+
 //彈窗
 .lightBox {
   background: rgba(0, 0, 0, .5);

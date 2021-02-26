@@ -13,20 +13,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs } from 'vue'
+import { defineComponent, ref } from 'vue'
 
 export default defineComponent ({
   props: { options: Array },
   emits: ['getId'],
   setup(props, { emit }) {
-    const data = reactive({ nowId: 1 })
+    const nowId = ref(1)
     const selOption = (id: number) => {
-      data.nowId = id
+      nowId.value = id
       emit('getId', id)
     }
 
-    const resultData = toRefs(data)
-    return { ...resultData, selOption }
+    return { nowId, selOption }
   }
 })
 </script>
