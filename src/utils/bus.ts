@@ -1,9 +1,9 @@
 import mitt from 'mitt'
 
 interface busType {
-  $on?: any,
-  $off?: any,
-  $emit?: any
+  $on?: Function,
+  $off?: Function,
+  $emit?: Function
 }
 
 const bus: busType = {}

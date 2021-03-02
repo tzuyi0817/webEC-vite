@@ -1,6 +1,8 @@
 <template>
   <div class="navTabs">
-    <ul>
+    <loading v-if="isLoading" />
+
+    <ul v-else class="fade">
       <li v-for="item in options" :key="item.id">
         <button 
           :class="['navTabs__item', { 'navTabs__item--active': nowId === item.id }]"
@@ -13,19 +15,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent } from 'vue'
 
 export default defineComponent ({
-  props: { options: Array },
+  props: { 
+    options: Array,
+    isLoading: Boolean,
+    nowId: Number
+  },
   emits: ['getId'],
   setup(props, { emit }) {
-    const nowId = ref(1)
-    const selOption = (id: number) => {
-      nowId.value = id
-      emit('getId', id)
-    }
+    const selOption = (id: number) => emit('getId', id)
 
-    return { nowId, selOption }
+    return { selOption }
   }
 })
 </script>

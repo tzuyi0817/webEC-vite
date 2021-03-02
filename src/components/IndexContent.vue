@@ -1,5 +1,5 @@
 <template>
-  <div class="indexContent">
+  <div class="indexContent fade">
     <p>{{ content }}</p>
     <a :href="url" @click="goLink(url)">
       <img :src="category && category.image">
@@ -26,7 +26,7 @@ export default defineComponent ({
     category: Object
   },
   setup(props) {
-    const router = useRouter()
+    const $router = useRouter()
     const nowId = ref(1)
     const contentData = [
       '烘焙咖啡使咖啡生豆的化學與物理性質轉變為已烘焙的咖啡製品',
@@ -36,7 +36,7 @@ export default defineComponent ({
 
     const url = computed(() => `/category/${nowId.value}`)
     const content = computed(() => contentData[nowId.value - 1])
-    const goLink = (url: string) => router.push(url)
+    const goLink = (url: string) => $router.push(url)
 
     watch((): any => props.category, (val: categoryType) => nowId.value = val.id )
 

@@ -8,7 +8,12 @@ const routes: any[] = [
   {
     path: '/index',
     name: 'Index',
-    component: () => import('/@/views/index.vue')
+    component: () => import('/@/views/Index.vue')
+  },
+  {
+    path: '/category/:id',
+    name: 'Category',
+    component: () => import('/@/views/Category.vue')
   },
 ]
 
