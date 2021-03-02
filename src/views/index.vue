@@ -9,17 +9,13 @@
       </p>
     </section>
 
-    <loading v-if="isLoading" />
-
-    <template v-else>
-      <nav-tabs :options="categories" @getId="getId" class="fade" />
-      <index-content :category="nowCategory" class="fade" />
-    </template>
+    <nav-tabs :options="categories" @getId="getId" :isLoading="isLoading" :nowId="nowId" />
+    <index-content v-if="!isLoading" :category="nowCategory" :isLoading="isLoading" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive, toRefs, computed, inject } from 'vue'
+import { defineComponent, onMounted, reactive, toRefs, computed } from 'vue'
 import { useStore } from 'vuex'
 import * as common from '/@/utils/common'
 import IndexBanner from '/@/components/IndexBanner.vue'
@@ -33,18 +29,17 @@ export default defineComponent ({
     IndexContent
   },
   setup() {
-    const groupPath = useStore().state.groupPath
     const data = reactive({ 
       categories: [],
       nowId: 1,
-      isLoading: false 
+      isLoading: false
     })
-
+    const groupPath = useStore().state.groupPath
     const nowCategory = computed(() => data.categories[data.nowId - 1])
     const getId = (id: number) => data.nowId = id
- 
-    const ajax: object = common.ajax(groupPath.platform + '/index', 'get', inject('$bus'))
+
     const getCategories = (): void => {
+      const ajax: object = common.ajax(groupPath.platform + '/index', 'get')
       data.isLoading = true
 
       common.getAjax(ajax).then((result: any) => {

@@ -20,6 +20,7 @@ const path = `/@/configs/groups/${import.meta.env.VITE_APP_BASIC_TYPE}.ts`
 const setApiConfig = (path: string) => {
   axios.all([getConfig(path)]).then(axios.spread(apiData => {
     app.provide('$apiPrefixes', common.evil(apiData.data)())
+    common.getBus(bus)
     app.mount('#app')
   })).catch(() => {
     if (!path) setApiConfig(`/@/configs/groups/${import.meta.env.VITE_APP_BASIC_TYPE}.ts`)

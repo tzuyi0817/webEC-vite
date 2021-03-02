@@ -27,8 +27,8 @@ export default defineComponent ({
     Navigation 
   },
   setup() {
-    const router = useRouter()
-    const goLink = (link: string) => router.push(link)
+    const $router = useRouter()
+    const goLink = (link: string) => $router.push(link)
     const banner = [
       {
         id: 1,
