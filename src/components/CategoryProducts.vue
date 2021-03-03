@@ -1,13 +1,19 @@
 <template>
   <div class="categoryProducts">
+    <loading v-if="isLoading" />
+    <img v-else :src="category.image" class="fade" >
+
     <strong>{{ category.name }}</strong>
     <sort-select :options="sortOptions" @getSelVal="getSelVal" />
+
+    <category-products-list :products="category.Products" :isLoading="isLoading" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import SortSelect from '/@/components/SortSelect.vue'
+import CategoryProductsList from '/@/components/CategoryProductsList.vue'
 
 export default defineComponent ({
   props: {
@@ -15,7 +21,8 @@ export default defineComponent ({
     isLoading: Boolean
   },
   components: {
-    SortSelect
+    SortSelect,
+    CategoryProductsList
   },
   setup() {
     const sortOptions = [
@@ -36,6 +43,13 @@ export default defineComponent ({
 <style lang="scss"scoped>
 .categoryProducts {
   margin: 20px 0;
+  img {
+    margin-bottom: 20px;
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+
   strong {
     color: $baseColor;
   }

@@ -15,6 +15,11 @@ const routes: any[] = [
     name: 'Category',
     component: () => import('/@/views/Category.vue')
   },
+  {
+    path: '/product/:id',
+    name: 'Product',
+    component: () => import('/@/views/Product.vue')
+  },
 ]
 
 const router = createRouter({
