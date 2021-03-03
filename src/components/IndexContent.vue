@@ -49,8 +49,10 @@ export default defineComponent ({
 .indexContent {
   p {
     padding: 10px 5px;
-    font-weight: bold;
-    color: $baseColor;
+    &:last-child {
+      font-weight: bold;
+      color: $baseColor;
+    }
   }
 
   img {
