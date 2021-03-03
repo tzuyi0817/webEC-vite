@@ -1,7 +1,6 @@
 <template>
   <div class="category container">
-    <nav-tabs :options="categories" @getId="getId" :isLoading="isLoading" :nowId="categoryId" />
-    <img v-if="!isLoading" :src="category.image" class="fade" >
+    <nav-tabs :options="categories" @getId="getId" :isLoading="false" :nowId="categoryId" />
 
     <category-products :category="category" :isLoading="isLoading" />
   </div>
@@ -62,13 +61,3 @@ export default defineComponent ({
   }
 })
 </script>
-
-<style lang="scss" scoped>
-.category {
-  img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-  }
-}
-</style>

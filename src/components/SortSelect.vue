@@ -151,52 +151,19 @@ select {
 
     &:nth-child(1) {
       transform: translateY(2px);
-      z-index: 6;
-      &.open {
-        transform: translateY(100%);
-        transition-delay: 0ms
-      }
     }
 
     &:nth-child(2) {
       transform: translateY(4px);
-      z-index: 5;
-      &.open {
-        transform: translateY(200%);
-        transition-delay: 30ms
-      }
     }
 
-    &:nth-child(3) {
-      z-index: 4;
-      &.open {
-        transform: translateY(300%);
-        transition-delay: 60ms
-      }
-    }
-    
-    &:nth-child(4) {
-      z-index: 3;
-      z-index: 4;
-      &.open {
-        transform: translateY(400%);
-        transition-delay: 90ms
-      }
-    }
-
-    &:nth-child(5) {
-      z-index: 2;
-      &.open {
-        transform: translateY(500%);
-        transition-delay: 120ms
-      }
-    }
-
-    &:nth-child(6) {
-      z-index: 1;
-      &.open {
-        transform: translateY(600%);
-        transition-delay: 150ms
+    @for $i from 1 through 10 {
+      &:nth-child(#{$i}) {
+        z-index: #{10+1-$i};
+        &.open {
+          transform: translateY(#{$i*100%});
+          transition-delay: #{$i*30}ms
+        }
       }
     }
   }
