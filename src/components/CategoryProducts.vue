@@ -1,7 +1,7 @@
 <template>
   <div class="categoryProducts">
     <loading v-if="isLoading" />
-    <img v-else :src="category.image" class="fade" >
+    <img v-else :src="category.image" class="fade" />
 
     <strong>{{ category.name }}</strong>
     <sort-select :options="sortOptions" @getSelVal="getSelVal" />
@@ -43,6 +43,7 @@ export default defineComponent ({
 <style lang="scss"scoped>
 .categoryProducts {
   margin: 20px 0;
+
   img {
     margin-bottom: 20px;
     width: 100%;
