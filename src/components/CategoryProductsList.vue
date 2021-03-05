@@ -1,7 +1,6 @@
 <template>
-  <loading v-if="isLoading" />
-  <div class="categoryProductsList fade" v-else>
-    <ul>
+  <div class="categoryProductsList">
+    <ul class="fade">
       <li v-for="item in products" :key="item.id">
         <div class="card">
           <div class="post">
@@ -23,24 +22,34 @@
         </div>
       </li>
     </ul>
+
+    <p class="categoryProductsList__Prompt">{{ getPrompt }}</p>
+    <loading v-if="isLoading" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, computed } from 'vue'
 
 export default defineComponent ({
   props: {
     products: Array,
-    isLoading: Boolean
+    isLoading: Boolean,
+    loadMore: Boolean
   },
-  setup() {
+  setup(props: any) {
     const subDescription = (description: String) => {
       const lenght = description.length
       return lenght > 35 ? description.substr(0, 35) + '...' : description
     }
 
-    return { subDescription }
+    const getPrompt = computed(() => {
+      const { products, loadMore } = props
+      return products.length == 0 
+        ? '此類別暫無商品'
+        : loadMore ? '' : '已無更多商品'
+    })
+    return { subDescription, getPrompt }
   }
 })
 </script>
@@ -48,6 +57,11 @@ export default defineComponent ({
 <style lang="scss" scoped>
 .categoryProductsList {
   margin: 30px 0;
+  &__Prompt {
+    color: $subColor;
+    font-weight: bold;
+    margin: 50px 0;
+  }
 
   .card {
     width: 100%;
@@ -77,6 +91,9 @@ export default defineComponent ({
     }
 
     &-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       width: 60%;
       overflow: hidden;
       padding: 0 10px;

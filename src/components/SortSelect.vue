@@ -126,8 +126,6 @@ select {
     cursor: pointer;
     display: block;
     line-height: 50px;
-    list-style: none;
-    opacity: 1;
     padding: 0 50px 0 20px;
     text-align: left;
     -webkit-transition: -webkit-transform 300ms ease;
