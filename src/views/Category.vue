@@ -1,8 +1,8 @@
 <template>
-  <div class="category container">
+  <div class="category container" @scroll.passive="handerScroll">
     <nav-tabs :options="categories" @getId="getId" :isLoading="false" :nowId="categoryId" />
 
-    <category-products :category="category" :isLoading="isLoading" />
+    <category-products :category="category" :isLoading="isLoading" @getSelquery="getSelquery" :products="products" :loadMore="loadMore" />
   </div>
 </template>
 
@@ -13,6 +13,11 @@ import { useStore } from 'vuex'
 import * as common from '/@/utils/common'
 import NavTabs from '/@/components/NavTabs.vue'
 import CategoryProducts from '/@/components/CategoryProducts.vue'
+
+interface queryType {
+  key: string
+  value: string
+}
 
 export default defineComponent ({
   components: {
@@ -25,39 +30,65 @@ export default defineComponent ({
     const data = reactive({
       categories: [],
       category: {},
+      products: [],
       isLoading: false,
-      currentPage: 0,
+      currentPage: 1,
       totalPage: 0,
       currentKey: '',
       currentValue: '',
-      categoryId: +useRoute().params.id
+      categoryId: +useRoute().params.id,
+      loadMore: false
     })
 
     const getCategory = (): void => {
-      // const { key, value, page } = useRoute().query
-      // const searchParams = new URLSearchParams({ key, value, page })
-      const ajax = common.ajax(groupPath.platform + `/Category/${data.categoryId}`, 'get')
+      const searchParams = new URLSearchParams({ key: data.currentKey, value: data.currentValue, page: data.currentPage.toString() })
+      const ajax = common.ajax(groupPath.platform + `/Category/${data.categoryId}?${searchParams.toString()}`, 'get')
       data.isLoading = true
 
       common.getAjax(ajax).then((result: any) => {
         data.isLoading = false
         data.categories = result.categories
         data.category = result.category
+        data.products = data.products.concat(result.products)
         data.currentPage = result.page
         data.totalPage = result.totalPage.length
         data.currentKey = result.key
         data.currentValue = result.value
+        data.loadMore = data.totalPage > data.currentPage
       })
     }
+
+    const resetProducts = () => {
+      data.currentPage = 1
+      data.products = []
+      getCategory()
+    }
+
     const getId = (id: number) => {
       data.categoryId = id
       $router.push({ name: 'Category', params: { id } })
-      getCategory()
+      resetProducts()
+    }
+    
+    const getSelquery = (query: queryType) => {
+      data.currentKey = query.key
+      data.currentValue = query.value
+      resetProducts()
+    }
+
+    const handerScroll = (event: any) => {
+      if (!data.isLoading && data.loadMore) {
+        const { scrollHeight, offsetHeight, scrollTop } = event.srcElement
+        if (scrollHeight - offsetHeight <= scrollTop + 5) {
+          data.currentPage++
+          getCategory()
+        }
+      }
     }
 
     onMounted(() => getCategory())
     const resData = toRefs(data)
-    return { ...resData, getId }
+    return { ...resData, getId, handerScroll, getSelquery }
   }
 })
 </script>
