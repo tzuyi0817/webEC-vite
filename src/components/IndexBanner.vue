@@ -2,7 +2,7 @@
   <div class="indexBanner">
     <carousel>
       <slide v-for="item in banner" :key="item.id">
-        <a :href="item.url" @click="goLink(item.url)"><img :src="item.src"></a>
+        <a @click="goLink(item.url)"><img :src="item.src"></a>
       </slide>
       
       <template #addons>

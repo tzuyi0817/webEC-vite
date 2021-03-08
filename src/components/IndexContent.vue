@@ -1,7 +1,7 @@
 <template>
   <div class="indexContent fade">
     <p>{{ content }}</p>
-    <a :href="url" @click="goLink(url)">
+    <a @click="goLink(url)">
       <img :src="category && category.image">
       <p>前往 {{ category && category.name }} 頁面 >></p>
     </a>

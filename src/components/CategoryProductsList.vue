@@ -1,13 +1,13 @@
 <template>
   <div class="categoryProductsList">
-    <ul class="fade">
-      <li v-for="item in products" :key="item.id">
+    <ul>
+      <li v-for="item in products" :key="item.id" class="fade">
         <div class="card">
           <div class="post">
             <img :src="item.image" />
       
             <div class="post-content">
-              <p class="post-header"><a :href="`/product/${item.id}`">{{ item.name }}</a></p>
+              <p class="post-header" @click="goLink(item.id)">{{ item.name }}</p>
               <p class="post-text">{{ subDescription(item.description) }}</p>
               <div class="post-footer">
                 <div>
@@ -15,7 +15,7 @@
                   <p>還剩{{ item.count }}件</p>
                 </div>
 
-                <button><a :href="`/product/${item.id}`">Detail</a></button>
+                <button @click="goLink(item.id)">Detail</button>
               </div>
             </div>
           </div>
@@ -23,13 +23,14 @@
       </li>
     </ul>
 
-    <p class="categoryProductsList__Prompt">{{ getPrompt }}</p>
-    <loading v-if="isLoading" />
+    <p class="categoryProductsList__Prompt" v-if="!isLoading">{{ getPrompt }}</p>
+    <loading v-else />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
+import { useRouter } from 'vue-router'
 
 export default defineComponent ({
   props: {
@@ -43,13 +44,16 @@ export default defineComponent ({
       return lenght > 35 ? description.substr(0, 35) + '...' : description
     }
 
+    const $router = useRouter()
+    const goLink = (id: number) => $router.push({ name: 'Product', params: { id } })
+
     const getPrompt = computed(() => {
       const { products, loadMore } = props
       return products.length == 0 
         ? '此類別暫無商品'
         : loadMore ? '' : '已無更多商品'
     })
-    return { subDescription, getPrompt }
+    return { subDescription, getPrompt, goLink }
   }
 })
 </script>
@@ -100,11 +104,9 @@ export default defineComponent ({
     }
 
     &-header {
-      a {
-        font-size: 16px;
-        color: $baseColor;
-        text-align: center;
-      }
+      font-size: 16px;
+      color: $baseColor;
+      text-align: center;
     }
 
     &-text {
@@ -145,20 +147,15 @@ export default defineComponent ({
         overflow: hidden;
         cursor: pointer;
         transition: .3s;
-        a {
-          color: $subColor;
-        }
+        color: $subColor;
 
         &:hover, &:active {
           box-shadow: 0 0 5px $subColor, 0 0 25px $subColor;
+          color: #fff;
           &::after,
           &::before {
             transition: .3s;
             background: $subColor;
-          }
-
-          a {
-            color: #fff;
           }
         }
 
