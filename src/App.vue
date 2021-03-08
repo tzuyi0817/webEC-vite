@@ -4,7 +4,8 @@
       <transition :name="transitionName">
         <component :is="Component" class="transition" />
       </transition>
-    </router-view>  
+    </router-view>
+    <Footer /> 
     <show-toast />
   </div>
 </template>
@@ -14,10 +15,12 @@ import { defineComponent, inject, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import ShowToast from './components/ShowToast.vue';
+import Footer from './components/Footer.vue';
 
 export default defineComponent ({
   components: {
-    ShowToast
+    ShowToast,
+    Footer
   },
   setup() {
     const $apiPrefixes = inject('$apiPrefixes')

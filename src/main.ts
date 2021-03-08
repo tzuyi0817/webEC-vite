@@ -7,11 +7,13 @@ import store from '/@/store/index'
 import Loading from '/@/components/Loading.vue'
 import axios from 'axios'
 import bus from './utils/bus'
+import { FontAwesomeIcon } from './utils/font-awesome'
 
 const app = createApp(App)
 app.use(router)
 app.use(store)
 app.component('Loading', Loading)
+app.component('icon', FontAwesomeIcon)
 app.provide('$bus', bus)
 
 const getConfig = (filePath: string) => axios.get(filePath)

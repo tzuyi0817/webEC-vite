@@ -20,6 +20,21 @@ const routes: any[] = [
     name: 'Product',
     component: () => import('/@/views/Product.vue')
   },
+  {
+    path: '/search',
+    name: 'Search',
+    component: () => import('/@/views/Search.vue')
+  },
+  {
+    path: '/user',
+    name: 'UserProfile',
+    component: () => import('/@/views/UserProfile.vue')
+  },
+  {
+    path: '/cart',
+    name: 'Cart',
+    component: () => import('/@/views/Cart.vue')
+  },
 ]
 
 const router = createRouter({
