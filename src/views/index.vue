@@ -17,10 +17,10 @@
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs, computed } from 'vue'
 import { useStore } from 'vuex'
-import * as common from '/@/utils/common'
-import IndexBanner from '/@/components/IndexBanner.vue'
-import NavTabs from '/@/components/NavTabs.vue'
-import IndexContent from '/@/components/IndexContent.vue'
+import * as common from '../utils/common'
+import IndexBanner from '../components/IndexBanner.vue'
+import NavTabs from '../components/NavTabs.vue'
+import IndexContent from '../components/IndexContent.vue'
 
 export default defineComponent ({
   components: {
@@ -34,12 +34,12 @@ export default defineComponent ({
       nowId: 1,
       isLoading: false
     })
-    const groupPath = useStore().state.groupPath
+    const { groupPath } = useStore().state
     const nowCategory = computed(() => data.categories[data.nowId - 1])
     const getId = (id: number) => data.nowId = id
 
     const getCategories = (): void => {
-      const ajax: object = common.ajax(groupPath.platform + '/index', 'get')
+      const ajax = common.ajax(groupPath.platform + '/index', 'get')
       data.isLoading = true
 
       common.getAjax(ajax).then((result: any) => {

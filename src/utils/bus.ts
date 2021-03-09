@@ -1,10 +1,5 @@
 import mitt from 'mitt'
-
-interface busType {
-  $on?: Function,
-  $off?: Function,
-  $emit?: Function
-}
+import { busType } from './interface'
 
 const bus: busType = {}
 const emitter = mitt()
