@@ -3,7 +3,7 @@
     <div :class="['slider', nowSelect]"></div>
     <li v-for="(item, index) in menu" :key="index" @click="select(item.route)">
       <a :class="{ 'active': nowSelect == item.name }">
-        <icon :name="item.icon" :type="item.type"></icon>
+        <icon :name="item.icon" :type="item.type" />
         <span>{{ item.name }}</span>
       </a>
     </li>
@@ -56,10 +56,10 @@ export default defineComponent ({
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #fff;
+  background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(242,245,248,1) 35%, rgba(236,236,237,1) 100%);
   border-radius: 20px 20px 0px 0px;
   padding: 30px 0px 15px;
-  box-shadow: 0px 8px 20px rgba($color: $baseColor, $alpha: 0.9);
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.9);
   li {
     a {
       width: 90px;
@@ -121,22 +121,22 @@ export default defineComponent ({
     border-radius: 50%;
     opacity: 0;
     &.home {
-      left: 17.5%;
+      left: calc(50% - 135px);
       opacity: 1;
     }
 
     &.search {
-      left: 39.5%;
+      left: calc(50% - 45px);
       opacity: 1;
     }
 
     &.profile {
-      left: 61%;
+      left: calc(50% + 45px);
       opacity: 1;
     }
 
     &.cart {
-      left: 82.5%;
+      left: calc(50% + 135px);
       opacity: 1;
     }
   }

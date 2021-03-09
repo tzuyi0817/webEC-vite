@@ -11,15 +11,7 @@
 <script lang="ts">
 import { defineComponent, computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
-
-interface categoryType {
-  id: number
-  createdAt: string
-  StoreId: number
-  image: string
-  name: string
-  updatedAt: string
-}
+import { categoryType } from '../utils/interface'
 
 export default defineComponent ({
   props: {

@@ -10,14 +10,10 @@
 import { defineComponent, onMounted, reactive, toRefs } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import * as common from '/@/utils/common'
-import NavTabs from '/@/components/NavTabs.vue'
-import CategoryProducts from '/@/components/CategoryProducts.vue'
-
-interface queryType {
-  key: string
-  value: string
-}
+import * as common from '../utils/common'
+import NavTabs from '../components/NavTabs.vue'
+import CategoryProducts from '../components/CategoryProducts.vue'
+import { queryType } from '../utils/interface'
 
 export default defineComponent ({
   components: {
@@ -25,7 +21,7 @@ export default defineComponent ({
     CategoryProducts
   },
   setup() {
-    const groupPath = useStore().state.groupPath
+    const { groupPath } = useStore().state
     const $router = useRouter()
     const data = reactive({
       categories: [],
@@ -41,7 +37,11 @@ export default defineComponent ({
     })
 
     const getCategory = (): void => {
-      const searchParams = new URLSearchParams({ key: data.currentKey, value: data.currentValue, page: data.currentPage.toString() })
+      const searchParams = new URLSearchParams({ 
+        key: data.currentKey, 
+        value: data.currentValue, 
+        page: data.currentPage.toString() 
+      })
       const ajax = common.ajax(groupPath.platform + `/Category/${data.categoryId}?${searchParams.toString()}`, 'get')
       data.isLoading = true
 
@@ -50,10 +50,7 @@ export default defineComponent ({
         data.categories = result.categories
         data.category = result.category
         data.products = data.products.concat(result.products)
-        data.currentPage = result.page
         data.totalPage = result.totalPage.length
-        data.currentKey = result.key
-        data.currentValue = result.value
         data.loadMore = data.totalPage > data.currentPage
       })
     }

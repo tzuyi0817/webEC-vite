@@ -7,8 +7,8 @@
             <img :src="item.image" />
       
             <div class="post-content">
-              <p class="post-header" @click="goLink(item.id)">{{ item.name }}</p>
-              <p class="post-text">{{ subDescription(item.description) }}</p>
+              <p class="post-header" @click="goLink(item.id)">{{ subContent(item.name, 19) }}</p>
+              <p class="post-text">{{ subContent(item.description, 35) }}</p>
               <div class="post-footer">
                 <div>
                   <p>$ {{ item.price }}</p>
@@ -39,9 +39,9 @@ export default defineComponent ({
     loadMore: Boolean
   },
   setup(props: any) {
-    const subDescription = (description: String) => {
-      const lenght = description.length
-      return lenght > 35 ? description.substr(0, 35) + '...' : description
+    const subContent = (str: String, num: number) => {
+      const length = str.length
+      return length > num ? str.slice(0, num + 1) + '...' : str
     }
 
     const $router = useRouter()
@@ -53,7 +53,7 @@ export default defineComponent ({
         ? '此類別暫無商品'
         : loadMore ? '' : '已無更多商品'
     })
-    return { subDescription, getPrompt, goLink }
+    return { subContent, getPrompt, goLink }
   }
 })
 </script>
@@ -70,7 +70,6 @@ export default defineComponent ({
   .card {
     width: 100%;
     height: 180px;
-    background: rgb(255,255,255);
     background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(242,245,248,1) 35%, rgba(236,236,237,1) 100%);
     box-shadow: 0 13px 15px rgba(0, 0, 0, 0.3);
     border-radius: 10px;

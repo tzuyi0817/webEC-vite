@@ -1,15 +1,5 @@
 import axios from 'axios'
-
-type ajaxType = {
-  groupPath: string,
-  restful: string
-}
-
-interface busType {
-  $on: Function
-  $off: Function
-  $emit: Function
-}
+import { busType, ajaxType, selValType } from './interface'
 
 let $bus: busType
 const api = axios.create({ headers: { 'Content-Type': 'application/x-www-form-urlencoded'} })
@@ -24,7 +14,7 @@ api.interceptors.request.use(config => {
 
 
 
-export function ajax(groupPath: string, restful: string): object {
+export function ajax(groupPath: string, restful: string): ajaxType {
   return { groupPath, restful }
 }
 
@@ -36,7 +26,7 @@ export function getAjax(ajax: ajaxType, data = {}) {
   })
   .catch((error: any) => {
     console.log(error)
-    showToast('資料獲取和操作失敗')
+    showToast('資料獲取或操作失敗')
   })
 }
 
@@ -51,4 +41,13 @@ export function getBus(bus: busType): void {
 
 export function showToast(msg: string): void {
   if (msg) $bus.$emit('toast', msg)
+}
+
+export function getSortOptions(): selValType[] {
+  return [
+    { name: '上架時間: 新到舊', query: { key: 'createdAt', value: 'desc' }, value: 'timeDesc' },
+    { name: '上架時間: 舊到新', query: { key: 'createdAt', value: 'asc' }, value: 'timeAsc' },
+    { name: '價格: 高至低', query: { key: 'price', value: 'desc' }, value: 'priceDesc' },
+    { name: '價格: 低至高', query: { key: 'price', value: 'asc' }, value: 'priceAsc' }
+  ]
 }
