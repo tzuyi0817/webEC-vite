@@ -13,7 +13,7 @@
 
       <template v-else>
         <icon name="exclamation-triangle" type="fas" />
-        <p>找不到您所查詢「{{currentKeyword}}」的相關商品</p>
+        <p>找不到您所查詢「{{ currentKeyword }}」的相關商品</p>
       </template>
     </div>
 
