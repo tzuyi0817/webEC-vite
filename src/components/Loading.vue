@@ -12,15 +12,15 @@
 .loading {
   position: relative;
   width: 100%;
-  height: 100px;
+  height: 250px;
 }
 
 .loading-element { 
   position: absolute;
   top: calc(50% - 32px);
   left: calc(50% - 32px);
-  width: 64px;
-  height: 64px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   perspective: 800px;
   .inner { 
@@ -29,25 +29,28 @@
     width: 100%;
     height: 100%;
     border-radius: 50%;
+    font-size: 17px;
+    font-weight: bold;
+    color: $subColor;
     &.one {
       left: 0%;
       top: 0%;
       animation: rotate-one 1.5s linear infinite;
-      border-bottom: 3px solid #666;
+      border-bottom: 5px solid $baseColor;
     }
 
     &.two {
       right: 0%;
       top: 0%;
       animation: rotate-two 1.5s linear infinite;
-      border-right: 3px solid #666;
+      border-right: 5px solid red;
     }
 
     &.three { 
       right: 0%;
       bottom: 0%;
-      animation: rotate-three 1s linear infinite;
-      border-top: 3px solid #666;
+      animation: rotate-three 1.5s linear infinite;
+      border-top: 5px solid #ffcc00;
     }
   }
 } 
