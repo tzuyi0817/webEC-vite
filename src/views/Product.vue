@@ -1,12 +1,12 @@
 <template>
-  <div class="product container">
+  <div class="product container" @scroll.passive="handerScroll">
     <product-banner :productImage="productImage" :isLoading="isLoading" />
     <product-content v-if="!isLoading" :product="product" :rating="rating" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, onMounted, toRefs } from 'vue'
+import { defineComponent, reactive, onMounted, toRefs, onUnmounted, inject } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import * as common from '../utils/common'
@@ -20,6 +20,8 @@ export default defineComponent ({
   },
   setup() {
     const { groupPath } = useStore().state
+    const state = useStore()
+    const $bus: any = inject('$bus')
     const data = reactive({
       isLoading: false,
       product: {},
@@ -44,12 +46,15 @@ export default defineComponent ({
         data.rating = result.ratingAve
         data.comment = result.comment
         data.totalPage = result.totalPage.length
+        state.commit('updateProductName', result.product.name)
       })
     }
+    const handerScroll = (event: any) => $bus.$emit('scroll', event.srcElement.scrollTop)
 
     onMounted(() => getProduct())
+    onUnmounted(() => state.commit('updateProductName', ''))
     const resDate = toRefs(data)
-    return { ...resDate }
+    return { ...resDate, handerScroll }
   }
 })
 </script>

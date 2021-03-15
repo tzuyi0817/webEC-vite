@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { busType, ajaxType, selValType } from './interface'
 
-let $bus: busType
+let $bus: any
 const api = axios.create({ headers: { 'Content-Type': 'application/x-www-form-urlencoded'} })
 
 api.defaults.withCredentials = true

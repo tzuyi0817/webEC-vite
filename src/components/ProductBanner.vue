@@ -7,7 +7,6 @@
         <span>{{ `${currentPage}/${productImage.length}` }}</span>
       </slide>
     </carousel>
-    <button @click="goBack"><icon name="angle-left" type="fas" /></button>
   </div>
 </template>
 
@@ -15,7 +14,6 @@
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide } from 'vue3-carousel'
 import { defineComponent, ref } from 'vue'
-import { useRouter } from 'vue-router'
 
 export default defineComponent ({
   props: {
@@ -27,7 +25,6 @@ export default defineComponent ({
     Slide
   },
   setup() {
-    const $router = useRouter()
     const currentPage = ref(1)
     const img = ref('')
     const touch = () => {
@@ -41,10 +38,8 @@ export default defineComponent ({
         currentPage.value = Math.round(Math.abs(num) / width) + 1
       }, 500)
     }
-
-    const goBack = () => $router.back()
     
-    return { currentPage, img, touch, goBack }
+    return { currentPage, img, touch }
   }
 })
 </script>
@@ -56,19 +51,6 @@ export default defineComponent ({
     height: 400px;
     object-fit: cover;
     position: relative;
-  }
-
-  button {
-    position: absolute;
-    background: rgba(0, 0, 0, 0.26);
-    border-radius: 50%;
-    left: 25px;
-    top: 15px;
-    padding: 3px 10px;
-    svg {
-      width: 12px;
-      color: #fff;
-    }
   }
 
   span {
