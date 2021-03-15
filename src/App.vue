@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <Header />
     <router-view v-slot="{ Component }">
       <transition :name="transitionName">
         <component :is="Component" class="transition" />
@@ -14,12 +15,14 @@
 import { defineComponent, inject, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
-import ShowToast from './components/ShowToast.vue';
-import Footer from './components/Footer.vue';
+import ShowToast from './components/ShowToast.vue'
+import Header from './components/Header.vue'
+import Footer from './components/Footer.vue'
 
 export default defineComponent ({
   components: {
     ShowToast,
+    Header,
     Footer
   },
   setup() {

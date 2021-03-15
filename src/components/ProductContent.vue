@@ -1,7 +1,7 @@
 <template>
   <div class="productContent">
-    <p>{{ product.name }}</p>
-    <p>{{ `$${product.price}` }}</p>
+    <h1>{{ product.name }}</h1>
+    <p class="price">{{ `$${product.price}` }}</p>
 
     <div class="productContent__stars">
       <template v-if="product.Comments && product.Comments.length">
@@ -22,14 +22,16 @@
       ></iframe>
     </div>
     
-    
+    <div class="productContent__transport">
+      <p><icon name="clock" type="fas" />較長備貨 (出貨天數 15 天)</p>
+      <p><icon name="truck" type="fas" />運費: $60</p>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
 import Stars from '../components/Stars.vue'
-import * as common from '../utils/common'
 
 export default defineComponent ({
   props: {
@@ -65,15 +67,40 @@ export default defineComponent ({
     }
   }
 
-  p {
+  &__transport {
+    svg {
+      width: 20px;
+    }
+
+    p {
+      padding: 5px 2px;
+      font-size: 14px;
+      display: flex;
+      &:first-child {
+        color: $baseColor;
+        background: rgba($subColor, 0.1);
+        font-weight: bold;
+      }
+
+      svg {
+        margin-right: 5px;
+      }
+    }
+  }
+
+  .price {
+    color: $baseColor;
+    font-weight: bold;
+  }
+
+  h1, .price {
     font-size: 17px;
+  }
+
+  p, h1 {
     margin: 10px 0;
     text-align: left;
     line-height: 20px;
-    &:nth-child(2) {
-      color: $baseColor;
-      font-weight: bold;
-    }
   }
 }
 </style>
