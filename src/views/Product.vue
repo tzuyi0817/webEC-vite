@@ -1,7 +1,7 @@
 <template>
   <div class="product container">
     <product-banner :productImage="productImage" :isLoading="isLoading" />
-    <product-content :product="product" v-if="!isLoading" />
+    <product-content v-if="!isLoading" :product="product" :rating="rating" />
   </div>
 </template>
 
