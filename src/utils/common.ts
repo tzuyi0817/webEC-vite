@@ -51,33 +51,3 @@ export function getSortOptions(): selValType[] {
     { name: '價格: 低至高', query: { key: 'price', value: 'asc' }, value: 'priceAsc' }
   ]
 }
-
-export function getStar(rating: number): string {
-  const yellowNum = Math.floor(rating)
-  const grayNum = Math.floor(5 - rating);
-  const decimalNum = +(rating - yellowNum).toFixed(1);
-
-  const getStarts = (yellowNum: number, decimalNum: number, grayNum: number) => {
-    const startInfosMap = [
-      { color: "yellow", num: yellowNum },
-      { color: null, num: decimalNum },
-      { color: "gray", num: grayNum }
-    ]
-
-    const startsHtml = startInfosMap.map(item => {
-        const { color, num } = item
-        const percentage = num * 100;
-        if (!color && num > 0) {
-          return `<span class="star star-percentage">
-                  <i class="fa fa-star fa-star-gray"></i>
-                  <i class="fa fa-star fa-star-yellow percent-star" style="width: ${percentage}%;"></i>
-                  </span>`
-        } else {
-          return `<i class="fa fa-star fa-star-${color}"></i>`.repeat(num);
-        }
-      }).join('')
-
-    return startsHtml
-  }
-  return getStarts(yellowNum, decimalNum, grayNum)
-}
