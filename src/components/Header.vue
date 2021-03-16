@@ -1,11 +1,10 @@
 <template>
   <div v-if="isShow">
     <div class="header" :style="`opacity: ${scrollTop / 350}`">
-      <button v-if="scrollTop > 175" @click="goBack"><icon name="angle-left" type="fas" /></button>
       <span>{{ productName }}</span>
     </div>
 
-    <button v-if="scrollTop < 175" class="defaultBtn" @click="goBack" :style="`opacity: ${175 / scrollTop + 1}`">
+    <button :class="{ 'defaultBtn': scrollTop < 175 }" @click="goBack" :style="`opacity: ${buttonOpacity}`">
       <icon name="angle-left" type="fas" />
     </button>
   </div>
@@ -26,6 +25,7 @@ export default defineComponent ({
     const scrollTop = ref(0)
 
     const isShow = computed(() => !notShow.includes($route.name as string))
+    const buttonOpacity = computed(() => scrollTop.value < 175 ? 175 / (scrollTop.value + 175) : scrollTop.value / 175)
     const productName = computed(() => {
       const name = state.productName
       return name.length > 15 ? name.slice(0, 15) + '...' : name
@@ -35,7 +35,7 @@ export default defineComponent ({
     const goBack = () => $router.back()
 
     onUnmounted(() => $bus.$off('scroll'))
-    return { goBack, isShow, productName, scrollTop }
+    return { goBack, isShow, productName, scrollTop, buttonOpacity }
   }
 })
 </script>
@@ -50,38 +50,30 @@ export default defineComponent ({
   padding: 10px 6%;
   background: #fff;
   height: 55px;
-  button {
-    background: #fff;
-    svg {
-      color: $baseColor;
-    }
-  }
-
   span {
-    width: 100%;
-    display: block;
-    text-align: center;
     font-size: 20px;
-    padding: 0 20px;
-  }
-}
-
-.defaultBtn {
-  z-index: 10;
-  position: absolute;
-  background: rgba(0, 0, 0, 0.26);
-  top: 10px;
-  left: 6%;
-  svg {
-    color: #fff;
+    padding: 0 20px 0 55px;
   }
 }
 
 button {
+  z-index: 10;
+  position: absolute;
   border-radius: 50%;
   padding: 3px 10px;
+  background: #fff;
+  top: 11px;
+  left: 6%;
   svg {
     width: 12px;
+    color: $baseColor;
+  }
+}
+
+.defaultBtn {
+  background: rgba(0, 0, 0, 0.26);
+  svg {
+    color: #fff;
   }
 }
 </style>
