@@ -1,8 +1,9 @@
 import axios from 'axios'
+import qs from 'qs'
 import { busType, ajaxType, selValType } from './interface'
 
 let $bus: any
-const api = axios.create({ headers: { 'Content-Type': 'application/x-www-form-urlencoded'} })
+const api = axios.create({ headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
 
 api.defaults.withCredentials = true
 api.interceptors.request.use(config => {
@@ -19,6 +20,7 @@ export function ajax(groupPath: string, restful: string): ajaxType {
 }
 
 export function getAjax(ajax: ajaxType, data = {}) {
+  data = qs.stringify(data)
   api.defaults.timeout = 0
   
   return api[ajax.restful](ajax.groupPath, data).then((response: any) => {
