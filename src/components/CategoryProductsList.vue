@@ -15,7 +15,7 @@
                   <p>還剩{{ item.count }}件</p>
                 </div>
 
-                <button @click="goLink(item.id)">Detail</button>
+                <button class="btnStyle" @click="goLink(item.id)">Detail</button>
               </div>
             </div>
           </div>
@@ -134,66 +134,7 @@ export default defineComponent ({
           font-size: 13px;
         }
       }
-
-      button {
-        margin: 0 5px 0 20px;
-        z-index: 0;
-        position: relative;
-        padding: 5px 15px;
-        font-size: 16px;
-        border-radius: 10px;
-        text-align: center;
-        overflow: hidden;
-        cursor: pointer;
-        transition: .3s;
-        color: $subColor;
-
-        &:hover, &:active {
-          box-shadow: 0 0 5px $subColor, 0 0 25px $subColor;
-          color: #fff;
-          &::after,
-          &::before {
-            transition: .3s;
-            background: $subColor;
-          }
-        }
-
-        &::before {
-          content: '';
-          position: absolute;
-          z-index: -2;
-          left: 50%;
-          top: 50%;
-          transform: translate(-50%, -50%);
-          width: 150%;
-          height: 300%;
-          background-color: #efefef;
-          background-repeat: no-repeat;
-          background-size: 50% 50%;
-          background-position: 0 0;
-          background-image: conic-gradient($subColor, $subColor);
-          animation: rotate 2s linear infinite;
-        }
-        
-        &::after {
-          content: '';
-          position: absolute;
-          z-index: -1;
-          left: 2px;
-          top: 2px;
-          width: calc(100% - 4px);
-          height: calc(100% - 4px);
-          background: #efefef;
-          border-radius: 10px;
-        }
-      }
     }
   }
-}
-
-@keyframes rotate {
-	100% {
-		transform: translate(-50%, -50%) rotate(1turn);
-	}
 }
 </style>

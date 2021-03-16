@@ -25,7 +25,7 @@ export default defineComponent ({
     const scrollTop = ref(0)
 
     const isShow = computed(() => !notShow.includes($route.name as string))
-    const buttonOpacity = computed(() => scrollTop.value < 175 ? 175 / (scrollTop.value + 175) : scrollTop.value / 175)
+    const buttonOpacity = computed(() => scrollTop.value < 175 ? 175 / (scrollTop.value + 175) : scrollTop.value / 350)
     const productName = computed(() => {
       const name = state.productName
       return name.length > 15 ? name.slice(0, 15) + '...' : name
@@ -61,7 +61,7 @@ button {
   position: absolute;
   border-radius: 50%;
   padding: 3px 10px;
-  background: #fff;
+  background: transparent;
   top: 11px;
   left: 6%;
   svg {
