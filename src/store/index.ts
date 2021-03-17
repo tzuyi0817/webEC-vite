@@ -3,14 +3,14 @@ import { createStore } from 'vuex'
 export default createStore({
   state: {
     groupPath: {},
-    productName: ''
+    titleName: ''
   },
   mutations: {
     updateGroupPath(state, val) {
       state.groupPath = val
     },
-    updateProductName(state, val) {
-      state.productName = val
+    updateTitleName(state, val) {
+      state.titleName = val
     }
   },
   actions: {

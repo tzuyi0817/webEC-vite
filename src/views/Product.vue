@@ -1,22 +1,31 @@
 <template>
-  <div class="product container" @scroll.passive="handerScroll">
+  <div class="product container" @scroll.passive="handerScroll" ref="productScroll">
     <product-banner :productImage="productImage" :isLoading="isLoading" />
     <product-content v-if="!isLoading" :product="product" :rating="rating" />
+    <product-rating v-if="!isLoading" :product="product" :rating="rating" />
+
+    <h1>相似商品</h1>
+    <category-products-list :products="moreProducts" :isLoading="isLoading" :isShowPrompt="false" v-if="moreProducts.length > 0" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, onMounted, toRefs, onUnmounted, inject } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, onBeforeRouteUpdate } from 'vue-router'
 import { useStore } from 'vuex'
 import * as common from '../utils/common'
+import { paramsType } from '../utils/interface'
 import ProductBanner from '../components/ProductBanner.vue'
 import ProductContent from '../components/ProductContent.vue'
+import ProductRating from '../components/ProductRating.vue'
+import CategoryProductsList from '../components/CategoryProductsList.vue'
 
 export default defineComponent ({
   components: {
     ProductBanner,
-    ProductContent
+    ProductContent,
+    ProductRating,
+    CategoryProductsList
   },
   setup() {
     const { groupPath } = useStore().state
@@ -29,11 +38,12 @@ export default defineComponent ({
       rating: 0,
       comment: [],
       productImage: [''],
-      totalPage: 0
+      totalPage: 0,
+      productScroll: null
     })
 
-    const getProduct = () => {
-      const { id } = useRoute().params
+    const getProduct = (params: paramsType = { id: '' }) => {
+      const { id } = params.id ? params : useRoute().params
       const ajax = common.ajax(groupPath.platform + `/product/${id}`, 'get')
       data.isLoading = true
 
@@ -46,13 +56,20 @@ export default defineComponent ({
         data.rating = result.ratingAve
         data.comment = result.comment
         data.totalPage = result.totalPage.length
-        state.commit('updateProductName', result.product.name)
+        state.commit('updateTitleName', result.product.name)
       })
     }
     const handerScroll = (event: any) => $bus.$emit('scroll', event.srcElement.scrollTop)
 
+    onBeforeRouteUpdate((to) => {
+      getProduct(to.params as any)
+      data.productScroll.scrollTo(0, 0)
+    })
     onMounted(() => getProduct())
-    onUnmounted(() => state.commit('updateProductName', ''))
+    onUnmounted(() => {
+      state.commit('updateTitleName', '')
+      $bus.$emit('scroll', 0)
+    })
     const resDate = toRefs(data)
     return { ...resDate, handerScroll }
   }
@@ -60,5 +77,10 @@ export default defineComponent ({
 </script>
 
 <style lang="scss" scoped>
-
+.product {
+  h1 {
+    margin: 10px;
+    text-align: left;
+  }
+}
 </style>

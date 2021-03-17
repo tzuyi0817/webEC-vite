@@ -28,3 +28,7 @@ export interface queryType {
   key: string 
   value: string
 }
+
+export interface paramsType {
+  id: string
+}
