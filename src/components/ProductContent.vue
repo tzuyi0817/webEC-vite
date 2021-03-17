@@ -1,7 +1,7 @@
 <template>
   <div class="productContent">
     <h1>{{ product.name }}</h1>
-    <p class="price">{{ `$${product.price}` }}</p>
+    <h1 class="price">{{ `$${product.price}` }}</h1>
 
     <div class="productContent__stars">
       <template v-if="product.Comments && product.Comments.length">
@@ -40,6 +40,26 @@
         {{ !product.count ? '商品補貨中' : isLoading ? '處理中...' : '加入購物車' }}
       </button>
     </div>
+
+    <div class="productContent__detail">
+      <h1>商品詳情</h1>
+      <hr />
+
+      <div>
+        <p>商品數量</p>
+        <span>{{ product.count }}</span>
+      </div>
+      <div>
+        <p>類別</p>
+        <button @click="goCategory">
+          {{ product.Product_category && product.Product_category.name }} 
+          <icon name="chevron-right" type="fas" />
+        </button>
+      </div>
+      <hr />
+
+      <p class="description">{{ product.description }}</p>
+    </div>
   </div>
 </template>
 
@@ -47,6 +67,7 @@
 import { defineComponent, computed, ref } from 'vue'
 import Stars from '../components/Stars.vue'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 import * as common from '../utils/common'
 
 export default defineComponent ({
@@ -59,24 +80,27 @@ export default defineComponent ({
   },
   setup(props: any) {
     const { groupPath } = useStore().state
+    const $router = useRouter()
+    const { product } = props
     const quantity = ref(1)
     const isLoading = ref(false)
 
-    const disable = computed(() => quantity.value >= props.product.count)
+    const disable = computed(() => quantity.value >= product.count)
     const facebook = computed(() => {
-      return `https://www.facebook.com/plugins/share_button.php?href=https%3A%2F%2Ftzuyi0817.github.io%2Fac_s4_final_project_ecweb_vue%2F%23%2Fproduct%2F${props.product.id}&layout=button&size=large&width=69&height=28&appId`
+      return `https://www.facebook.com/plugins/share_button.php?href=https%3A%2F%2Ftzuyi0817.github.io%2Fac_s4_final_project_ecweb_vue%2F%23%2Fproduct%2F${product.id}&layout=button&size=large&width=69&height=28&appId`
     })
 
     const handlerInput = (event: InputEvent) => {
       const { value }: any = event.target
-      if (value > props.product.count) quantity.value = props.product.count
+      if (value > product.count) quantity.value = product.count
       if (value < 1) quantity.value = 1
     }
     const quantityBtn = (type: string) => type == '+' ? quantity.value++ : quantity.value--
+    const goCategory = () => $router.push({ name: 'Category', params: { id: product.ProductCategoryId } })
     const addCart = () => {
       const ajax = common.ajax(groupPath.platform + '/cart', 'post')
       const data = { 
-        productId: props.product.id, 
+        productId: product.id, 
         quantity: quantity.value
       }
       isLoading.value = true
@@ -92,7 +116,7 @@ export default defineComponent ({
       })
     }
 
-    return { facebook, quantity, disable, handlerInput, quantityBtn, addCart, isLoading }
+    return { facebook, quantity, disable, handlerInput, quantityBtn, addCart, isLoading, goCategory }
   }
 })
 </script>
@@ -222,13 +246,48 @@ export default defineComponent ({
     }
   }
 
+  &__detail {
+    margin: 30px 0;
+    h1 {
+      padding: 5px;
+    }
+
+    button {
+      background: transparent;
+    }
+
+    div {
+      display: flex;
+      font-size: 14px;
+      align-items: center;
+      p {
+        width: 110px;
+      }
+
+      button, span {
+        display: flex;
+        font-size: 14px;
+        justify-content: space-between;
+        align-items: center;
+        text-align: left;
+        padding: 10px;
+        flex: 1;
+        color: $baseFont;
+        svg {
+          width: 8px;
+        }
+      }
+    }
+
+    .description {
+      font-size: 14px;
+      opacity: 0.6;
+    }
+  }
+
   .price {
     color: $baseColor;
     font-weight: bold;
-  }
-
-  h1, .price {
-    font-size: 17px;
   }
 
   p, h1 {

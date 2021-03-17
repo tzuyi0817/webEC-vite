@@ -23,8 +23,8 @@
       </li>
     </ul>
 
-    <p class="categoryProductsList__Prompt" v-if="!isLoading">{{ getPrompt }}</p>
-    <loading v-else />
+    <p class="categoryProductsList__Prompt" v-if="!isLoading && isShowPrompt">{{ getPrompt }}</p>
+    <loading v-if="isLoading" />
   </div>
 </template>
 
@@ -36,7 +36,14 @@ export default defineComponent ({
   props: {
     products: Array,
     isLoading: Boolean,
-    loadMore: Boolean
+    loadMore: {
+      type: Boolean,
+      default: false
+    },
+    isShowPrompt: {
+      type: Boolean,
+      default: true
+    }
   },
   setup(props: any) {
     const subContent = (str: String, num: number) => {
@@ -49,7 +56,7 @@ export default defineComponent ({
 
     const getPrompt = computed(() => {
       const { products, loadMore } = props
-      return products.length == 0 
+      return products.length == 0
         ? '此類別暫無商品'
         : loadMore ? '' : '已無更多商品'
     })

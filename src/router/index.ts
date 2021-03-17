@@ -8,7 +8,7 @@ const routes: any[] = [
   {
     path: '/index',
     name: 'Index',
-    component: () => import('/@/views/Index.vue')
+    component: () => import('../views/Index.vue')
   },
   {
     path: '/category/:id',
@@ -34,7 +34,7 @@ const routes: any[] = [
     path: '/cart',
     name: 'Cart',
     component: () => import('/@/views/Cart.vue')
-  },
+  }
 ]
 
 const router = createRouter({

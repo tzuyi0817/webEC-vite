@@ -1,7 +1,7 @@
 <template>
   <div v-if="isShow">
     <div class="header" :style="`opacity: ${scrollTop / 350}`">
-      <span>{{ productName }}</span>
+      <span>{{ titleName }}</span>
     </div>
 
     <button :class="{ 'defaultBtn': scrollTop < 175 }" @click="goBack" :style="`opacity: ${buttonOpacity}`">
@@ -26,8 +26,8 @@ export default defineComponent ({
 
     const isShow = computed(() => !notShow.includes($route.name as string))
     const buttonOpacity = computed(() => scrollTop.value < 175 ? 175 / (scrollTop.value + 175) : scrollTop.value / 350)
-    const productName = computed(() => {
-      const name = state.productName
+    const titleName = computed(() => {
+      const name = state.titleName
       return name.length > 15 ? name.slice(0, 15) + '...' : name
     })
 
@@ -35,7 +35,7 @@ export default defineComponent ({
     const goBack = () => $router.back()
 
     onUnmounted(() => $bus.$off('scroll'))
-    return { goBack, isShow, productName, scrollTop, buttonOpacity }
+    return { goBack, isShow, titleName, scrollTop, buttonOpacity }
   }
 })
 </script>
