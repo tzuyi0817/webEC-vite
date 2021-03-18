@@ -8,7 +8,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router'
 import { useStore } from 'vuex'
 import * as common from '../utils/common'
 import NavTabs from '../components/NavTabs.vue'
@@ -21,6 +21,7 @@ export default defineComponent ({
     CategoryProducts
   },
   setup() {
+    const state = useStore()
     const { groupPath } = useStore().state
     const $router = useRouter()
     const data = reactive({
@@ -83,9 +84,20 @@ export default defineComponent ({
       }
     }
 
+    state.commit('updateTitleName', '商品類別')
+    onBeforeRouteUpdate((to) => {
+      data.categoryId = +to.params.id
+      getCategory()
+    })
     onMounted(() => getCategory())
     const resData = toRefs(data)
     return { ...resData, getId, handerScroll, getSelquery }
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.category {
+  margin-top: 50px;
+}
+</style>

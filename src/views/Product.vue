@@ -1,16 +1,19 @@
 <template>
   <div class="product container" @scroll.passive="handerScroll" ref="productScroll">
     <product-banner :productImage="productImage" :isLoading="isLoading" />
-    <product-content v-if="!isLoading" :product="product" :rating="rating" />
-    <product-rating v-if="!isLoading" :product="product" :rating="rating" />
 
-    <h1>相似商品</h1>
-    <category-products-list :products="moreProducts" :isLoading="isLoading" :isShowPrompt="false" v-if="moreProducts.length > 0" />
+    <template v-if="!isLoading">
+      <product-content :product="product" :rating="rating" />
+      <product-rating :product="product" :rating="rating" />
+
+      <h1>相似商品</h1>
+      <category-products-list :products="moreProducts" :isLoading="isLoading" :isShowPrompt="false" v-if="moreProducts.length > 0" />
+    </template>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, onMounted, toRefs, onUnmounted, inject } from 'vue'
+import { defineComponent, reactive, onMounted, toRefs, inject } from 'vue'
 import { useRoute, onBeforeRouteUpdate } from 'vue-router'
 import { useStore } from 'vuex'
 import * as common from '../utils/common'
@@ -36,10 +39,8 @@ export default defineComponent ({
       product: {},
       moreProducts: [],
       rating: 0,
-      comment: [],
       productImage: [''],
-      totalPage: 0,
-      productScroll: null
+      productScroll: null as any
     })
 
     const getProduct = (params: paramsType = { id: '' }) => {
@@ -54,8 +55,6 @@ export default defineComponent ({
         data.moreProducts = result.productsFilter
         data.productImage = [image, imageI, imageII]
         data.rating = result.ratingAve
-        data.comment = result.comment
-        data.totalPage = result.totalPage.length
         state.commit('updateTitleName', result.product.name)
       })
     }
@@ -66,10 +65,6 @@ export default defineComponent ({
       data.productScroll.scrollTo(0, 0)
     })
     onMounted(() => getProduct())
-    onUnmounted(() => {
-      state.commit('updateTitleName', '')
-      $bus.$emit('scroll', 0)
-    })
     const resDate = toRefs(data)
     return { ...resDate, handerScroll }
   }

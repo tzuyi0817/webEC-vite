@@ -5,10 +5,10 @@
 
     <div class="productContent__stars">
       <template v-if="product.Comments && product.Comments.length">
-        <stars :rating="rating" />
+        <stars :rating="rating"  @click="goRating" />
         <span class="rating">{{ rating }}</span>
       </template>
-      <span v-else>此商品尚未有人評價</span>
+      <span v-else @click="goRating">此商品尚未有人評價</span>
       
       <iframe
         :src="facebook"
@@ -97,6 +97,7 @@ export default defineComponent ({
     }
     const quantityBtn = (type: string) => type == '+' ? quantity.value++ : quantity.value--
     const goCategory = () => $router.push({ name: 'Category', params: { id: product.ProductCategoryId } })
+    const goRating = () => $router.push({ name: 'Rating', params: { id: product.id } })
     const addCart = () => {
       const ajax = common.ajax(groupPath.platform + '/cart', 'post')
       const data = { 
@@ -116,7 +117,7 @@ export default defineComponent ({
       })
     }
 
-    return { facebook, quantity, disable, handlerInput, quantityBtn, addCart, isLoading, goCategory }
+    return { facebook, quantity, disable, handlerInput, quantityBtn, addCart, isLoading, goCategory, goRating }
   }
 })
 </script>
