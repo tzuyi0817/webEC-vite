@@ -65,7 +65,6 @@ export default defineComponent ({
     const getId = (id: number) => {
       data.categoryId = id
       $router.push({ name: 'Category', params: { id } })
-      resetProducts()
     }
     
     const getSelquery = (query: queryType) => {
@@ -87,7 +86,7 @@ export default defineComponent ({
     state.commit('updateTitleName', '商品類別')
     onBeforeRouteUpdate((to) => {
       data.categoryId = +to.params.id
-      getCategory()
+      resetProducts()
     })
     onMounted(() => getCategory())
     const resData = toRefs(data)
