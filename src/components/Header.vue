@@ -21,10 +21,13 @@ export default defineComponent ({
     const $route = useRoute()
     const { state } = useStore()
     const $bus: any = inject('$bus')
-    const notShow = ['Index', 'Category', 'Search']
-    const scrollTop = ref(0)
+    const notShow = ['Index', 'Search']
+    const scrollTop = ref(350)
 
-    const isShow = computed(() => !notShow.includes($route.name as string))
+    const isShow = computed(() => {
+      scrollTop.value = $route.name == 'Product' ? 0 : 350
+      return !notShow.includes($route.name as string)
+    })
     const buttonOpacity = computed(() => scrollTop.value < 175 ? 175 / (scrollTop.value + 175) : scrollTop.value / 350)
     const titleName = computed(() => {
       const name = state.titleName
@@ -50,9 +53,11 @@ export default defineComponent ({
   padding: 10px 6%;
   background: #fff;
   height: 55px;
+  box-shadow: 0 0 0.375rem 0 rgb(0 0 0 / 6%);
   span {
+    width: 100%;
     font-size: 20px;
-    padding: 0 20px 0 55px;
+    padding: 0 40px;
   }
 }
 

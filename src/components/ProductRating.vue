@@ -8,7 +8,7 @@
           <template v-if="ratingLength">
             <stars :rating="rating" />
             <span class="rating">{{ rating }} / 5</span>
-            <span>{{ `(${ratingLength}則評論)` }}</span>
+            <span>{{ `(${ratingLength}則評價)` }}</span>
           </template>
           <span v-else>此商品尚未有人評價</span>
         </button>
@@ -28,6 +28,7 @@
 
 <script lang="ts">
 import { defineComponent, computed} from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import Stars from '../components/Stars.vue'
 import RatingList from '../components/RatingList.vue'
 
@@ -41,8 +42,10 @@ export default defineComponent ({
     RatingList
   },
   setup(props: any) {
+    const $route = useRoute()
+    const $router = useRouter()
     const { product } = props
-    const goRating = () => (123)
+    const goRating = () => $router.push({ name: 'Rating', params: { id: $route.params.id } })
     const ratingLength = computed(() => product.Comments && product.Comments.length)
     const ratingList = computed(() => product.Comments && product.Comments.slice(0, 3))
 
@@ -77,7 +80,7 @@ export default defineComponent ({
   }
 
   &__footer {
-    height: 50px;
+    padding-bottom: 50px;
     display: flex;
     justify-content: center;
     align-items: center;

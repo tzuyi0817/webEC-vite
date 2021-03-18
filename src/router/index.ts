@@ -21,6 +21,11 @@ const routes: any[] = [
     component: () => import('/@/views/Product.vue')
   },
   {
+    path: '/rating/:id',
+    name: 'Rating',
+    component: () => import('/@/views/Rating.vue')
+  },
+  {
     path: '/search',
     name: 'Search',
     component: () => import('/@/views/Search.vue')

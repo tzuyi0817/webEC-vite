@@ -1,6 +1,6 @@
 <template>
   <ul class="ratingList">
-    <li v-for="item in ratingList" :key="item.id">
+    <li v-for="item in ratingList" :key="item.id" class="fade">
       <div class="ratingList__box">
         <img :src="item.User.image">
 
@@ -14,25 +14,44 @@
 
       <hr />
     </li>
+
+    <p class="ratingList__Prompt" v-if="!isLoading">{{ getPrompt }}</p>
+    <loading v-if="isLoading" />
   </ul>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, computed } from 'vue'
 import Stars from '../components/Stars.vue'
 
 export default defineComponent ({
   props: {
-    ratingList: Array
+    ratingList: Array,
+    isLoading: {
+      type: Boolean,
+      default: false
+    },
+    ratingLength: {
+      type: Number,
+      default: -1
+    }
   },
   components: {
     Stars
   },
-  setup() {
+  setup(props) {
     const hideName = (name: string) => name && name.slice(0, 1) + '*****' + name.slice(-1)
     const conversionTime = (time: string) => new Date(time).Format('yyyy-MM-dd hh:mm:ss')
 
-    return { hideName, conversionTime }
+    const getPrompt = computed(() => {
+      const { ratingList, ratingLength } = props
+      const nowLength = ratingList && ratingList.length
+      return nowLength == 0
+        ? '此商品尚未有人評價'
+        : nowLength == ratingLength ? '已無更多評價' : ''
+    })
+
+    return { hideName, conversionTime, getPrompt }
   }
 })
 </script>
@@ -53,6 +72,7 @@ export default defineComponent ({
   &__content {
     padding: 0 8px;
     p {
+      text-align: left;
       margin-bottom: 8px;
       &:last-child {
         margin: 20px 0;
@@ -64,6 +84,13 @@ export default defineComponent ({
       display: flex;
       margin: 12px 0;
     }
+  }
+
+  &__Prompt {
+    text-align: center;
+    color: $subColor;
+    font-weight: bold;
+    margin: 50px 0;
   }
 }
 </style>
