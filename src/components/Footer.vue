@@ -4,6 +4,7 @@
     <li v-for="(item, index) in menu" :key="index" @click="select(item.route)">
       <a :class="{ 'active': nowSelect == item.name }">
         <icon :name="item.icon" :type="item.type" />
+        <div v-if="item.name === 'cart' && getCartCoount">{{ getCartCoount }}</div>
         <span>{{ item.name }}</span>
       </a>
     </li>
@@ -13,6 +14,7 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 
 type pathListType = {
   [key: string]: string
@@ -39,10 +41,10 @@ export default defineComponent ({
       }
       return pathList[path] || path
     })
+    const getCartCoount = computed(() => useStore().state.cartCount)
 
     const select = (route: string) => $router.push({ name: route })
-
-    return { menu, select, nowSelect }
+    return { menu, select, nowSelect, getCartCoount }
   }
 })
 </script>
@@ -79,6 +81,22 @@ export default defineComponent ({
         z-index: 9;
       }
 
+      div {
+        background: $cartCountBg;
+        color: $cartCount;
+        border-radius: .625rem;
+        height: .875rem;
+        position: absolute;
+        left: 58%;
+        top: -.15rem;
+        font-size: .625rem;
+        line-height: .625rem;
+        padding: .125rem .3125rem;
+        text-align: center;
+        transition: 1s  cubic-bezier(.49 , -.35 , .77 , 1.44);
+        z-index: 10;
+      }
+
       span {
         display: block;
         font-size: 14px;
@@ -96,6 +114,10 @@ export default defineComponent ({
       &.active {
         svg {
           top: -85%;
+        }
+
+        div {
+          top: -2.8rem;
         }
 
         span {

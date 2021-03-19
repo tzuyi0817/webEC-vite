@@ -21,8 +21,8 @@ export default defineComponent ({
     CategoryProducts
   },
   setup() {
-    const state = useStore()
-    const { groupPath } = useStore().state
+    const store = useStore()
+    const { groupPath } = store.state
     const $router = useRouter()
     const data = reactive({
       categories: [],
@@ -83,7 +83,7 @@ export default defineComponent ({
       }
     }
 
-    state.commit('updateTitleName', '商品類別')
+    store.commit('updateTitleName', '商品類別')
     onBeforeRouteUpdate((to) => {
       data.categoryId = +to.params.id
       resetProducts()

@@ -18,8 +18,8 @@ export default defineComponent ({
     RatingList
   },
   setup() {
-    const state = useStore()
-    const { groupPath } = state.state
+    const store = useStore()
+    const { groupPath } = store.state
     const { id } = useRoute().params
     const data = reactive({
       isLoading: false,
@@ -54,7 +54,7 @@ export default defineComponent ({
       }
     }
 
-    state.commit('updateTitleName', '評價')
+    store.commit('updateTitleName', '評價')
     onMounted(() => getRating())
     const resData = toRefs(data)
     return { ...resData, handerScroll }
