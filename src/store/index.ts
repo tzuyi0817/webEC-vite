@@ -15,8 +15,7 @@ export default createStore({
       state.titleName = val
     },
     updateCartCount(state) {
-      const localCartItem = common.LocalStorage('get', 'cartItem') as string
-      const cartItem = JSON.parse(localCartItem)
+      const cartItem = common.getCartItem()
       state.cartCount = cartItem ? cartItem.length : 0
     }
   },

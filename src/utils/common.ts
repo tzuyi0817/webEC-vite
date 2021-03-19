@@ -26,10 +26,7 @@ export function getAjax(ajax: ajaxType, data = {}) {
   return api[ajax.restful](ajax.groupPath, data).then((response: any) => {
     return response.data
   })
-  .catch((error: any) => {
-    console.log(error)
-    showToast('資料獲取或操作失敗')
-  })
+  .catch((error: any) => showToast(error))
 }
 
 export function LocalStorage(set: string, key: string, value: any = '') {
@@ -78,6 +75,11 @@ export function getSortOptions(): selValType[] {
     { name: '價格: 高至低', query: { key: 'price', value: 'desc' }, value: 'priceDesc' },
     { name: '價格: 低至高', query: { key: 'price', value: 'asc' }, value: 'priceAsc' }
   ]
+}
+
+export function getCartItem() {
+  const localCartItem = LocalStorage('get', 'cartItem') as string
+  return JSON.parse(localCartItem)
 }
 
 Date.prototype.Format = function(fmt: string) {
