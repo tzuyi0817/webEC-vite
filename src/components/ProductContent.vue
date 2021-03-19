@@ -79,7 +79,8 @@ export default defineComponent ({
     Stars
   },
   setup(props: any) {
-    const { groupPath } = useStore().state
+    const store = useStore()
+    const { groupPath } = store.state
     const $router = useRouter()
     const { product } = props
     const quantity = ref(1)
@@ -109,6 +110,8 @@ export default defineComponent ({
       common.getAjax(ajax, data).then((result: any) => {
         isLoading.value = false
         if (result.status == 'success') {
+          common.LocalStorage('set', 'cartItem', [{ ...product, quantity: quantity.value }])
+          store.commit('updateCartCount')
           common.showToast('商品已加入購物車')
           quantity.value = 1
         } else {

@@ -32,6 +32,7 @@ export default defineComponent ({
     const transitionName = ref('')
 
     store.commit('updateGroupPath', $apiPrefixes)
+    store.commit('updateCartCount')
     watch((): any => route.path, (to, from) => {
       const toDepth = to.split('/').length
       const fromDepth = from.split('/').length

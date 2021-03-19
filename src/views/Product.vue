@@ -31,8 +31,8 @@ export default defineComponent ({
     CategoryProductsList
   },
   setup() {
-    const { groupPath } = useStore().state
-    const state = useStore()
+    const store = useStore()
+    const { groupPath } = store.state
     const $bus: any = inject('$bus')
     const data = reactive({
       isLoading: false,
@@ -55,7 +55,7 @@ export default defineComponent ({
         data.moreProducts = result.productsFilter
         data.productImage = [image, imageI, imageII]
         data.rating = result.ratingAve
-        state.commit('updateTitleName', result.product.name)
+        store.commit('updateTitleName', result.product.name)
       })
     }
     const handerScroll = (event: any) => $bus.$emit('scroll', event.srcElement.scrollTop)
