@@ -32,8 +32,8 @@
     <div class="productContent__quantity">
       <input type="number" min="1" v-model.number="quantity" :disabled="disable" @input="handlerInput($event)" />
       <div class="nav">
-        <button class="up" @click="quantityBtn('+')" :disabled="disable">+</button>
-        <button class="down" @click="quantityBtn('-')" :disabled="quantity <= 1">-</button>
+        <button class="up" @click="quantityBtn('+')" :disabled="disable"><icon name="plus" type="fas" /></button>
+        <button class="down" @click="quantityBtn('-')" :disabled="quantity <= 1"><icon name="minus" type="fas" /></button>
       </div>
 
       <button :class="['btnStyle', { 'btnStyle--disable': !product.count || isLoading }]" @click="addCart" :disabled="!product.count || isLoading">
@@ -176,11 +176,6 @@ export default defineComponent ({
     display: flex;
     margin: 20px 0;
     height: 45px;
-    input[type=number]::-webkit-inner-spin-button,
-    input[type=number]::-webkit-outer-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
 
     input {
       color: $baseColor;
@@ -192,9 +187,6 @@ export default defineComponent ({
       margin: 0;
       padding: 5px 20px;
       border: 1px solid #eee;
-      &:disabled {
-        background: rgba(0, 0, 0, 0.1);
-      }
     }
 
     .nav {
@@ -212,6 +204,10 @@ export default defineComponent ({
         transform: translateX(-100%);
         user-select: none;
         border-radius: 0px;
+        svg {
+          width: 8px
+        }
+
         &:disabled {
           background: rgba(0, 0, 0, 0.1);
           color: #fff;
