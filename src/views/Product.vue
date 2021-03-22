@@ -43,20 +43,19 @@ export default defineComponent ({
       productScroll: null as any
     })
 
-    const getProduct = (params: paramsType = { id: '' }) => {
+    const getProduct = async(params: paramsType = { id: '' }) => {
       const { id } = params.id ? params : useRoute().params
       const ajax = common.ajax(groupPath.platform + `/product/${id}`, 'get')
       data.isLoading = true
 
-      common.getAjax(ajax).then((result: any) => {
-        const { image, imageI, imageII } = result.product
-        data.isLoading = false
-        data.product = result.product
-        data.moreProducts = result.productsFilter
-        data.productImage = [image, imageI, imageII]
-        data.rating = result.ratingAve
-        store.commit('updateTitleName', result.product.name)
-      })
+      const result = await common.getAjax(ajax)
+      const { image, imageI, imageII } = result.product
+      data.isLoading = false
+      data.product = result.product
+      data.moreProducts = result.productsFilter
+      data.productImage = [image, imageI, imageII]
+      data.rating = result.ratingAve
+      store.commit('updateTitleName', result.product.name)
     }
     const handerScroll = (event: any) => $bus.$emit('scroll', event.srcElement.scrollTop)
 

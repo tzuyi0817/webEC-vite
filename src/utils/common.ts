@@ -30,10 +30,10 @@ export function getAjax(ajax: ajaxType, data = {}) {
 }
 
 export function LocalStorage(set: string, key: string, value: any = '') {
-  if (set == 'set') {
+  if (set === 'set') {
     let setValue: string
 
-    if (key === 'cartItem') {
+    if (key === 'cartItem' && value.length == 1) {
       let nowData: any = localStorage.getItem(key)
       const valueId: number = value[0] && value[0].id
 
@@ -43,15 +43,13 @@ export function LocalStorage(set: string, key: string, value: any = '') {
       if (~index) {
         nowData[index].quantity += value[0] && value[0].quantity
         setValue = JSON.stringify([...nowData])
-      } else {
-        setValue = JSON.stringify([...nowData, ...value])
-      }
-    } else {
-      setValue = JSON.stringify(value)
-    }
+      } 
+      else setValue = JSON.stringify([...nowData, ...value])
+    } 
+    else setValue = JSON.stringify(value)
     localStorage.setItem(key, setValue)
   }
-  else if (set == 'remove') localStorage.removeItem(key)
+  else if (set === 'remove') localStorage.removeItem(key)
   else return localStorage.getItem(key)
 }
 

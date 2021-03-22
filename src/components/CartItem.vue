@@ -5,7 +5,9 @@
         <router-link :to="`/product/${item.id}`"><img :src="item.image"></router-link>
 
         <div class="cartItem__content">
-          <p>{{ subName(item.name) }}</p>
+          <router-link :to="`/product/${item.id}`">
+            <p>{{ subName(item.name) }}</p>
+          </router-link>
           <span>較長備貨</span>
           <div>
             <h6>{{ `$${item.price}` }}</h6>
@@ -14,7 +16,7 @@
 
           <div class="cartItem__quantity">
             <button @click="minusBtn(index)"><icon name="minus" type="fas" /></button>
-            <input type="number" v-model.number="item.quantity" @input="handlerInput($event, index)" :disabled="item.quantity == item.count" />
+            <input type="number" v-model.number="item.quantity" @input="handerInput($event, index)" :disabled="item.quantity == item.count" />
             <button @click="item.quantity++" :disabled="item.quantity == item.count"><icon name="plus" type="fas" /></button>
           </div>
         </div>
@@ -38,13 +40,13 @@ export default defineComponent ({
       const { cartItem }: any = props
       cartItem[index].quantity == 1 ? '' : cartItem[index].quantity--
     }
-    const handlerInput = (event: InputEvent, index: number) => {
+    const handerInput = (event: InputEvent, index: number) => {
       const { value }: any = event.target
       const { cartItem }: any = props
       if (value > cartItem[index].count) cartItem[index].quantity = cartItem[index].count
       if (value < 1) cartItem[index].quantity = 1
     }
-    return { subName, handlerInput, minusBtn }
+    return { subName, handerInput, minusBtn }
   }
 })
 </script>

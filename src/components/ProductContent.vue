@@ -99,7 +99,7 @@ export default defineComponent ({
     const quantityBtn = (type: string) => type == '+' ? quantity.value++ : quantity.value--
     const goCategory = () => $router.push({ name: 'Category', params: { id: product.ProductCategoryId } })
     const goRating = () => $router.push({ name: 'Rating', params: { id: product.id } })
-    const addCart = () => {
+    const addCart = async() => {
       const ajax = common.ajax(groupPath.platform + '/cart', 'post')
       const data = { 
         productId: product.id, 
@@ -107,17 +107,16 @@ export default defineComponent ({
       }
       isLoading.value = true
 
-      common.getAjax(ajax, data).then((result: any) => {
-        isLoading.value = false
-        if (result.status == 'success') {
-          common.LocalStorage('set', 'cartItem', [{ ...product, quantity: quantity.value }])
-          store.commit('updateCartCount')
-          common.showToast('商品已加入購物車')
-          quantity.value = 1
-        } else {
-          common.showToast('商品無法加入購物車，請稍後再試')
-        }
-      })
+      const result = await common.getAjax(ajax, data)
+      isLoading.value = false
+      if (result.status == 'success') {
+        common.LocalStorage('set', 'cartItem', [{ ...product, quantity: quantity.value }])
+        store.commit('updateCartCount')
+        common.showToast('商品已加入購物車')
+        quantity.value = 1
+      } else {
+        common.showToast('商品無法加入購物車，請稍後再試')
+      }
     }
 
     return { facebook, quantity, disable, handlerInput, quantityBtn, addCart, isLoading, goCategory, goRating }

@@ -53,7 +53,7 @@ export default defineComponent ({
 
     const getKeywordPrompt = computed(() => data.currentKeyword ? `「${data.currentKeyword}」` : '')
 
-    const getSearch = () => {
+    const getSearch = async() => {
       const searchParams = new URLSearchParams({ 
         keyword: data.currentKeyword,
         key: data.currentKey, 
@@ -64,12 +64,11 @@ export default defineComponent ({
       const ajax = common.ajax(groupPath.platform + `/ESHOP/search?${searchParams.toString()}`, 'get')
       data.isLoading = true
 
-      common.getAjax(ajax).then((result: any) => {
-        data.isLoading = false
-        data.products = data.products.concat(result.products)
-        data.totalPage = result.totalPage.length
-        data.loadMore = data.totalPage > data.currentPage
-      })
+      const result = await common.getAjax(ajax)
+      data.isLoading = false
+      data.products = data.products.concat(result.products)
+      data.totalPage = result.totalPage.length
+      data.loadMore = data.totalPage > data.currentPage
     }
 
     const resetProducts = () => {
