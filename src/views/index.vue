@@ -38,14 +38,13 @@ export default defineComponent ({
     const nowCategory = computed(() => data.categories[data.nowId - 1])
     const getId = (id: number) => data.nowId = id
 
-    const getCategories = (): void => {
+    const getCategories = async() => {
       const ajax = common.ajax(groupPath.platform + '/index', 'get')
       data.isLoading = true
 
-      common.getAjax(ajax).then((result: any) => {
-        data.isLoading = false
-        data.categories = result.categories
-      })
+      const result = await common.getAjax(ajax)
+      data.isLoading = false
+      data.categories = result.categories
     }
 
     onMounted(() => getCategories())

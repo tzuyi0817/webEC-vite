@@ -37,7 +37,7 @@ export default defineComponent ({
       loadMore: false
     })
 
-    const getCategory = (): void => {
+    const getCategory = async() => {
       const searchParams = new URLSearchParams({ 
         key: data.currentKey, 
         value: data.currentValue, 
@@ -46,14 +46,13 @@ export default defineComponent ({
       const ajax = common.ajax(groupPath.platform + `/Category/${data.categoryId}?${searchParams.toString()}`, 'get')
       data.isLoading = true
 
-      common.getAjax(ajax).then((result: any) => {
-        data.isLoading = false
-        data.categories = result.categories
-        data.category = result.category
-        data.products = data.products.concat(result.products)
-        data.totalPage = result.totalPage.length
-        data.loadMore = data.totalPage > data.currentPage
-      })
+      const result = await common.getAjax(ajax)
+      data.isLoading = false
+      data.categories = result.categories
+      data.category = result.category
+      data.products = data.products.concat(result.products)
+      data.totalPage = result.totalPage.length
+      data.loadMore = data.totalPage > data.currentPage
     }
 
     const resetProducts = () => {

@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, computed } from 'vue'
+import { defineComponent, ref, onMounted, computed, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import CartItem from '../components/CartItem.vue'
 import * as common from '../utils/common'
@@ -29,6 +29,7 @@ export default defineComponent ({
 
     store.commit('updateTitleName', '購物車')
     onMounted(() => cartItem.value = common.getCartItem())
+    onUnmounted(() => common.LocalStorage('set', 'cartItem', cartItem.value))
     return { cartItem, subtotal }
   }
 })
