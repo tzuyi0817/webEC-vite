@@ -6,7 +6,7 @@
         <component :is="Component" class="transition" />
       </transition>
     </router-view>
-    <Footer /> 
+    <Footer />
     <show-toast />
   </div>
 </template>
