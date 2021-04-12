@@ -1,5 +1,5 @@
 <template>
-  <ul class="footer">
+  <ul class="footer" v-if="isShow">
     <div :class="['slider', nowSelect]"></div>
     <li v-for="(item, index) in menu" :key="index" @click="select(item.route)">
       <a :class="{ 'active': nowSelect == item.name }">
@@ -42,9 +42,10 @@ export default defineComponent ({
       return pathList[path] || path
     })
     const getCartCoount = computed(() => useStore().state.cartCount)
+    const isShow = computed(() => route.name !== 'Account')
 
     const select = (route: string) => $router.push({ name: route })
-    return { menu, select, nowSelect, getCartCoount }
+    return { menu, select, nowSelect, getCartCoount, isShow }
   }
 })
 </script>
