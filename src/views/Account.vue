@@ -3,9 +3,7 @@
     <div class="account__box">
       <header>- {{ nowPage }} -</header>
       <component :is="nowComponent" @changePage="changePage" :linkPrompt="linkPrompt" />
-      <p @click="changePage">
-        <a>{{ linkPrompt }}</a>
-      </p>
+      <p><a @click="changePage">{{ linkPrompt }}</a></p>
     </div>
   </div>
 </template>

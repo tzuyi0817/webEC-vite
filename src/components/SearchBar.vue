@@ -77,9 +77,6 @@ export default defineComponent ({
     border-bottom-right-radius: 0.25rem;
     background: $searchBorder;
     transition: all 0.2s;
-    &:disabled {
-      opacity: 0.8;
-    }
 
     svg {
       width: 20px;

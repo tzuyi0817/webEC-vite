@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import * as common from '../utils/common'
 
 const routes: any[] = [
   {
@@ -50,6 +51,29 @@ const routes: any[] = [
 const router = createRouter({
   history: createWebHistory(),
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('token')
+  const withoutAuth = ['Index', 'Category', 'Product', 'Search']
+
+  if (withoutAuth.includes(to.name as string)) {
+    next()
+    return
+  }
+
+  if (token && to.name === 'Account') {
+    next('/index')
+    return
+  }
+
+  if (!token && to.name !== 'Account') {
+    common.showToast('請先登入')
+    next('/account')
+    return
+  }
+
+  next()
 })
 
 export default router
