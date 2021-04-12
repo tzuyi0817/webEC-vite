@@ -7,6 +7,10 @@
     <button :class="{ 'defaultBtn': scrollTop < 175 }" @click="goBack" :style="`opacity: ${buttonOpacity}`">
       <icon name="angle-left" type="fas" />
     </button>
+
+    <button class="logoutBtn" v-if="isProfile" @click="logout">
+      <icon name="sign-out-alt" type="fas" />
+    </button>
   </div>
 </template>
 
@@ -14,31 +18,39 @@
 import { defineComponent, computed, inject, onUnmounted, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useStore } from 'vuex'
+import * as common from '../utils/common'
 
 export default defineComponent ({
   setup() {
     const $router = useRouter()
     const $route = useRoute()
-    const { state } = useStore()
+    const store = useStore()
     const $bus: any = inject('$bus')
     const notShow = ['Index', 'Search']
     const scrollTop = ref(350)
+    const isProfile = ref(false)
 
     const isShow = computed(() => {
+      isProfile.value = $route.name == 'UserProfile'
       scrollTop.value = $route.name == 'Product' ? 0 : 350
       return !notShow.includes($route.name as string)
     })
     const buttonOpacity = computed(() => scrollTop.value < 175 ? 175 / (scrollTop.value + 175) : scrollTop.value / 350)
     const titleName = computed(() => {
-      const name = state.titleName
+      const name = store.state.titleName
       return name.length > 15 ? name.slice(0, 15) + '...' : name
     })
 
     $bus.$on('scroll', (top: number) => scrollTop.value = top)
     const goBack = () => $router.back()
-
+    const logout = () => {
+      store.commit('emptyUser')
+      $router.push({ name: 'Account' })
+      common.showToast('已成功登出')
+    }
+ 
     onUnmounted(() => $bus.$off('scroll'))
-    return { goBack, isShow, titleName, scrollTop, buttonOpacity }
+    return { goBack, isShow, titleName, scrollTop, buttonOpacity, isProfile, logout }
   }
 })
 </script>
@@ -72,6 +84,13 @@ button {
   svg {
     width: 12px;
     color: $baseColor;
+  }
+}
+
+.logoutBtn {
+  left: 85%;
+  svg {
+    width: 24px;
   }
 }
 

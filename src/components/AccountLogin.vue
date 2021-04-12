@@ -6,6 +6,7 @@
     </fieldset>
 
     <footer>
+      <p><a @click="goIndex">VIEW AS GUEST</a></p>
       <button @click="login" :disabled="isLoading">{{ isLoading ? '登入中...' : 'Login' }}</button>
     </footer>
   </div>
@@ -26,6 +27,7 @@ export default defineComponent ({
     const password = ref('')
     const isLoading = ref(false)
 
+    const goIndex = () => $router.push({ name: 'Index' })
     const login = async() => {
       if (!email.value || !password.value) {
         common.showToast('請填入 email 和 password')
@@ -43,7 +45,7 @@ export default defineComponent ({
       if (result.status == 'success') {
         common.LocalStorage('set', 'token', result.token)
         store.commit('updateUser', result.user)
-        $router.push({ name: 'Index' })
+        goIndex()
         common.showToast('登入成功')
       } else {
         password.value = ''
@@ -52,7 +54,7 @@ export default defineComponent ({
     }
 
     store.commit('updateTitleName', '登入')
-    return { login, email, password, isLoading }
+    return { goIndex, login, email, password, isLoading }
   }
 })
 </script>

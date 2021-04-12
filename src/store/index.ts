@@ -25,6 +25,10 @@ export default createStore({
         ...state.user,
         ...currentUser
       }
+    },
+    emptyUser(state) {
+      state.user = {}
+      common.LocalStorage('remove', 'token')
     }
   },
   actions
