@@ -8,6 +8,7 @@
     </router-view>
     <Footer />
     <show-toast />
+    <show-msg />
   </div>
 </template>
 
@@ -18,12 +19,14 @@ import { useRoute } from 'vue-router'
 import ShowToast from './components/ShowToast.vue'
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
+import ShowMsg from './components/ShowMsg.vue'
 
 export default defineComponent ({
   components: {
     ShowToast,
     Header,
-    Footer
+    Footer,
+    ShowMsg
   },
   setup() {
     const $apiPrefixes = inject('$apiPrefixes')

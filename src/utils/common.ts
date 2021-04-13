@@ -62,6 +62,12 @@ export function getBus(bus: busType): void {
   $bus = bus
 }
 
+export function showMsg(html: HTMLElement, fun: Function, cancel = false) {
+  const body = document.getElementsByTagName('body')[0]
+  body.setAttribute('style', 'overflow:hidden;')
+  $bus.$emit('showMsg', { html, fun, cancel })
+}
+
 export function showToast(msg: string): void {
   if (msg) $bus.$emit('toast', msg)
 }

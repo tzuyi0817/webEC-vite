@@ -1,6 +1,6 @@
 <template>
   <ul class="cartItem">
-    <li v-for="(item, index) in cartItem" :key="index" class="fade">
+    <li v-for="(item, index) in cartItem" :key="index" :class="fade[index]">
       <div class="cartItem__box">
         <router-link :to="`/product/${item.id}`"><img :src="item.image"></router-link>
 
@@ -17,7 +17,7 @@
           <div class="cartItem__quantity">
             <button @click="minusBtn(index)"><icon name="minus" type="fas" /></button>
             <input type="number" v-model.number="item.quantity" @input="handerInput($event, index)" :disabled="item.quantity == item.count" />
-            <button @click="item.quantity++" :disabled="item.quantity == item.count"><icon name="plus" type="fas" /></button>
+            <button @click="plusBtn(index)" :disabled="item.quantity == item.count"><icon name="plus" type="fas" /></button>
           </div>
         </div>
       </div>
@@ -28,25 +28,42 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, toRefs, computed } from 'vue'
+import * as common from '../utils/common'
 
 export default defineComponent ({
   props: {
     cartItem: Array
   },
-  setup(props) {
+  emits: ['deleteProduct', 'saveCartItem'],
+  setup(props, { emit }) {
+    const { cartItem }: any = toRefs(props)
+
+    const fade = computed(() => cartItem.value.map((_: any) => 'fade'))
+
     const subName = (name: string) => name.length > 20 ? name.slice(0, 20) + '...' : name
     const minusBtn = (index: number) => {
-      const { cartItem }: any = props
-      cartItem[index].quantity == 1 ? '' : cartItem[index].quantity--
+      cartItem.value[index].quantity == 1 
+        ? common.showMsg('確定要從購物車移除此商品？' as unknown as HTMLElement, () => deleteProduct(index), true)
+        : cartItem.value[index].quantity--
+      emit('saveCartItem')
+    }
+    const plusBtn = (index: number) => {
+      cartItem.value[index].quantity++
+      emit('saveCartItem')
     }
     const handerInput = (event: InputEvent, index: number) => {
       const { value }: any = event.target
-      const { cartItem }: any = props
-      if (value > cartItem[index].count) cartItem[index].quantity = cartItem[index].count
-      if (value < 1) cartItem[index].quantity = 1
+      if (value > cartItem.value[index].count) cartItem.value[index].quantity = cartItem.value[index].count
+      if (value < 1) cartItem.value[index].quantity = 1
+      emit('saveCartItem')
     }
-    return { subName, handerInput, minusBtn }
+    const deleteProduct = (deleteIndex: number) => {
+      fade.value[deleteIndex] = 'fadeout'
+      setTimeout(() => emit('deleteProduct', deleteIndex), 2000)
+    }
+
+    return { subName, handerInput, minusBtn, plusBtn, fade }
   }
 })
 </script>
@@ -123,6 +140,15 @@ export default defineComponent ({
       padding: 1px 2px;
       border: 1px solid #eee;
     }
-  } 
+  }
+
+  li {
+    opacity: 1;
+    transition: opacity 2s linear;
+  }
+
+  .fadeout {
+    opacity: 0;
+  }
 }
 </style>
