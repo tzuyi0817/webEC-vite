@@ -68,7 +68,7 @@ router.beforeEach((to, from, next) => {
   }
 
   if (!token && to.name !== 'Account') {
-    common.showToast('請先登入')
+    common.showToast('請先登入帳號')
     next('/account')
     return
   }

@@ -33,18 +33,18 @@ export function LocalStorage(set: string, key: string, value: any = '') {
   if (set === 'set') {
     let setValue: string
 
-    if (key === 'cartItem' && value.length == 1) {
+    if (key === 'cartItem' && Object.prototype.toString.call(value) === '[object Object]') {
       let nowData: any = localStorage.getItem(key)
-      const valueId: number = value[0] && value[0].id
+      const valueId: number = value && value.id
 
       nowData = nowData && JSON.parse(nowData) || []
       const index = nowData.findIndex((item: any) => item.id == valueId)
 
       if (~index) {
-        nowData[index].quantity += value[0] && value[0].quantity
+        nowData[index].quantity += value && value.quantity
         setValue = JSON.stringify([...nowData])
       } 
-      else setValue = JSON.stringify([...nowData, ...value])
+      else setValue = JSON.stringify([...nowData, value])
     } 
     else setValue = JSON.stringify(value)
     localStorage.setItem(key, setValue)
