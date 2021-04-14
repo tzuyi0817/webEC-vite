@@ -29,6 +29,7 @@ export default defineComponent ({
 
     const deleteProduct = (deleteIndex: number) => {
       cartItem.value = cartItem.value.filter((_: any, index: number) => index !== deleteIndex)
+      common.showToast('商品移除成功')
       saveCartItem()
     }
     const saveCartItem = async () => await common.LocalStorage('set', 'cartItem', cartItem.value)

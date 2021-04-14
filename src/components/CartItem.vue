@@ -1,6 +1,6 @@
 <template>
-  <ul class="cartItem">
-    <li v-for="(item, index) in cartItem" :key="index" :class="fade[index]">
+  <transition-group name="list" tag="ul" class="cartItem">
+    <li v-for="(item, index) in cartItem" :key="item.id" class="fade">
       <div class="cartItem__box">
         <router-link :to="`/product/${item.id}`"><img :src="item.image"></router-link>
 
@@ -20,15 +20,16 @@
             <button @click="plusBtn(index)" :disabled="item.quantity == item.count"><icon name="plus" type="fas" /></button>
           </div>
         </div>
-      </div>
 
+        <icon class="cross" name="times-circle" type="fas" role="button" @click="confirmDelete(index)" />
+      </div>
       <hr />
     </li>
-  </ul>
+  </transition-group>
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs, computed } from 'vue'
+import { defineComponent, toRefs } from 'vue'
 import * as common from '../utils/common'
 
 export default defineComponent ({
@@ -39,12 +40,10 @@ export default defineComponent ({
   setup(props, { emit }) {
     const { cartItem }: any = toRefs(props)
 
-    const fade = computed(() => cartItem.value.map((_: any) => 'fade'))
-
     const subName = (name: string) => name.length > 20 ? name.slice(0, 20) + '...' : name
     const minusBtn = (index: number) => {
       cartItem.value[index].quantity == 1 
-        ? common.showMsg('確定要從購物車移除此商品？' as unknown as HTMLElement, () => deleteProduct(index), true)
+        ? confirmDelete(index)
         : cartItem.value[index].quantity--
       emit('saveCartItem')
     }
@@ -58,12 +57,11 @@ export default defineComponent ({
       if (value < 1) cartItem.value[index].quantity = 1
       emit('saveCartItem')
     }
-    const deleteProduct = (deleteIndex: number) => {
-      fade.value[deleteIndex] = 'fadeout'
-      setTimeout(() => emit('deleteProduct', deleteIndex), 2000)
-    }
+    const confirmDelete = (deleteIndex: number) => 
+      common.showMsg('確定要從購物車移除此商品？' as unknown as HTMLElement, () => deleteProduct(deleteIndex), true)
+    const deleteProduct = (deleteIndex: number) => emit('deleteProduct', deleteIndex)
 
-    return { subName, handerInput, minusBtn, plusBtn, fade }
+    return { subName, handerInput, minusBtn, plusBtn, confirmDelete }
   }
 })
 </script>
@@ -76,11 +74,20 @@ export default defineComponent ({
     padding: 12px;
     font-size: 0.875rem;
     text-align: left;
+    position: relative;
     img {
       min-width: 80px;
       width: 80px;
       height: 80px;
       object-fit: center;
+    }
+
+    .cross {
+      position: absolute;
+      width: 16px;
+      color: $baseColor;
+      right: 3px;
+      top: -3px;
     }
   }
 
@@ -141,14 +148,19 @@ export default defineComponent ({
       border: 1px solid #eee;
     }
   }
+}
 
-  li {
-    opacity: 1;
-    transition: opacity 2s linear;
-  }
+li {
+  transition: all .5s;
+  height: 178px;
+}
 
-  .fadeout {
-    opacity: 0;
-  }
+.list-leave-active, .list-enter-active {
+  transition: all .5s;
+}
+
+.list-enter, .list-leave-to {
+  height: 0;
+  opacity: 0;
 }
 </style>

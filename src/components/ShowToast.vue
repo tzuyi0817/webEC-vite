@@ -26,9 +26,7 @@ export default defineComponent ({
     })
 
     onUnmounted(() => $bus.$off('toast'))
-
-    const resData = toRefs(data)
-    return { ...resData }
+    return { ...toRefs(data) }
   }
 })
 </script>

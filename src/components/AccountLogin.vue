@@ -28,7 +28,7 @@ export default defineComponent ({
     const isLoading = ref(false)
 
     const goIndex = () => $router.push({ name: 'Index' })
-    const login = async() => {
+    const login = async () => {
       if (!email.value || !password.value) {
         common.showToast('請填入 email 和 password')
         return
