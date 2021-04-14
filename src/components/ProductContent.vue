@@ -110,7 +110,7 @@ export default defineComponent ({
       const result = await common.getAjax(ajax, data)
       isLoading.value = false
       if (result.status == 'success') {
-        common.LocalStorage('set', 'cartItem', [{ ...product, quantity: quantity.value }])
+        common.LocalStorage('set', 'cartItem', { ...product, quantity: quantity.value })
         store.commit('updateCartCount')
         common.showToast('商品已加入購物車')
         quantity.value = 1

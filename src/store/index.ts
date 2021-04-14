@@ -18,7 +18,7 @@ export default createStore({
     },
     updateCartCount(state) {
       const cartItem = common.getCartItem()
-      state.cartCount = cartItem ? cartItem.length : 0
+      state.cartCount = cartItem || cartItem.length ? cartItem.length : 0
     },
     updateUser(state, currentUser) {
       state.user = {
