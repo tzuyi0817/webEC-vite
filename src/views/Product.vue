@@ -43,7 +43,7 @@ export default defineComponent ({
       productScroll: null as any
     })
 
-    const getProduct = async(params: paramsType = { id: '' }) => {
+    const getProduct = async (params: paramsType = { id: '' }) => {
       const { id } = params.id ? params : useRoute().params
       const ajax = common.ajax(groupPath.platform + `/product/${id}`, 'get')
       data.isLoading = true
@@ -64,8 +64,7 @@ export default defineComponent ({
       data.productScroll.scrollTo(0, 0)
     })
     onMounted(() => getProduct())
-    const resDate = toRefs(data)
-    return { ...resDate, handerScroll }
+    return { ...toRefs(data), handerScroll }
   }
 })
 </script>

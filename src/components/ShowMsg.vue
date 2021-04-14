@@ -42,8 +42,7 @@ export default defineComponent({
 
     onUnmounted(() => $bus.$off('showMsg'))
 
-    const resData = toRefs(data)
-    return { ...resData, showMsgFun, closeMsgFun }
+    return { ...toRefs(data), showMsgFun, closeMsgFun }
   }
 })
 </script>

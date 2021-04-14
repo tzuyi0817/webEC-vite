@@ -29,16 +29,16 @@ export default defineComponent ({
     IndexContent
   },
   setup() {
-    const data = reactive({ 
+    const data: any = reactive({ 
       categories: [],
       nowId: 1,
-      isLoading: false
+      isLoading: false,
+      nowCategory: computed(() => data.categories[data.nowId - 1])
     })
     const { groupPath } = useStore().state
-    const nowCategory = computed(() => data.categories[data.nowId - 1])
     const getId = (id: number) => data.nowId = id
 
-    const getCategories = async() => {
+    const getCategories = async () => {
       const ajax = common.ajax(groupPath.platform + '/index', 'get')
       data.isLoading = true
 
@@ -48,8 +48,7 @@ export default defineComponent ({
     }
 
     onMounted(() => getCategories())
-    const resData = toRefs(data)
-    return { ...resData, getId, nowCategory }
+    return { ...toRefs(data), getId }
   }
 })
 </script>

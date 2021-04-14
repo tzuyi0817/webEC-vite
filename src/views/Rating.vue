@@ -30,7 +30,7 @@ export default defineComponent ({
       loadMore: false
     })
 
-    const getRating = async() => {
+    const getRating = async () => {
       const searchParams = new URLSearchParams({ page: data.currentPage.toString() })
       const ajax = common.ajax(groupPath.platform + `/product/${id}?${searchParams.toString()}`, 'get')
       data.isLoading = true
@@ -55,8 +55,7 @@ export default defineComponent ({
 
     store.commit('updateTitleName', '評價')
     onMounted(() => getRating())
-    const resData = toRefs(data)
-    return { ...resData, handerScroll }
+    return { ...toRefs(data), handerScroll }
   }
 })
 </script>

@@ -37,7 +37,7 @@ export default defineComponent ({
       loadMore: false
     })
 
-    const getCategory = async() => {
+    const getCategory = async () => {
       const searchParams = new URLSearchParams({ 
         key: data.currentKey, 
         value: data.currentValue, 
@@ -65,13 +65,13 @@ export default defineComponent ({
       data.categoryId = id
       $router.push({ name: 'Category', params: { id } })
     }
-    
+
     const getSelquery = (query: queryType) => {
       data.currentKey = query.key
       data.currentValue = query.value
       resetProducts()
     }
-
+    
     const handerScroll = (event: any) => {
       if (!data.isLoading && data.loadMore) {
         const { scrollHeight, offsetHeight, scrollTop } = event.srcElement
@@ -88,8 +88,7 @@ export default defineComponent ({
       resetProducts()
     })
     onMounted(() => getCategory())
-    const resData = toRefs(data)
-    return { ...resData, getId, handerScroll, getSelquery }
+    return { ...toRefs(data), getId, handerScroll, getSelquery }
   }
 })
 </script>

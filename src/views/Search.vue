@@ -40,7 +40,7 @@ export default defineComponent ({
   setup() {
     const { groupPath } = useStore().state
     const sortOptions = common.getSortOptions()
-    const data = reactive({
+    const data: any = reactive({
       products: [],
       currentPage: 1,
       totalPage: 0,
@@ -48,12 +48,11 @@ export default defineComponent ({
       currentKey: '',
       currentValue: '',
       isLoading: false,
-      loadMore: false
+      loadMore: false,
+      getKeywordPrompt: computed(() => data.currentKeyword ? `「${data.currentKeyword}」` : '')
     })
 
-    const getKeywordPrompt = computed(() => data.currentKeyword ? `「${data.currentKeyword}」` : '')
-
-    const getSearch = async() => {
+    const getSearch = async () => {
       const searchParams = new URLSearchParams({ 
         keyword: data.currentKeyword,
         key: data.currentKey, 
@@ -99,8 +98,7 @@ export default defineComponent ({
     }
 
     onMounted(() => getSearch())
-    const resData = toRefs(data)
-    return { ...resData, getKeyword, sortOptions, getSelVal, getKeywordPrompt, handerScroll }
+    return { ...toRefs(data), getKeyword, sortOptions, getSelVal, handerScroll }
   }
 })
 </script>

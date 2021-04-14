@@ -30,7 +30,7 @@ export default defineComponent ({
     const content = computed(() => contentData[nowId.value - 1])
     const goLink = (url: string) => $router.push(url)
 
-    watch((): any => props.category, (val: categoryType) => nowId.value = val.id )
+    watch((): any => props.category, (val: categoryType) => nowId.value = val.id)
 
     return { nowId, url, goLink, content }
   }
