@@ -1,8 +1,8 @@
 <template>
   <div class="accountLogin commonForm">
     <fieldset>
-      <input type="email" name="email" placeholder="Email" v-model="email" required />
-      <input type="password" name="password" placeholder="Password" v-model="password" required />
+      <input type="email" name="email" placeholder="Email" v-model="email" />
+      <input type="password" name="password" placeholder="Password" v-model="password" />
     </fieldset>
 
     <footer>
@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import * as common from '../utils/common'
@@ -30,7 +30,7 @@ export default defineComponent ({
     const goIndex = () => $router.push({ name: 'Index' })
     const login = async () => {
       if (!email.value || !password.value) {
-        common.showToast('請填入 email 和 password')
+        common.showToast('請輸入 Email 和 Password')
         return
       }
       const ajax = common.ajax(groupPath.platform + '/users/logIn', 'post')
@@ -44,6 +44,7 @@ export default defineComponent ({
       isLoading.value = false
       if (result.status == 'success') {
         common.LocalStorage('set', 'token', result.token)
+        common.LocalStorage('set', 'email', result.user.email)
         store.commit('updateUser', result.user)
         goIndex()
         common.showToast('登入成功')
@@ -54,6 +55,10 @@ export default defineComponent ({
     }
 
     store.commit('updateTitleName', '登入')
+    onMounted(() => {
+      const localEmail = common.LocalStorage('get', 'email') as string
+      localEmail && (email.value = JSON.parse(localEmail))
+    })
     return { goIndex, login, email, password, isLoading }
   }
 })
