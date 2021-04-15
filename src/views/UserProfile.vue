@@ -1,7 +1,7 @@
 <template>
   <div class="userProfile container">
     <header>
-      <img :src="profile.image" v-if="!isLoading" class="fade">
+      <img :src="actor" v-if="!isLoading" class="fade">
       <p>{{ profile.name }}</p>
       <button><icon type="fas" name="edit" />編輯</button>
     </header>
@@ -22,6 +22,7 @@ import { defineComponent, reactive, toRefs, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import OrderList from '../components/OrderList.vue'
+import actor from '../assets/actor.jpg'
 import * as common from '../utils/common'
 
 export default defineComponent ({
@@ -46,7 +47,8 @@ export default defineComponent ({
         if (!data.profile.Orders) return []
         const orders: [] = data.profile.Orders
         return orders.filter((order: { OrderStatusId: number }) => order.OrderStatusId === data.nowSelect)
-      })
+      }),
+      actor: computed(() => data.profile.image ? data.profile.image : actor)
     })
     
     const getUser = async () => {
