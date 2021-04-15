@@ -5,6 +5,8 @@ declare module '*.vue' {
   export default component
 }
 
+declare module '*.jpg'
+
 declare global {
   interface Date {
     Format (fmt?: string) : string

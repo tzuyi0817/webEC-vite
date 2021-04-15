@@ -33,18 +33,23 @@ export function LocalStorage(set: string, key: string, value: any = '') {
   if (set === 'set') {
     let setValue: string
 
-    if (key === 'cartItem' && Object.prototype.toString.call(value) === '[object Object]') {
-      let nowData: any = localStorage.getItem(key)
-      const valueId: number = value && value.id
+    if (key === 'cartItem') {
+      const user = JSON.parse(LocalStorage('get', 'email') as string)
+      let localData = JSON.parse(localStorage.getItem(key) as string)
+      !localData && (localData = {})
+      !(user in localData) && (localData[user] = [])
 
-      nowData = nowData && JSON.parse(nowData) || []
-      const index = nowData.findIndex((item: any) => item.id == valueId)
+      if (Object.prototype.toString.call(value) === '[object Object]') {
+        const valueId: number = value && value.id
+        const index = localData[user].findIndex((item: any) => item.id == valueId)
 
-      if (~index) {
-        nowData[index].quantity += value && value.quantity
-        setValue = JSON.stringify([...nowData])
-      } 
-      else setValue = JSON.stringify([...nowData, value])
+        ~index 
+          ? localData[user][index].quantity += value && value.quantity
+          : localData[user] = [...localData[user], value]
+      } else {
+        localData[user] = [...value]
+      }
+      setValue = JSON.stringify(localData)
     } 
     else setValue = JSON.stringify(value)
     localStorage.setItem(key, setValue)
@@ -82,8 +87,11 @@ export function getSortOptions(): selValType[] {
 }
 
 export function getCartItem() {
-  const localCartItem = LocalStorage('get', 'cartItem') as string
-  return JSON.parse(localCartItem)
+  const localCartItem = JSON.parse(LocalStorage('get', 'cartItem') as string)
+  const user = JSON.parse(LocalStorage('get', 'email') as string)
+  return localCartItem 
+    ? user in localCartItem ? localCartItem[user] : []
+    : []
 }
 
 Date.prototype.Format = function(fmt: string) {

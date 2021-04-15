@@ -46,6 +46,7 @@ export default defineComponent ({
         common.LocalStorage('set', 'token', result.token)
         common.LocalStorage('set', 'email', result.user.email)
         store.commit('updateUser', result.user)
+        common.LocalStorage('get', 'cartItem') && store.commit('updateCartCount')
         goIndex()
         common.showToast('登入成功')
       } else {

@@ -35,8 +35,8 @@ export default defineComponent ({
     const transitionName = ref('')
 
     store.commit('updateGroupPath', $apiPrefixes)
-    localStorage.getItem('cartItem') && store.commit('updateCartCount')
     localStorage.getItem('token') && store.dispatch('getUser')
+    localStorage.getItem('cartItem') && store.commit('updateCartCount')
     watch((): any => route.path, (to, from) => {
       const toDepth = to.split('/').length
       const fromDepth = from.split('/').length
