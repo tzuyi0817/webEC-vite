@@ -37,7 +37,7 @@ const routes: any[] = [
     component: () => import('/@/views/Search.vue')
   },
   {
-    path: '/user',
+    path: '/user/:id',
     name: 'UserProfile',
     component: () => import('/@/views/UserProfile.vue')
   },

@@ -1,6 +1,6 @@
 <template>
   <div class="categoryProducts">
-    <loading v-if="isLoading" />
+    <loading v-if="isLoading && !products.length" />
     <img v-else :src="category.image" class="fade" />
 
     <strong>商品排序</strong>

@@ -4,7 +4,7 @@
     <li v-for="(item, index) in menu" :key="index" @click="select(item.route)">
       <a :class="{ 'active': nowSelect == item.name }">
         <icon :name="item.icon" :type="item.type" />
-        <div v-if="item.name === 'cart' && getCartCoount">{{ getCartCoount }}</div>
+        <div v-if="item.name === 'cart' && cartCount">{{ cartCount }}</div>
         <span>{{ item.name }}</span>
       </a>
     </li>
@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, toRefs } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 
@@ -29,6 +29,8 @@ export default defineComponent ({
       { name: 'cart', icon: 'shopping-cart', type: 'fas', route: 'Cart' }
     ]
 
+    const store = useStore()
+    const { user, cartCount } = toRefs(store.state)
     const route = useRoute()
     const $router = useRouter()
     const nowSelect = computed(() => {
@@ -41,11 +43,10 @@ export default defineComponent ({
       }
       return pathList[path] || path
     })
-    const getCartCoount = computed(() => useStore().state.cartCount)
     const isShow = computed(() => route.name !== 'Account')
 
-    const select = (route: string) => $router.push({ name: route })
-    return { menu, select, nowSelect, getCartCoount, isShow }
+    const select = (route: string) => $router.push({ name: route, params: { id: route === 'UserProfile' ? `${user.value.id}` : '' } })
+    return { menu, select, nowSelect, cartCount, isShow }
   }
 })
 </script>
