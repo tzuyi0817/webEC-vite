@@ -7,7 +7,7 @@
       <sort-select :options="sortOptions" @getSelVal="getSelVal" />
     </div>
 
-    <loading v-if="isLoading" />
+    <loading v-if="isLoading && !products.length" />
     <div class="search__prompt" v-else>
       <p v-if="products.length > 0">{{ getKeywordPrompt }}搜尋到 {{ products.length }} 件商品</p>
 

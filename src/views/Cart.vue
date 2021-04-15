@@ -43,7 +43,7 @@ export default defineComponent ({
       store.commit('updateCartCount')
     }
     const saveCartItem = async () => await common.LocalStorage('set', 'cartItem', cartItem.value)
-    const goIndex = () => $router.push({ name: 'Index'})
+    const goIndex = () => $router.push({ name: 'Index' })
 
     store.commit('updateTitleName', '購物車')
     onMounted(() => cartItem.value = common.getCartItem())
@@ -59,6 +59,8 @@ export default defineComponent ({
     padding: 20px;
     img {
       width: 70%;
+      max-width: 350px;
+      max-height: 350px;
     }
 
     button {
