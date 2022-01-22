@@ -11,4 +11,8 @@ declare global {
   interface Date {
     Format (fmt?: string) : string
   }
+
+  interface ImportMeta {
+    readonly env: ImportMetaEnv;
+  }
 }
