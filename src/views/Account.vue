@@ -8,30 +8,22 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, computed } from 'vue'
-import AccountLogin from '../components/AccountLogin.vue'
-import AccountRegister from '../components/AccountRegister.vue'
+<script setup lang="ts">
+import { ref, computed } from 'vue';
+import AccountLogin from "../components/AccountLogin.vue";
+import AccountRegister from "../components/AccountRegister.vue";
 
-export default defineComponent ({
-  components: {
-    AccountLogin,
-    AccountRegister
-  },
-  setup() {
-    const nowPage = ref('Login')
-    const nowComponent = computed(() => `Account${nowPage.value}`)
-    const linkPrompt = computed(() => {
-      return nowPage.value === 'Login' 
-        ? "Don't have an account? REGISTER" 
-        : "Already have an account? LOGIN"
-    })
+const nowPage = ref('Login');
+const nowComponent = computed(() => nowPage.value === 'Login' ? AccountLogin : AccountRegister);
+const linkPrompt = computed(() => {
+  return nowPage.value === 'Login' 
+    ? "Don't have an account? REGISTER" 
+    : "Already have an account? LOGIN"
+});
 
-    const changePage = () => nowPage.value = nowPage.value === 'Login' ? 'Register' : 'Login'
-
-    return { nowPage, nowComponent, linkPrompt, changePage }
-  }
-})
+const changePage = () => {
+  nowPage.value = nowPage.value === 'Login' ? 'Register' : 'Login';
+};
 </script>
 
 <style lang="scss">

@@ -13,57 +13,50 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, reactive, toRefs } from 'vue'
-import { useStore } from 'vuex'
-import * as common from '../utils/common'
+<script setup lang="ts">
+import { ref } from 'vue';
+import { useStore } from 'vuex';
+import * as common from '../utils/common';
 
-export default defineComponent ({
-  emits: ['changePage'],
-  setup(props, { emit }) {
-    const store = useStore()
-    const { groupPath } = store.state
-    const data = reactive({
-      name: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-      isLoading: false
-    })
+const emit = defineEmits(["changePage"]);
+const store = useStore();
+const { groupPath } = store.state;
+const name = ref("");
+const email = ref("");
+const password = ref("");
+const confirmPassword = ref("");
+const isLoading = ref(false);
 
-    const register = async () => {
-      if (!data.name || !data.email || !data.password) {
-        common.showToast('請輸入 Name 、 Email 和 Password')
-        return
-      }
-
-      if (data.password !== data.confirmPassword) {
-        data.password = data.confirmPassword = ''
-        common.showToast('輸入的 Password 和 Confirm Password 不相同')
-      }
-
-      const ajax = common.ajax(groupPath.platform + '/users/signUp', 'post')
-      const setData = {
-        name: data.name,
-        email: data.email,
-        password: data.password,
-        password_confirm: data.confirmPassword,
-      }
-      data.isLoading = true
-
-      const result = await common.getAjax(ajax, setData)
-      data.isLoading = false
-      if (result.status == 'success') {
-        common.showToast(result.message)
-        emit('changePage')
-      } else {
-        data.password = data.confirmPassword = ''
-        common.showToast('輸入的信箱已經註冊')
-      }
-    }
-
-    store.commit('updateTitleName', '註冊')
-    return { ...toRefs(data), register }
+const register = async () => {
+  if (!name.value || !email.value || !password.value) {
+    common.showToast('請輸入 Name 、 Email 和 Password');
+    return
   }
-})
+
+  if (password.value !== confirmPassword.value) {
+    password.value = confirmPassword.value = '';
+    common.showToast('輸入的 Password 和 Confirm Password 不相同');
+  }
+
+  const ajax = common.ajax(groupPath.platform + '/users/signUp', 'post');
+  const setData = {
+    name: name.value,
+    email: email.value,
+    password: password.value,
+    password_confirm: confirmPassword.value,
+  };
+  isLoading.value = true;
+
+  const result = await common.getAjax(ajax, setData);
+  isLoading.value = false;
+  if (result.status == 'success') {
+    common.showToast(result.message);
+    emit('changePage');
+  } else {
+    password.value = confirmPassword.value = '';
+    common.showToast('輸入的信箱已經註冊');
+  }
+};
+
+store.commit('updateTitleName', '註冊');
 </script>
