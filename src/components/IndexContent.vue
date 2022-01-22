@@ -8,33 +8,29 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, computed, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
-import { categoryType } from '../utils/interface'
+<script setup lang="ts">
+import { computed, ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
+import { categoryType } from '../utils/interface';
 
-export default defineComponent ({
-  props: {
-    category: Object
-  },
-  setup(props) {
-    const $router = useRouter()
-    const nowId = ref(1)
-    const contentData = [
-      '烘焙咖啡使咖啡生豆的化學與物理性質轉變為已烘焙的咖啡製品',
-      '葡萄酒是用新鮮葡萄果實或葡萄汁，經過發酵釀製而成的酒精飲料',
-      '不使用化學合成農藥、化學合成肥料、基因改造生物、動物及植物生長調節劑等非天然物質的農產品'
-    ]
+interface Props {
+  category: categoryType
+}
 
-    const url = computed(() => `/category/${nowId.value}`)
-    const content = computed(() => contentData[nowId.value - 1])
-    const goLink = (url: string) => $router.push(url)
+const props = defineProps<Props>();
+const router = useRouter();
+const nowId = ref(1);
+const url = computed(() => `/category/${nowId.value}`);
+const content = computed(() => contentData[nowId.value - 1]);
+const contentData = [
+  '烘焙咖啡使咖啡生豆的化學與物理性質轉變為已烘焙的咖啡製品',
+  '葡萄酒是用新鮮葡萄果實或葡萄汁，經過發酵釀製而成的酒精飲料',
+  '不使用化學合成農藥、化學合成肥料、基因改造生物、動物及植物生長調節劑等非天然物質的農產品'
+];
 
-    watch((): any => props.category, (val: categoryType) => nowId.value = val.id)
+const goLink = (url: string) => router.push(url);
 
-    return { nowId, url, goLink, content }
-  }
-})
+watch(() => props.category, (val: categoryType) => nowId.value = val.id);
 </script>
 
 <style lang="scss" scoped>

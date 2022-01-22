@@ -14,22 +14,18 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { categoryType } from "../utils/interface";
 
-export default defineComponent ({
-  props: { 
-    options: Array,
-    isLoading: Boolean,
-    nowId: Number
-  },
-  emits: ['getId'],
-  setup(props, { emit }) {
-    const selOption = (id: number) => emit('getId', id)
+interface Props {
+  options: categoryType[],
+  isLoading: Boolean,
+  nowId: Number
+}
+defineProps<Props>();
+const emit = defineEmits(["getId"]);
 
-    return { selOption }
-  }
-})
+const selOption = (id: number) => emit('getId', id);
 </script>
 
 <style lang="scss" scoped>

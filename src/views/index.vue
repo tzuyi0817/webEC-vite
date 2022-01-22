@@ -14,43 +14,33 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, onMounted, reactive, toRefs, computed } from 'vue'
-import { useStore } from 'vuex'
-import * as common from '../utils/common'
-import IndexBanner from '../components/IndexBanner.vue'
-import NavTabs from '../components/NavTabs.vue'
-import IndexContent from '../components/IndexContent.vue'
+<script setup lang="ts">
+import { onMounted, ref, computed } from "vue";
+import { useStore } from "vuex";
+import { ajax, getAjax } from "../utils/common";
+import { categoryType } from "../utils/interface";
+import IndexBanner from "../components/IndexBanner.vue";
+import NavTabs from "../components/NavTabs.vue";
+import IndexContent from "../components/IndexContent.vue";
 
-export default defineComponent ({
-  components: {
-    IndexBanner,
-    NavTabs,
-    IndexContent
-  },
-  setup() {
-    const data: any = reactive({ 
-      categories: [],
-      nowId: 1,
-      isLoading: false,
-      nowCategory: computed(() => data.categories[data.nowId - 1])
-    })
-    const { groupPath } = useStore().state
-    const getId = (id: number) => data.nowId = id
+const { groupPath } = useStore().state;
+const categories = ref([]);
+const nowId = ref(1);
+const isLoading = ref(false);
+const nowCategory = computed((): categoryType => categories.value[nowId.value - 1]);
 
-    const getCategories = async () => {
-      const ajax = common.ajax(groupPath.platform + '/index', 'get')
-      data.isLoading = true
+const getId = (id: number) => nowId.value = id;
 
-      const result = await common.getAjax(ajax)
-      data.isLoading = false
-      data.categories = result.categories
-    }
+const getCategories = async() => {
+  const ajaxGroup = ajax(groupPath.platform + "/index", "get");
+  isLoading.value = true;
 
-    onMounted(() => getCategories())
-    return { ...toRefs(data), getId }
-  }
-})
+  const result = await getAjax(ajaxGroup);
+  isLoading.value = false;
+  categories.value = result.categories;
+};
+
+onMounted(getCategories);
 </script>
 
 <style lang="scss" scoped>

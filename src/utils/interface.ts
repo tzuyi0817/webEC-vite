@@ -20,7 +20,7 @@ export interface categoryType {
 
 export interface selValType {
   name: string
-  query: {key: string, value: string }
+  query: { key: string, value: string }
   value: string
 }
 

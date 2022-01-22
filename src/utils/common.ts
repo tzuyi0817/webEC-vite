@@ -11,12 +11,11 @@ api.interceptors.request.use(config => {
 
   if (token) config.headers['Authorization'] = `Bearer ${JSON.parse(token)}`
   return config
-}, err => Promise.reject(err))
-
+}, err => Promise.reject(err));
 
 
 export function ajax(groupPath: string, restful: string): ajaxType {
-  return { groupPath, restful }
+  return { groupPath, restful };
 }
 
 export function getAjax(ajax: ajaxType, data = {}) {
