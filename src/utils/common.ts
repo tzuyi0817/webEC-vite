@@ -1,8 +1,8 @@
-import axios from 'axios'
+import axios from 'axios';
 import qs from 'qs'
-import { busType, ajaxType, selValType } from './interface'
+import { busType, ajaxType, timeKeys, axiosMethod } from './interface'
 
-let $bus: any
+let $bus: busType;
 const api = axios.create({ headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
 
 api.defaults.withCredentials = true
@@ -14,15 +14,16 @@ api.interceptors.request.use(config => {
 }, err => Promise.reject(err));
 
 
-export function ajax(groupPath: string, restful: string): ajaxType {
+export function ajax(groupPath: string, restful: axiosMethod): ajaxType {
   return { groupPath, restful };
 }
 
 export function getAjax(ajax: ajaxType, data = {}) {
-  data = qs.stringify(data)
-  api.defaults.timeout = 0
+  const { restful, groupPath } = ajax;
+  data = qs.stringify(data);
+  api.defaults.timeout = 0;
   
-  return api[ajax.restful](ajax.groupPath, data).then((response: any) => {
+  return api[restful](groupPath, data).then((response: any) => {
     return response.data
   })
   .catch((error: any) => showToast(error))
@@ -92,7 +93,7 @@ export function getCartItem() {
 }
 
 Date.prototype.Format = function(fmt: string) {
-  var o = {
+  const o: timeKeys = {
     'M+': this.getMonth() + 1, // 月份
     'd+': this.getDate(), // 日
     'h+': this.getHours(), // 小时
@@ -100,10 +101,15 @@ Date.prototype.Format = function(fmt: string) {
     's+': this.getSeconds(), // 秒
     'q+': Math.floor((this.getMonth() + 3) / 3), // 季度
     'S': this.getMilliseconds() // 毫秒
-  }
+  };
 
-  if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length))
-  for (var k in o)
-    if (new RegExp('(' + k + ')').test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)))
-  return fmt
+  type key = keyof timeKeys;
+
+  if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+  for (const k in o)
+    if (new RegExp('(' + k + ')').test(fmt)) {
+      const time = `${o[k as key]}`;
+      fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? time : ('00' + time).substr(('' + time).length));
+    }
+  return fmt;
 }

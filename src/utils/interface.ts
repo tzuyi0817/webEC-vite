@@ -1,12 +1,16 @@
+import { Method, AxiosInstance } from 'axios';
+
+export type axiosMethod = Extract<Method, keyof AxiosInstance>;
+
 export interface ajaxType {
   groupPath: string
-  restful: string
+  restful: axiosMethod
 }
 
 export interface busType {
-  $on?: Function
-  $off?: Function
-  $emit?: Function
+  $on: Function
+  $off: Function
+  $emit: Function
 }
 
 export interface categoryType {
@@ -48,4 +52,14 @@ export interface queryType {
 
 export interface paramsType {
   id: string
+}
+
+export interface timeKeys {
+  "M+": number
+  "d+": number
+  "h+": number
+  "m+": number
+  "s+": number
+  "q+": number
+  "S": number
 }
