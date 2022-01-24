@@ -1,5 +1,5 @@
 <template>
-  <div class="search container" @scroll.passive="handerScroll">
+  <div class="search container" @scroll.passive="handleScroll">
     <search-bar :isLoading="isLoading" @getKeyword="getKeyword" />
 
     <div class="search__sort">
@@ -17,90 +17,76 @@
       </template>
     </div>
 
-    <category-products-list :products="products" :isLoading="isLoading" :loadMore="loadMore" v-if="products.length > 0" />
+    <category-products-list v-if="products.length > 0" :products="products" :isLoading="isLoading" :loadMore="loadMore" />
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, reactive, onMounted, toRefs, computed } from 'vue'
-import { useStore } from 'vuex'
-import SearchBar from '../components/SearchBar.vue'
-import SortSelect from '../components/SortSelect.vue'
-import CategoryProductsList from '../components/CategoryProductsList.vue'
-import * as common from '../utils/common'
-import { selValType } from '../utils/interface'
+<script setup lang="ts">
+import { ref, onMounted, computed } from 'vue';
+import { useStore } from 'vuex';
+import SearchBar from '../components/SearchBar.vue';
+import SortSelect from '../components/SortSelect.vue';
+import CategoryProductsList from '../components/CategoryProductsList.vue';
+import { sortOptions, ajax, getAjax } from '../utils/common';
+import { selValType } from '../utils/interface';
 
+const { groupPath } = useStore().state;
+const products = ref([]);
+const currentPage = ref(1);
+const totalPage = ref(0);
+const currentKeyword = ref("");
+const currentKey = ref("");
+const currentValue = ref("");
+const isLoading = ref(false);
+const loadMore = ref(false);
+const getKeywordPrompt = computed(() => currentKeyword.value ? `「${currentKeyword.value}」` : "");
 
-export default defineComponent ({
-  components: {
-    SearchBar,
-    SortSelect,
-    CategoryProductsList
-  },
-  setup() {
-    const { groupPath } = useStore().state
-    const sortOptions = common.getSortOptions()
-    const data: any = reactive({
-      products: [],
-      currentPage: 1,
-      totalPage: 0,
-      currentKeyword: '',
-      currentKey: '',
-      currentValue: '',
-      isLoading: false,
-      loadMore: false,
-      getKeywordPrompt: computed(() => data.currentKeyword ? `「${data.currentKeyword}」` : '')
-    })
+const getSearch = async () => {
+  const searchParams = new URLSearchParams({ 
+    keyword: currentKeyword.value,
+    key: currentKey.value, 
+    value: currentValue.value, 
+    page: currentPage.value.toString() 
+  });
 
-    const getSearch = async () => {
-      const searchParams = new URLSearchParams({ 
-        keyword: data.currentKeyword,
-        key: data.currentKey, 
-        value: data.currentValue, 
-        page: data.currentPage.toString() 
-      })
+  const ajaxGroup = ajax(groupPath.platform + `/ESHOP/search?${searchParams.toString()}`, 'get');
+  isLoading.value = true;
 
-      const ajax = common.ajax(groupPath.platform + `/ESHOP/search?${searchParams.toString()}`, 'get')
-      data.isLoading = true
+  const result = await getAjax(ajaxGroup);
+  isLoading.value = false;
+  products.value = products.value.concat(result.products);
+  totalPage.value = result.totalPage.length;
+  loadMore.value = totalPage.value > currentPage.value;
+}
 
-      const result = await common.getAjax(ajax)
-      data.isLoading = false
-      data.products = data.products.concat(result.products)
-      data.totalPage = result.totalPage.length
-      data.loadMore = data.totalPage > data.currentPage
+const resetProducts = () => {
+  currentPage.value = 1;
+  products.value = [];
+  getSearch();
+}
+
+const getKeyword = (keyword: string) => {
+  currentKeyword.value =  keyword;
+  resetProducts();
+}
+
+const getSelVal = (selVal: selValType) => {
+  currentKey.value = selVal.query.key;
+  currentValue.value = selVal.query.value;
+  resetProducts();
+}
+
+const handleScroll = (event: Event) => {
+  if (!isLoading.value && loadMore.value) {
+    const { scrollHeight, offsetHeight, scrollTop } = <HTMLDivElement>event.target;
+    if (scrollHeight - offsetHeight <= scrollTop + 5) {
+      currentPage.value++;
+      getSearch();
     }
-
-    const resetProducts = () => {
-      data.currentPage = 1
-      data.products = []
-      getSearch()
-    }
-
-    const getKeyword = (keyword: string) => {
-      data.currentKeyword =  keyword
-      resetProducts()
-    }
-
-    const getSelVal = (selVal: selValType) => {
-      data.currentKey = selVal.query.key
-      data.currentValue = selVal.query.value
-      resetProducts()
-    }
-
-    const handerScroll = (event: any) => {
-      if (!data.isLoading && data.loadMore) {
-        const { scrollHeight, offsetHeight, scrollTop } = event.srcElement
-        if (scrollHeight - offsetHeight <= scrollTop + 5) {
-          data.currentPage++
-          getSearch()
-        }
-      }
-    }
-
-    onMounted(() => getSearch())
-    return { ...toRefs(data), getKeyword, sortOptions, getSelVal, handerScroll }
   }
-})
+};
+
+onMounted(getSearch);
 </script>
 
 <style lang="scss" scoped>

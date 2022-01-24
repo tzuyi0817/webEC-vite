@@ -8,35 +8,34 @@
           :key="index"
           :class="{ 'open': isOpen, 'active': selectValue.value == item.value && isOpen }"
           :tabindex="index"
-          @click.prevent="selcetEvent(item)"
+          @click.prevent="selectEvent(item)"
         >{{ item.name }}</li>
       </ul>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue'
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { selValType } from "../utils/interface";
 
-export default defineComponent ({
-  props: {
-    options: Array
-  },
-  emits: ['getSelVal'],
-  setup(props: any, { emit }) {
-    const selectValue = ref('')
-    const isOpen = ref(false)
-    const trigger = () => isOpen.value = !isOpen.value
-    const selcetEvent = (select: string) => {
-      selectValue.value = select
-      isOpen.value = false
-      emit('getSelVal', select)
-    }
+interface Props {
+  options: selValType[],
+};
 
-    onMounted(() => selectValue.value = props.options[0])
-    return { selectValue, isOpen, trigger, selcetEvent }
-  }
-})
- </script>
+const props = defineProps<Props>();
+const emit = defineEmits(["getSelVal"]);
+const selectValue = ref({} as selValType);
+const isOpen = ref(false);
+
+const trigger = () => isOpen.value = !isOpen.value;
+const selectEvent = (select: selValType) => {
+  selectValue.value = select;
+  isOpen.value = false;
+  emit('getSelVal', select);
+};
+
+onMounted(() => selectValue.value = props.options[0]);
+</script>
 
 <style lang="scss" scoped>
 select {

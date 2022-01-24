@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import * as common from '../utils/common'
 
-const routes: any[] = [
+const routes = [
   {
     path: '/',
     redirect: '/index'
@@ -50,7 +50,7 @@ const routes: any[] = [
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes,
 })
 
 router.beforeEach((to, from, next) => {

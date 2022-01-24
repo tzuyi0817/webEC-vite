@@ -4,8 +4,8 @@ export interface ajaxType {
 }
 
 export interface busType {
-  $on?: Function,
-  $off?: Function,
+  $on?: Function
+  $off?: Function
   $emit?: Function
 }
 
@@ -15,6 +15,23 @@ export interface categoryType {
   StoreId: number
   image: string
   name: string
+  updatedAt: string
+}
+
+export interface productType {
+  ProductCategoryId: number
+  Product_category: categoryType
+  StoreId: number
+  count: number
+  createdAt: string
+  description: string
+  id: number
+  image: string
+  imageI: string
+  imageII: string
+  launched: boolean
+  name: string
+  price: number
   updatedAt: string
 }
 

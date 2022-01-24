@@ -76,14 +76,12 @@ export function showToast(msg: string): void {
   if (msg) $bus.$emit('toast', msg)
 }
 
-export function getSortOptions(): selValType[] {
-  return [
-    { name: '上架時間: 新到舊', query: { key: 'createdAt', value: 'desc' }, value: 'timeDesc' },
-    { name: '上架時間: 舊到新', query: { key: 'createdAt', value: 'asc' }, value: 'timeAsc' },
-    { name: '價格: 高至低', query: { key: 'price', value: 'desc' }, value: 'priceDesc' },
-    { name: '價格: 低至高', query: { key: 'price', value: 'asc' }, value: 'priceAsc' }
-  ]
-}
+export const sortOptions = [
+  { name: '上架時間: 新到舊', query: { key: 'createdAt', value: 'desc' }, value: 'timeDesc' },
+  { name: '上架時間: 舊到新', query: { key: 'createdAt', value: 'asc' }, value: 'timeAsc' },
+  { name: '價格: 高至低', query: { key: 'price', value: 'desc' }, value: 'priceDesc' },
+  { name: '價格: 低至高', query: { key: 'price', value: 'asc' }, value: 'priceAsc' }
+];
 
 export function getCartItem() {
   const localCartItem = JSON.parse(LocalStorage('get', 'cartItem') as string)

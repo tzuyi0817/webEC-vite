@@ -28,41 +28,37 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, computed } from 'vue'
-import { useRouter } from 'vue-router'
+<script setup lang="ts">
+import { computed } from 'vue';
+import { useRouter } from 'vue-router';
+import { productType } from "../utils/interface";
 
-export default defineComponent ({
-  props: {
-    products: Array,
-    isLoading: Boolean,
-    loadMore: {
-      type: Boolean,
-      default: false
-    },
-    isShowPrompt: {
-      type: Boolean,
-      default: true
-    }
-  },
-  setup(props: any) {
-    const subContent = (str: String, num: number) => {
-      const length = str.length
-      return length > num ? str.slice(0, num + 1) + '...' : str
-    }
+interface Props {
+  products: productType[]
+  isLoading: Boolean
+  loadMore?: Boolean
+  isShowPrompt?: Boolean
+};
 
-    const $router = useRouter()
-    const goLink = (id: number) => $router.push({ name: 'Product', params: { id } })
+const props = withDefaults(defineProps<Props>(), {
+  loadMore: () => false,
+  isShowPrompt: () => true,
+});
 
-    const getPrompt = computed(() => {
-      const { products, loadMore } = props
-      return products.length == 0
-        ? '此類別暫無商品'
-        : loadMore ? '' : '已無更多商品'
-    })
-    return { subContent, getPrompt, goLink }
-  }
-})
+const router = useRouter();
+const getPrompt = computed(() => {
+  const { products, loadMore } = props;
+  return products.length == 0
+    ? '此類別暫無商品'
+    : loadMore ? '' : '已無更多商品'
+});
+
+const subContent = (str: String, num: number) => {
+  const length = str.length;
+  return length > num ? str.slice(0, num + 1) + '...' : str;
+};
+
+const goLink = (id: number) => router.push({ name: 'Product', params: { id } });
 </script>
 
 <style lang="scss" scoped>

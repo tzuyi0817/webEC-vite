@@ -1,4 +1,4 @@
-const path = require('path')
+const path = require('path');
 
 module.exports = {
   alias: {
@@ -10,4 +10,4 @@ module.exports = {
     }
   },
   port: '8080'
-}
+};

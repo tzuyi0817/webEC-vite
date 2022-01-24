@@ -3,26 +3,25 @@
     <label>
       <input type="search" placeholder="Search for goods..."  v-model="keyword" />
     </label>
-    <button @click="search" :disabled="isLoading"><icon :name="svg" type="fas" :class="{ 'loading': isLoading }" /></button>
+    <button @click="search" :disabled="Boolean(isLoading)">
+      <icon :name="svg" type="fas" :class="{ 'loading': isLoading }" />
+    </button>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, computed } from 'vue'
+<script setup lang="ts">
+import { ref, computed } from 'vue';
 
-export default defineComponent ({
-  props: {
-    isLoading: Boolean
-  },
-  emits: ['getKeyword'],
-  setup(props, { emit }) {
-    const keyword = ref('')
-    const svg = computed(() => props.isLoading ? 'spinner' : 'search')
-    const search = () => emit('getKeyword', keyword.value)
+interface Props {
+  isLoading: Boolean
+};
 
-    return { keyword, svg, search }
-  }
-})
+const props = defineProps<Props>();
+const emit = defineEmits(["getKeyword"]);
+const keyword = ref('');
+const svg = computed(() => props.isLoading ? 'spinner' : 'search');
+
+const search = () => emit('getKeyword', keyword.value);
 </script>
 
 <style lang="scss" scoped>
