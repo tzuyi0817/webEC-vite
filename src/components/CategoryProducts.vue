@@ -11,32 +11,23 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-import SortSelect from '../components/SortSelect.vue'
-import CategoryProductsList from '../components/CategoryProductsList.vue'
-import { selValType } from '../utils/interface'
-import * as common from '../utils/common'
+<script setup lang="ts">
+import SortSelect from '../components/SortSelect.vue';
+import CategoryProductsList from '../components/CategoryProductsList.vue';
+import { selValType, productType, categoryType } from '../utils/interface';
+import { sortOptions } from '../utils/common';
 
-export default defineComponent ({
-  props: {
-    category: Object,
-    isLoading: Boolean,
-    products: Array,
-    loadMore: Boolean
-  },
-  emits: ['getSelquery'],
-  components: {
-    SortSelect,
-    CategoryProductsList
-  },
-  setup(props, { emit }) {
-    const sortOptions = common.getSortOptions()
-    const getSelVal = (selVal: selValType) => emit('getSelquery', selVal.query)
+interface Props {
+  category: categoryType,
+  isLoading: Boolean,
+  products: productType[],
+  loadMore: Boolean
+};
 
-    return { sortOptions, getSelVal }
-  }
-})
+defineProps<Props>();
+const emit = defineEmits(["getSelQuery"]);
+
+const getSelVal = (selVal: selValType) => emit('getSelQuery', selVal.query);
 </script>
 
 <style lang="scss" scoped>
