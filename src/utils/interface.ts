@@ -37,6 +37,35 @@ export interface productType {
   name: string
   price: number
   updatedAt: string
+  Comments: commentType[]
+}
+
+export interface commentType {
+  Product: productType
+  ProductId: number
+  User: userType
+  UserId: number
+  comment: string
+  createdAt: string
+  id: number
+  rating: number
+  updatedAt: string
+}
+
+export interface userType {
+  StoreId: number
+  address: string
+  createdAt: string
+  email: string
+  emailVerf: boolean
+  id: number
+  image: string
+  name: string
+  password: string
+  resetPasswordExpires: string | null
+  resetPasswordToken: string| null
+  role: number
+  updatedAt: string
 }
 
 export interface selValType {

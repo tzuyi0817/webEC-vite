@@ -9,32 +9,28 @@
   </span>
 </template>
 
-<script lang="ts">
-import { defineComponent, computed } from 'vue'
+<script setup lang="ts">
+import { computed } from 'vue';
 
-export default defineComponent ({
-  props: {
-    rating: {
-      type: Number,
-      default: 0
-    }
-  },
-  setup(props: any) {
-    const stars = computed(() => {
-      const yellowNum = ~~props.rating
-      const grayNum = ~~(5 - props.rating)
-      const decimalNum = +(props.rating - yellowNum).toFixed(1)
+interface Props {
+  rating: number
+};
 
-      return {
-        ['yellow']: { num: yellowNum },
-        ['gray']: { num: grayNum },
-        ['decimal']: { num: decimalNum }
-      }
-    })
+const props = withDefaults(defineProps<Props>(), {
+  rating: 0,
+});
 
-    return { stars }
+const stars = computed(() => {
+  const yellowNum = props.rating | 0;
+  const grayNum = 5 - props.rating | 0;
+  const decimalNum = (props.rating - yellowNum).toFixed(1);
+
+  return {
+    ['yellow']: { num: yellowNum },
+    ['gray']: { num: grayNum },
+    ['decimal']: { num: +decimalNum },
   }
-})
+});
 </script>
 
 <style lang="scss" scoped>

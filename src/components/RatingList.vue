@@ -20,40 +20,33 @@
   </ul>
 </template>
 
-<script lang="ts">
-import { defineComponent, computed } from 'vue'
-import Stars from '../components/Stars.vue'
+<script setup lang="ts">
+import { computed } from 'vue';
+import Stars from '../components/Stars.vue';
+import { commentType } from "../utils/interface";
 
-export default defineComponent ({
-  props: {
-    ratingList: Array,
-    isLoading: {
-      type: Boolean,
-      default: false
-    },
-    ratingLength: {
-      type: Number,
-      default: -1
-    }
-  },
-  components: {
-    Stars
-  },
-  setup(props) {
-    const hideName = (name: string) => name && name.slice(0, 1) + '*****' + name.slice(-1)
-    const conversionTime = (time: string) => new Date(time).Format('yyyy-MM-dd hh:mm:ss')
+interface Props {
+  ratingList: commentType[],
+  isLoading?: boolean
+  ratingLength?: number
+};
 
-    const getPrompt = computed(() => {
-      const { ratingList, ratingLength } = props
-      const nowLength = ratingList && ratingList.length
-      return nowLength == 0
-        ? '此商品尚未有人評價'
-        : nowLength == ratingLength ? '已無更多評價' : ''
-    })
+const props = withDefaults(defineProps<Props>(), {
+  isLoading: false,
+  ratingLength: -1,
+});
 
-    return { hideName, conversionTime, getPrompt }
-  }
-})
+const getPrompt = computed(() => {
+  const { ratingList, ratingLength } = props;
+  const nowLength = ratingList?.length ?? 0;
+  return nowLength === 0
+    ? '此商品尚未有人評價'
+    : nowLength === ratingLength ? '已無更多評價' : '';
+});
+
+const hideName = (name: string) => name?.slice(0, 1) + '*****' + name?.slice(-1);
+const conversionTime = (time: string) => new Date(time).Format('yyyy-MM-dd hh:mm:ss');
+
 </script>
 
 <style lang="scss" scoped>

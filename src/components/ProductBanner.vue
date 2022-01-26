@@ -1,47 +1,39 @@
 <template>
   <div class="productBanner">
     <loading v-if="isLoading" />
-    <carousel v-else class="fade" v-model="currentPage" @touchend="touch">
+    <carousel v-else class="fade" @touchend="touch">
       <slide v-for="(image, index) in productImage" :key="index">
-        <img :src="image" ref="img">
+        <img :src="image">
         <span>{{ `${currentPage}/${productImage.length}` }}</span>
       </slide>
     </carousel>
   </div>
 </template>
 
-<script lang="ts">
-import 'vue3-carousel/dist/carousel.css'
-import { Carousel, Slide } from 'vue3-carousel'
-import { defineComponent, ref } from 'vue'
+<script setup lang="ts">
+import 'vue3-carousel/dist/carousel.css';
+import { Carousel, Slide } from 'vue3-carousel';
+import { ref } from 'vue';
 
-export default defineComponent ({
-  props: {
-    productImage: Array,
-    isLoading: Boolean
-  },
-  components: {
-    Carousel,
-    Slide
-  },
-  setup() {
-    const currentPage = ref(1)
-    const img = ref('')
-    const touch = () => {
-      setTimeout(() => {
-        const image = img.value as any
-        const width = image.width
-        const transform = image.parentElement.parentElement.style.transform
-        const clipStart = transform.indexOf('(') + 1
-        const clipEnd = transform.indexOf('px)')
-        const num = ~~transform.slice(clipStart, clipEnd)
-        currentPage.value = Math.round(Math.abs(num) / width) + 1
-      }, 500)
-    }
-    
-    return { currentPage, img, touch }
-  }
-})
+interface Props {
+  productImage: string[]
+  isLoading: Boolean
+};
+
+defineProps<Props>();
+const currentPage = ref(1);
+
+const touch = async (event) => {
+  setTimeout(() => {
+    const img = event.target;
+    const width = img.width;
+    const transform = img.parentElement.parentElement.style.transform;
+    const clipStart = transform.indexOf('(') + 1;
+    const clipEnd = transform.indexOf('px)');
+    const num = transform.slice(clipStart, clipEnd) | 0;
+    currentPage.value = Math.round(Math.abs(num) / width) + 1;
+  });
+};
 </script>
 
 <style lang="scss" scoped>

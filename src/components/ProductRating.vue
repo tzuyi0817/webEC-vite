@@ -14,44 +14,42 @@
         </button>
       </div>
 
-      <button @click="goRating">查看全部 <icon name="chevron-right" type="fas" /></button>
+      <button @click="goRating">
+        查看全部 <icon name="chevron-right" type="fas" />
+      </button>
     </div>
 
     <hr />
     <rating-list :ratingList="ratingList" />
 
     <div class="productRating__footer">
-      <button @click="goRating">{{ `查看所有瀏覽者 (${ratingLength})` }} <icon name="chevron-right" type="fas" /></button>
+      <button @click="goRating">
+        {{ `查看所有瀏覽者 (${ratingLength})` }} <icon name="chevron-right" type="fas" />
+      </button>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, computed} from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import Stars from '../components/Stars.vue'
-import RatingList from '../components/RatingList.vue'
+<script setup lang="ts">
+import { computed } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import Stars from '../components/Stars.vue';
+import RatingList from '../components/RatingList.vue';
+import { productType } from "../utils/interface";
 
-export default defineComponent ({
-  props: {
-    product: Object,
-    rating: Number
-  },
-  components: {
-    Stars,
-    RatingList
-  },
-  setup(props: any) {
-    const $route = useRoute()
-    const $router = useRouter()
-    const { product } = props
-    const goRating = () => $router.push({ name: 'Rating', params: { id: $route.params.id } })
-    const ratingLength = computed(() => product.Comments && product.Comments.length)
-    const ratingList = computed(() => product.Comments && product.Comments.slice(0, 3))
+interface Props {
+  product: productType
+  rating?: number
+};
 
-    return { goRating, ratingList, ratingLength }
-  }
-})
+const props = defineProps<Props>();
+const route = useRoute();
+const router = useRouter();
+const { product } = props;
+const ratingLength = computed(() => product.Comments?.length);
+const ratingList = computed(() => product.Comments?.slice(0, 3) ?? []);
+
+const goRating = () => router.push({ name: 'Rating', params: { id: route.params.id } });
 </script>
 
 <style lang="scss" scoped>
