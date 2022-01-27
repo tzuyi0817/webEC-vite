@@ -30,7 +30,7 @@ const isLoading = ref(false);
 const product = ref({} as productType);
 const moreProducts = ref([]);
 const rating = ref(0);
-const productImage = ref([""]);
+const productImage = ref([] as string[]);
 const productScroll = ref();
 
 const getProduct = async (id: string | null | string[] = null) => {
@@ -40,7 +40,7 @@ const getProduct = async (id: string | null | string[] = null) => {
 
   const result = await getAjax(ajaxGroup);
   const { image, imageI, imageII } = result.product;
-  isLoading.value = false
+  isLoading.value = false;
   product.value = result.product;
   moreProducts.value = result.productsFilter;
   productImage.value = [image, imageI, imageII];

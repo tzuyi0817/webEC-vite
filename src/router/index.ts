@@ -1,5 +1,5 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import * as common from '../utils/common'
+import { createRouter, createWebHistory } from 'vue-router';
+import { showToast } from '../utils/common';
 
 const routes = [
   {
@@ -46,34 +46,34 @@ const routes = [
     name: 'Cart',
     component: () => import('/@/views/Cart.vue')
   }
-]
+];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
-})
+});
 
 router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem('token')
-  const withoutAuth = ['Index', 'Category', 'Product', 'Search']
+  const token = localStorage.getItem('token');
+  const withoutAuth = ['Index', 'Category', 'Product', 'Search'];
 
   if (withoutAuth.includes(to.name as string)) {
-    next()
-    return
+    next();
+    return;
   }
 
   if (token && to.name === 'Account') {
-    next('/index')
-    return
+    next('/index');
+    return;
   }
 
   if (!token && to.name !== 'Account') {
-    common.showToast('請先登入帳號')
-    next('/account')
-    return
+    showToast('請先登入帳號');
+    next('/account');
+    return;
   }
 
-  next()
+  next();
 })
 
-export default router
+export default router;

@@ -1,63 +1,54 @@
 <template>
-  <div class="rating container" @scroll="handerScroll">
+  <div class="rating container" @scroll="handleScroll">
     <h1 v-if="!isLoading">{{ `${ratingLength}則評價` }}</h1>
 
     <rating-list :ratingList="ratingList" :isLoading="isLoading" :ratingLength="ratingLength" />
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, reactive, onMounted, toRefs } from 'vue'
-import { useStore } from 'vuex'
-import { useRoute } from 'vue-router'
-import * as common from '../utils/common'
-import RatingList from '../components/RatingList.vue'
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
+import { ajax, getAjax } from '../utils/common';
+import RatingList from '../components/RatingList.vue';
+// import { faCommentsDollar } from '@fortawesome/free-solid-svg-icons';
 
-export default defineComponent ({
-  components: {
-    RatingList
-  },
-  setup() {
-    const store = useStore()
-    const { groupPath } = store.state
-    const { id } = useRoute().params
-    const data = reactive({
-      isLoading: false,
-      ratingList: [],
-      ratingLength: 0,
-      currentPage: 1,
-      totalPage: 0,
-      loadMore: false
-    })
+const store = useStore();
+const { groupPath } = store.state;
+const { id } = useRoute().params;
+const isLoading = ref(false);
+const ratingList = ref([]);
+const ratingLength = ref(0);
+const currentPage = ref(1);
+const totalPage = ref(0);
+const loadMore = ref(false);
 
-    const getRating = async () => {
-      const searchParams = new URLSearchParams({ page: data.currentPage.toString() })
-      const ajax = common.ajax(groupPath.platform + `/product/${id}?${searchParams.toString()}`, 'get')
-      data.isLoading = true
+const getRating = async () => {
+  const searchParams = new URLSearchParams({ page: `${currentPage.value}` });
+  const ajaxGroup = ajax(groupPath.platform + `/product/${id}?${searchParams.toString()}`, 'get');
+  isLoading.value = true;
 
-      const result = await common.getAjax(ajax)
-      data.isLoading = false
-      data.ratingList = data.ratingList.concat(result.comment)
-      data.ratingLength = result.product.Comments.length
-      data.totalPage = result.totalPage.length
-      data.loadMore = data.totalPage > data.currentPage
+  const result = await getAjax(ajaxGroup);
+  isLoading.value = false;
+  ratingList.value = ratingList.value.concat(result.comment);
+  ratingLength.value = result.product.Comments.length;
+  totalPage.value = result.totalPage.length;
+  loadMore.value = totalPage.value > currentPage.value;
+};
+
+const handleScroll = (event: Event) => {
+  if (!isLoading.value && loadMore.value) {
+    const { scrollHeight, offsetHeight, scrollTop } = <HTMLDivElement>event.target;
+    if (scrollHeight - offsetHeight <= scrollTop + 5) {
+      currentPage.value++;
+      getRating();
     }
-
-    const handerScroll = (event: any) => {
-      if (!data.isLoading && data.loadMore) {
-        const { scrollHeight, offsetHeight, scrollTop } = event.srcElement
-        if (scrollHeight - offsetHeight <= scrollTop + 5) {
-          data.currentPage++
-          getRating()
-        }
-      }
-    }
-
-    store.commit('updateTitleName', '評價')
-    onMounted(() => getRating())
-    return { ...toRefs(data), handerScroll }
   }
-})
+};
+
+store.commit('updateTitleName', '評價');
+onMounted(getRating);
 </script>
 
 <style lang="scss" scoped>
