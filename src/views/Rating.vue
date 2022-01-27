@@ -1,5 +1,5 @@
 <template>
-  <div class="rating container" @scroll="handleScroll">
+  <div class="rating container" @scroll.passive="handleScroll">
     <h1 v-if="!isLoading">{{ `${ratingLength}則評價` }}</h1>
 
     <rating-list :ratingList="ratingList" :isLoading="isLoading" :ratingLength="ratingLength" />
