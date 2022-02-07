@@ -5,7 +5,10 @@ declare module '*.vue' {
   export default component
 };
 
-declare module '*.jpg';
+declare module "*.jpg" {
+  const value: any;
+  export default value;
+};
 
 declare global {
   interface Date {

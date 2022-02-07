@@ -35,21 +35,17 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, reactive } from 'vue'
+<script setup lang="ts">
+import { orderType } from "../utils/interface";
 
-export default defineComponent({
-  props: {
-    orderList: Array,
-    isLoading: Boolean,
-    nowSelect: Number
-  },
-  setup() {
-    const subName = (name: string) => name.length > 20 ? name.slice(0, 20) + '...' : name
+interface Props {
+  orderList: orderType[],
+  isLoading: boolean,
+  nowSelect: number
+}
 
-    return { subName }
-  },
-})
+defineProps<Props>();
+const subName = (name: string) => name.length > 20 ? name.slice(0, 20) + '...' : name;
 </script>
 
 <style lang="scss" scoped>

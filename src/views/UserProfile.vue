@@ -3,7 +3,9 @@
     <header>
       <img :src="actor" v-if="!isLoading" class="fade">
       <p>{{ profile.name }}</p>
-      <button><icon type="fas" name="edit" />編輯</button>
+      <button>
+        <icon type="fas" name="edit" />編輯
+      </button>
     </header>
 
     <ul class="userProfile__tab" role="tab">
@@ -17,55 +19,46 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, reactive, toRefs, onMounted, computed } from 'vue'
-import { useRoute } from 'vue-router'
-import { useStore } from 'vuex'
-import OrderList from '../components/OrderList.vue'
-import actor from '../assets/actor.jpg'
-import * as common from '../utils/common'
+<script setup lang="ts">
+import { ref, onMounted, computed } from 'vue';
+import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
+import OrderList from '../components/OrderList.vue';
+import { ajax, getAjax } from '../utils/common';
+import { profileType } from "../utils/interface";
 
-export default defineComponent ({
-  components: {
-    OrderList
-  },
-  setup() {
-    const store = useStore()
-    const { groupPath } = store.state
-    const { user } = toRefs(store.state)
-    const orderStatus = {
-      ['schedule']: 1,
-      ['process']: 2,
-      ['complete']: 3,
-      ['cancel']: 4
-    }
-    const data: any = reactive({
-      profile: {} as any,
-      isLoading: false,
-      nowSelect: orderStatus.schedule,
-      orderList: computed(() => {
-        if (!data.profile.Orders) return []
-        const orders: [] = data.profile.Orders
-        return orders.filter((order: { OrderStatusId: number }) => order.OrderStatusId === data.nowSelect)
-      }),
-      actor: computed(() => data.profile.image ? data.profile.image : actor)
-    })
-    
-    const getUser = async () => {
-      const { id } = useRoute().params
-      const ajax = common.ajax(groupPath.platform + `/user/${id}/profile`, 'get')
-      data.isLoading = true
+const store = useStore();
+const { groupPath } = store.state;
+const actorImage = new URL("../assets/actor.jpg", import.meta.url);
+const orderStatus = {
+  "schedule": 1,
+  "process": 2,
+  "complete": 3,
+  "cancel": 4,
+};
 
-      const result = await common.getAjax(ajax)
-      data.isLoading = false
-      data.profile = result.profile
-    }
+const profile = ref({} as profileType);
+const isLoading = ref(false);
+const nowSelect = ref(orderStatus.schedule);
+const orderList = computed(() => {
+  if (!profile.value?.Orders) return [];
+  const orders = profile.value.Orders;
+  return orders.filter(order => order.OrderStatusId === nowSelect.value);
+});
+const actor = computed(() => profile.value?.image ?? actorImage);
 
-    store.commit('updateTitleName', '我的訂單')
-    onMounted(() => getUser())
-    return { ...toRefs(data) }
-  }
-})
+const getUser = async () => {
+  const { id } = useRoute().params;
+  const ajaxGroup = ajax(groupPath.platform + `/user/${id}/profile`, 'get');
+  isLoading.value = true;
+
+  const result = await getAjax(ajaxGroup);
+  isLoading.value = false;
+  profile.value = result.profile;
+}
+
+store.commit('updateTitleName', '我的訂單');
+onMounted(getUser);
 </script>
 
 <style lang="scss" scoped>
