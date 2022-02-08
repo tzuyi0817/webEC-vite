@@ -1,6 +1,6 @@
 import axios from 'axios';
 import qs from 'qs'
-import { busType, ajaxType, timeKeys, axiosMethod } from './interface'
+import { busType, ajaxType, timeKeys, axiosMethod, cartItem } from './interface'
 
 let $bus: busType;
 const api = axios.create({ headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
@@ -40,11 +40,11 @@ export function LocalStorage(set: string, key: string, value: any = '') {
       !(user in localData) && (localData[user] = [])
 
       if (Object.prototype.toString.call(value) === '[object Object]') {
-        const valueId: number = value && value.id
-        const index = localData[user].findIndex((item: any) => item.id == valueId)
+        const valueId: number = value?.id
+        const index = localData[user].findIndex((item: cartItem) => item.id == valueId)
 
         ~index 
-          ? localData[user][index].quantity += value && value.quantity
+          ? localData[user][index].quantity += (value?.quantity ?? 0)
           : localData[user] = [...localData[user], value]
       } else {
         localData[user] = [...value]
@@ -85,11 +85,11 @@ export const sortOptions = [
 ];
 
 export function getCartItem() {
-  const localCartItem = JSON.parse(LocalStorage('get', 'cartItem') as string)
-  const user = JSON.parse(LocalStorage('get', 'email') as string)
-  return localCartItem 
+  const localCartItem = JSON.parse(LocalStorage('get', 'cartItem') as string);
+  const user = JSON.parse(LocalStorage('get', 'email') as string);
+  return localCartItem
     ? user in localCartItem ? localCartItem[user] : []
-    : []
+    : [];
 }
 
 Date.prototype.Format = function(fmt: string) {

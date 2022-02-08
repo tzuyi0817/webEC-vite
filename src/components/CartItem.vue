@@ -15,9 +15,15 @@
           </div>
 
           <div class="cartItem__quantity">
-            <button @click="minusBtn(index)"><icon name="minus" type="fas" /></button>
-            <input type="number" v-model.number="item.quantity" @input="handerInput($event, index)" :disabled="item.quantity == item.count" />
-            <button @click="plusBtn(index)" :disabled="item.quantity == item.count"><icon name="plus" type="fas" /></button>
+            <button @click="minusBtn(index)">
+              <icon name="minus" type="fas" />
+            </button>
+
+            <input type="number" v-model.number="item.quantity" @input="handleInput($event, index)" :disabled="item.quantity == item.count" />
+
+            <button @click="plusBtn(index)" :disabled="item.quantity == item.count">
+              <icon name="plus" type="fas" />
+            </button>
           </div>
         </div>
 
@@ -28,42 +34,43 @@
   </transition-group>
 </template>
 
-<script lang="ts">
-import { defineComponent, toRefs } from 'vue'
-import * as common from '../utils/common'
+<script setup lang="ts">
+import { toRefs } from 'vue';
+import { showMsg } from '../utils/common';
+import { cartItem as cartItemType } from "../utils/interface";
 
-export default defineComponent ({
-  props: {
-    cartItem: Array
-  },
-  emits: ['deleteProduct', 'saveCartItem'],
-  setup(props, { emit }) {
-    const { cartItem }: any = toRefs(props)
+interface Props {
+  cartItem: cartItemType[]
+};
 
-    const subName = (name: string) => name.length > 20 ? name.slice(0, 20) + '...' : name
-    const minusBtn = (index: number) => {
-      cartItem.value[index].quantity == 1 
-        ? confirmDelete(index)
-        : cartItem.value[index].quantity--
-      emit('saveCartItem')
-    }
-    const plusBtn = (index: number) => {
-      cartItem.value[index].quantity++
-      emit('saveCartItem')
-    }
-    const handerInput = (event: InputEvent, index: number) => {
-      const { value }: any = event.target
-      if (value > cartItem.value[index].count) cartItem.value[index].quantity = cartItem.value[index].count
-      if (value < 1) cartItem.value[index].quantity = 1
-      emit('saveCartItem')
-    }
-    const confirmDelete = (deleteIndex: number) => 
-      common.showMsg('確定要從購物車移除此商品？' as unknown as HTMLElement, () => deleteProduct(deleteIndex), true)
-    const deleteProduct = (deleteIndex: number) => emit('deleteProduct', deleteIndex)
+const props = defineProps<Props>();
+const emit = defineEmits(['deleteProduct', 'saveCartItem']);
+const { cartItem } = toRefs(props);
 
-    return { subName, handerInput, minusBtn, plusBtn, confirmDelete }
-  }
-})
+const subName = (name: string) => name.length > 20 ? name.slice(0, 20) + '...' : name;
+const minusBtn = (index: number) => {
+  cartItem.value[index].quantity == 1 
+    ? confirmDelete(index)
+    : cartItem.value[index].quantity--;
+  emit('saveCartItem');
+};
+
+const plusBtn = (index: number) => {
+  cartItem.value[index].quantity++;
+  emit('saveCartItem');
+};
+
+const handleInput = (event: Event, index: number) => {
+  const { value } = <HTMLInputElement>event.target;
+  if (+value > cartItem.value[index].count) cartItem.value[index].quantity = cartItem.value[index].count;
+  if (+value < 1) cartItem.value[index].quantity = 1;
+  emit('saveCartItem');
+};
+
+const confirmDelete = (deleteIndex: number) => 
+  showMsg('確定要從購物車移除此商品？' as unknown as HTMLElement, () => deleteProduct(deleteIndex), true);
+
+const deleteProduct = (deleteIndex: number) => emit('deleteProduct', deleteIndex);
 </script>
 
 <style lang="scss" scoped>

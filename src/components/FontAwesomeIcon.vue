@@ -8,7 +8,7 @@
   </svg>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, computed } from "vue"
 import { findIconDefinition } from "@fortawesome/fontawesome-svg-core"
 

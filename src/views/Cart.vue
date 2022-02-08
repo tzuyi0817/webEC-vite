@@ -15,41 +15,34 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, onMounted, computed } from 'vue'
-import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
-import CartItem from '../components/CartItem.vue'
-import * as common from '../utils/common'
+<script setup lang="ts">
+import { ref, onMounted, computed } from 'vue';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+import CartItem from '../components/CartItem.vue';
+import { showToast, LocalStorage, getCartItem } from '../utils/common';
+import { cartItem as cartItemType } from "../utils/interface";
 
-export default defineComponent ({
-  components: {
-    CartItem
-  },
-  setup() {
-    const store = useStore()
-    const $router = useRouter()
-    const cartItem = ref([])
-    const subtotal = computed(() => {
-      if (!cartItem.value) return 0
-      const total = cartItem.value.reduce((acc, curr: any) => acc + (curr.price * curr.quantity), 0)
-      return `${total}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
-    })
+const store = useStore();
+const router = useRouter();
+const cartItem = ref([]);
+const subtotal = computed(() => {
+  if (!cartItem.value) return 0;
+  const total = cartItem.value.reduce((acc, curr: cartItemType) => acc + (curr.price * curr.quantity), 0);
+  return `${total}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',');
+});
 
-    const deleteProduct = (deleteIndex: number) => {
-      cartItem.value = cartItem.value.filter((_: any, index: number) => index !== deleteIndex)
-      saveCartItem()
-      common.showToast('商品移除成功')
-      store.commit('updateCartCount')
-    }
-    const saveCartItem = async () => await common.LocalStorage('set', 'cartItem', cartItem.value)
-    const goIndex = () => $router.push({ name: 'Index' })
+const deleteProduct = (deleteIndex: number) => {
+  cartItem.value = cartItem.value.filter((_, index: number) => index !== deleteIndex);
+  saveCartItem();
+  showToast('商品移除成功');
+  store.commit('updateCartCount');
+};
+const saveCartItem = () => LocalStorage('set', 'cartItem', cartItem.value);
+const goIndex = () => router.push({ name: 'Index' });
 
-    store.commit('updateTitleName', '購物車')
-    onMounted(() => cartItem.value = common.getCartItem())
-    return { cartItem, subtotal, deleteProduct, saveCartItem, goIndex }
-  }
-})
+store.commit('updateTitleName', '購物車');
+onMounted(() => cartItem.value = getCartItem());
 </script>
 
 <style lang="scss" scoped>

@@ -1,7 +1,7 @@
 <template>
   <div class="userProfile container">
     <header>
-      <img :src="actor" v-if="!isLoading" class="fade">
+      <img :src="actor" class="fade">
       <p>{{ profile.name }}</p>
       <button>
         <icon type="fas" name="edit" />編輯

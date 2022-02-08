@@ -103,8 +103,8 @@ export interface shipmentConvenienceStore extends commonType {
 }
 
 export interface item extends commonType {
-  Order_item: cartItem
-  Order_items: cartItem[]
+  Order_item: orderItem
+  Order_items: orderItem[]
   ProductCategoryId: number
   StoreId: number
   count: number
@@ -117,7 +117,13 @@ export interface item extends commonType {
   price: number
 }
 
-export interface cartItem extends commonType {
+export interface cartItem extends productType {
+  orders: orderType[]
+  price: number
+  quantity: number
+}
+
+export interface orderItem extends commonType {
   OrderId: number
   ProductId: number
   price: number
