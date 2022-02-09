@@ -6,10 +6,11 @@
 
 <script lang="ts">
 import { defineComponent, inject, reactive, toRefs, onUnmounted } from 'vue'
+import { busType } from "../utils/interface";
 
 export default defineComponent ({
   setup() {
-    const $bus: any = inject('$bus')
+    const $bus = inject('$bus') as busType;
     const data = reactive({ msg: '', showToast: false })
 
     $bus.$on('toast', (msg: string, callback: any) => {

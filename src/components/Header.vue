@@ -19,13 +19,14 @@ import { defineComponent, computed, inject, onUnmounted, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import * as common from '../utils/common'
+import { busType } from "../utils/interface";
 
 export default defineComponent ({
   setup() {
     const $router = useRouter()
     const $route = useRoute()
     const store = useStore()
-    const $bus: any = inject('$bus')
+    const $bus = inject('$bus') as busType
     const notShow = ['Index', 'Search']
     const scrollTop = ref(350)
     const isProfile = ref(false)

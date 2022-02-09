@@ -12,10 +12,11 @@
 
 <script lang="ts">
 import { defineComponent, inject, reactive, toRefs, onUnmounted } from 'vue'
+import { busType } from "../utils/interface";
 
 export default defineComponent({
   setup() {
-    const $bus: any = inject('$bus')
+    const $bus = inject('$bus') as busType
     const data = reactive({
       html: undefined as unknown as HTMLElement,
       showMsg: false,

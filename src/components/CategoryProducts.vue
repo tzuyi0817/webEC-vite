@@ -4,7 +4,7 @@
     <img v-else :src="category.image" class="fade" />
 
     <strong>商品排序</strong>
-    <sort-select :options="sortOptions" @getSelVal="getSelVal" />
+    <sort-select :options="SortOptions" @getSelVal="getSelVal" />
     <p>{{ category.name }}</p>
 
     <category-products-list :products="products" :isLoading="isLoading" :loadMore="loadMore" />
@@ -15,7 +15,7 @@
 import SortSelect from '../components/SortSelect.vue';
 import CategoryProductsList from '../components/CategoryProductsList.vue';
 import { selValType, productType, categoryType } from '../utils/interface';
-import { sortOptions } from '../utils/common';
+import { SortOptions } from '../utils/common';
 
 interface Props {
   category: categoryType,

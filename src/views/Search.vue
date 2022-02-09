@@ -4,7 +4,7 @@
 
     <div class="search__sort">
       <strong>商品排序</strong>
-      <sort-select :options="sortOptions" @getSelVal="getSelVal" />
+      <sort-select :options="SortOptions" @getSelVal="getSelVal" />
     </div>
 
     <loading v-if="isLoading && !products.length" />
@@ -27,7 +27,7 @@ import { useStore } from 'vuex';
 import SearchBar from '../components/SearchBar.vue';
 import SortSelect from '../components/SortSelect.vue';
 import CategoryProductsList from '../components/CategoryProductsList.vue';
-import { sortOptions, ajax, getAjax } from '../utils/common';
+import { SortOptions, ajax, getAjax } from '../utils/common';
 import { selValType } from '../utils/interface';
 
 const { groupPath } = useStore().state;

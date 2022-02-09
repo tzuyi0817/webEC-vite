@@ -74,10 +74,10 @@ export function showMsg(html: HTMLElement, fun: Function, cancel = false) {
 }
 
 export function showToast(msg: string): void {
-  if (msg) $bus.$emit('toast', msg)
+  msg && $bus.$emit('toast', msg);
 }
 
-export const sortOptions = [
+export const SortOptions = [
   { name: '上架時間: 新到舊', query: { key: 'createdAt', value: 'desc' }, value: 'timeDesc' },
   { name: '上架時間: 舊到新', query: { key: 'createdAt', value: 'asc' }, value: 'timeAsc' },
   { name: '價格: 高至低', query: { key: 'price', value: 'desc' }, value: 'priceDesc' },
