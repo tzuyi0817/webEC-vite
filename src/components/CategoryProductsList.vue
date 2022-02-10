@@ -34,15 +34,15 @@ import { useRouter } from 'vue-router';
 import { productType } from "../utils/interface";
 
 interface Props {
-  products: productType[]
-  isLoading: Boolean
-  loadMore?: Boolean
-  isShowPrompt?: Boolean
-};
+  products: productType[];
+  isLoading: boolean;
+  loadMore?: boolean;
+  isShowPrompt?: boolean;
+}
 
 const props = withDefaults(defineProps<Props>(), {
-  loadMore: () => false,
-  isShowPrompt: () => true,
+  loadMore: false,
+  isShowPrompt: true,
 });
 
 const router = useRouter();

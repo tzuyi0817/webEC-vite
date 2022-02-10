@@ -16,8 +16,8 @@ import { Carousel, Slide } from 'vue3-carousel';
 import { ref } from 'vue';
 
 interface Props {
-  productImage: string[]
-  isLoading: Boolean
+  productImage: string[];
+  isLoading: boolean;
 };
 
 defineProps<Props>();

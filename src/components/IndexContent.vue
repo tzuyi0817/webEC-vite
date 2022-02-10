@@ -14,7 +14,7 @@ import { useRouter } from 'vue-router';
 import { categoryType } from '../utils/interface';
 
 interface Props {
-  category: categoryType
+  category: categoryType;
 }
 
 const props = defineProps<Props>();

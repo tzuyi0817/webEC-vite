@@ -18,10 +18,11 @@
 import { categoryType } from "../utils/interface";
 
 interface Props {
-  options: categoryType[],
-  isLoading: Boolean,
-  nowId: Number
+  options: categoryType[];
+  isLoading: boolean;
+  nowId: number;
 }
+
 defineProps<Props>();
 const emit = defineEmits(["getId"]);
 

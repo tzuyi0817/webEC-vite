@@ -19,8 +19,8 @@ import { ref, onMounted } from 'vue';
 import { selValType } from "../utils/interface";
 
 interface Props {
-  options: selValType[],
-};
+  options: selValType[];
+}
 
 const props = defineProps<Props>();
 const emit = defineEmits(["getSelVal"]);

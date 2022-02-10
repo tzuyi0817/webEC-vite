@@ -18,11 +18,11 @@ import { selValType, productType, categoryType } from '../utils/interface';
 import { SortOptions } from '../utils/common';
 
 interface Props {
-  category: categoryType,
-  isLoading: Boolean,
-  products: productType[],
-  loadMore: Boolean
-};
+  category: categoryType;
+  isLoading: boolean;
+  products: productType[];
+  loadMore: boolean;
+}
 
 defineProps<Props>();
 const emit = defineEmits(["getSelQuery"]);

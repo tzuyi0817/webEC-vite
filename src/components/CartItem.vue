@@ -40,8 +40,8 @@ import { showMsg } from '../utils/common';
 import { cartItem as cartItemType } from "../utils/interface";
 
 interface Props {
-  cartItem: cartItemType[]
-};
+  cartItem: cartItemType[];
+}
 
 const props = defineProps<Props>();
 const emit = defineEmits(['deleteProduct', 'saveCartItem']);

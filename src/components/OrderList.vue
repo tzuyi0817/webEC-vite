@@ -39,9 +39,9 @@
 import { orderType } from "../utils/interface";
 
 interface Props {
-  orderList: orderType[],
-  isLoading: boolean,
-  nowSelect: number
+  orderList: orderType[];
+  isLoading: boolean;
+  nowSelect: number;
 }
 
 defineProps<Props>();

@@ -79,9 +79,9 @@ import { ajax, getAjax, LocalStorage, showToast } from '../utils/common';
 import { productType } from "../utils/interface";
 
 interface Props {
-  product: productType,
-  rating?: number
-};
+  product: productType;
+  rating?: number;
+}
 
 const props = defineProps<Props>();
 const store = useStore();

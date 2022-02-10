@@ -13,8 +13,8 @@
 import { computed } from 'vue';
 
 interface Props {
-  rating: number
-};
+  rating: number;
+}
 
 const props = withDefaults(defineProps<Props>(), {
   rating: 0,

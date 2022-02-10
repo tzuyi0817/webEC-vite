@@ -13,8 +13,8 @@
 import { ref, computed } from 'vue';
 
 interface Props {
-  isLoading: Boolean
-};
+  isLoading: boolean;
+}
 
 const props = defineProps<Props>();
 const emit = defineEmits(["getKeyword"]);

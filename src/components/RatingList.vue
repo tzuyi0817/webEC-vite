@@ -26,10 +26,10 @@ import Stars from '../components/Stars.vue';
 import { commentType } from "../utils/interface";
 
 interface Props {
-  ratingList: commentType[],
-  isLoading?: boolean
-  ratingLength?: number
-};
+  ratingList: commentType[];
+  isLoading?: boolean;
+  ratingLength?: number;
+}
 
 const props = withDefaults(defineProps<Props>(), {
   isLoading: false,
