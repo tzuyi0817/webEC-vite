@@ -1,50 +1,50 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import { showToast } from '../utils/common';
 
-const routes = [
+const routes: RouteRecordRaw[] = [
   {
-    path: '/',
+    path: '/:catchAll(.*)',
     redirect: '/index'
   },
   {
     path: '/index',
     name: 'Index',
-    component: () => import('/@/views/Index.vue')
+    component: () => import('@/views/Index.vue')
   },
   {
     path: '/account',
     name: 'Account',
-    component: () => import('/@/views/Account.vue')
+    component: () => import('@/views/Account.vue')
   },
   {
     path: '/category/:id',
     name: 'Category',
-    component: () => import('/@/views/Category.vue')
+    component: () => import('@/views/Category.vue')
   },
   {
     path: '/product/:id',
     name: 'Product',
-    component: () => import('/@/views/Product.vue')
+    component: () => import('@/views/Product.vue')
   },
   {
     path: '/rating/:id',
     name: 'Rating',
-    component: () => import('/@/views/Rating.vue')
+    component: () => import('@/views/Rating.vue')
   },
   {
     path: '/search',
     name: 'Search',
-    component: () => import('/@/views/Search.vue')
+    component: () => import('@/views/Search.vue')
   },
   {
     path: '/user/:id',
     name: 'UserProfile',
-    component: () => import('/@/views/UserProfile.vue')
+    component: () => import('@/views/UserProfile.vue')
   },
   {
     path: '/cart',
     name: 'Cart',
-    component: () => import('/@/views/Cart.vue')
+    component: () => import('@/views/Cart.vue')
   }
 ];
 
