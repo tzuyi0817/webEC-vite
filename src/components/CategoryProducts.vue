@@ -14,20 +14,20 @@
 <script setup lang="ts">
 import SortSelect from '../components/SortSelect.vue';
 import CategoryProductsList from '../components/CategoryProductsList.vue';
-import { selValType, productType, categoryType } from '../utils/interface';
 import { SortOptions } from '../utils/common';
+import { Types } from '@/types';
 
 interface Props {
-  category: categoryType;
+  category: Types.Category;
   isLoading: boolean;
-  products: productType[];
+  products: Types.Product[];
   loadMore: boolean;
 }
 
 defineProps<Props>();
 const emit = defineEmits(["getSelQuery"]);
 
-const getSelVal = (selVal: selValType) => emit('getSelQuery', selVal.query);
+const getSelVal = (selVal: Types.SelectValue) => emit('getSelQuery', selVal.query);
 </script>
 
 <style lang="scss" scoped>

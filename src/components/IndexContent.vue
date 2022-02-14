@@ -9,12 +9,12 @@
 </template>
 
 <script setup lang="ts">
+import { Types } from '@/types';
 import { computed, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import { categoryType } from '../utils/interface';
 
 interface Props {
-  category: categoryType;
+  category: Types.Category;
 }
 
 const props = defineProps<Props>();
@@ -30,7 +30,7 @@ const contentData = [
 
 const goLink = (url: string) => router.push(url);
 
-watch(() => props.category, (val: categoryType) => nowId.value = val.id);
+watch(() => props.category, (val: Types.Category) => nowId.value = val.id);
 </script>
 
 <style lang="scss" scoped>

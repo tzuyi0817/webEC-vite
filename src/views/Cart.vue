@@ -21,14 +21,14 @@ import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import CartItem from '../components/CartItem.vue';
 import { showToast, LocalStorage, getCartItem } from '../utils/common';
-import { cartItem as cartItemType } from "../utils/interface";
+import { Types } from '@/types';
 
 const store = useStore();
 const router = useRouter();
 const cartItem = ref([]);
 const subtotal = computed(() => {
   if (!cartItem.value) return 0;
-  const total = cartItem.value.reduce((acc, curr: cartItemType) => acc + (curr.price * curr.quantity), 0);
+  const total = cartItem.value.reduce((acc, curr: Types.CartItem) => acc + (curr.price * curr.quantity), 0);
   return `${total}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',');
 });
 

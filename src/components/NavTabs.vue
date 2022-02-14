@@ -15,10 +15,10 @@
 </template>
 
 <script setup lang="ts">
-import { categoryType } from "../utils/interface";
+import { Types } from "@/types";
 
 interface Props {
-  options: categoryType[];
+  options: Types.Category[];
   isLoading: boolean;
   nowId: number;
 }

@@ -11,12 +11,12 @@
 </template>
 
 <script lang="ts">
+import { Types } from '@/types';
 import { defineComponent, inject, reactive, toRefs, onUnmounted } from 'vue'
-import { busType } from "../utils/interface";
 
 export default defineComponent({
   setup() {
-    const $bus = inject('$bus') as busType
+    const $bus = inject('$bus') as Types.Bus;
     const data = reactive({
       html: undefined as unknown as HTMLElement,
       showMsg: false,

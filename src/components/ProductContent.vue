@@ -76,10 +76,10 @@ import Stars from '../components/Stars.vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { ajax, getAjax, LocalStorage, showToast } from '../utils/common';
-import { productType } from "../utils/interface";
+import { Types } from '@/types';
 
 interface Props {
-  product: productType;
+  product: Types.Product;
   rating?: number;
 }
 

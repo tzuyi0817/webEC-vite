@@ -21,12 +21,12 @@
 </template>
 
 <script setup lang="ts">
+import { Types } from '@/types';
 import { computed } from 'vue';
 import Stars from '../components/Stars.vue';
-import { commentType } from "../utils/interface";
 
 interface Props {
-  ratingList: commentType[];
+  ratingList: Types.Comment[];
   isLoading?: boolean;
   ratingLength?: number;
 }

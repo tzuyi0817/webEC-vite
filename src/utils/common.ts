@@ -1,8 +1,8 @@
+import { Types } from '@/types';
 import axios from 'axios';
 import qs from 'qs'
-import { busType, ajaxType, timeKeys, axiosMethod, cartItem } from './interface'
 
-let $bus: busType;
+let $bus: Types.Bus;
 const api = axios.create({ headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
 
 api.defaults.withCredentials = true
@@ -14,11 +14,11 @@ api.interceptors.request.use(config => {
 }, err => Promise.reject(err));
 
 
-export function ajax(groupPath: string, restful: axiosMethod): ajaxType {
+export function ajax(groupPath: string, restful: Types.AxiosMethod): Types.AjaxType {
   return { groupPath, restful };
 }
 
-export function getAjax(ajax: ajaxType, data = {}) {
+export function getAjax(ajax: Types.AjaxType, data = {}) {
   const { restful, groupPath } = ajax;
   data = qs.stringify(data);
   api.defaults.timeout = 0;
@@ -41,7 +41,7 @@ export function LocalStorage(set: string, key: string, value: any = '') {
 
       if (Object.prototype.toString.call(value) === '[object Object]') {
         const valueId: number = value?.id
-        const index = localData[user].findIndex((item: cartItem) => item.id == valueId)
+        const index = localData[user].findIndex((item: Types.CartItem) => item.id == valueId)
 
         ~index 
           ? localData[user][index].quantity += (value?.quantity ?? 0)
@@ -63,7 +63,7 @@ export function evil(str: string) {
   return new fn('return ' + str)()
 }
 
-export function getBus(bus: busType): void {
+export function getBus(bus: Types.Bus): void {
   $bus = bus
 }
 
@@ -92,8 +92,14 @@ export function getCartItem() {
     : [];
 }
 
+declare global {
+  interface Date {
+    Format (fmt?: string) : string
+  }
+};
+
 Date.prototype.Format = function(fmt: string) {
-  const o: timeKeys = {
+  const o: Types.TimeKeys = {
     'M+': this.getMonth() + 1, // 月份
     'd+': this.getDate(), // 日
     'h+': this.getHours(), // 小时
@@ -103,7 +109,7 @@ Date.prototype.Format = function(fmt: string) {
     'S': this.getMilliseconds() // 毫秒
   };
 
-  type key = keyof timeKeys;
+  type key = keyof Types.TimeKeys;
 
   if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
   for (const k in o)

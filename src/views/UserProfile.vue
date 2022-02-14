@@ -20,12 +20,12 @@
 </template>
 
 <script setup lang="ts">
+import { Types } from '@/types';
 import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 import OrderList from '../components/OrderList.vue';
 import { ajax, getAjax } from '../utils/common';
-import { profileType } from "../utils/interface";
 
 const store = useStore();
 const { groupPath } = store.state;
@@ -37,13 +37,13 @@ const orderStatus = {
   "cancel": 4,
 };
 
-const profile = ref({} as profileType);
+const profile = ref({} as Types.UserProfile);
 const isLoading = ref(false);
 const nowSelect = ref(orderStatus.schedule);
 const orderList = computed(() => {
   if (!profile.value?.Orders) return [];
   const orders = profile.value.Orders;
-  return orders.filter(order => order.OrderStatusId === nowSelect.value);
+  return orders.filter(order => order.OrderStatusId === nowSelect.value) as Types.Order[];
 });
 const actor = computed(() => profile.value?.image ?? actorImage);
 

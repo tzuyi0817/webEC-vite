@@ -28,7 +28,7 @@ import SearchBar from '../components/SearchBar.vue';
 import SortSelect from '../components/SortSelect.vue';
 import CategoryProductsList from '../components/CategoryProductsList.vue';
 import { SortOptions, ajax, getAjax } from '../utils/common';
-import { selValType } from '../utils/interface';
+import { Types } from '@/types';
 
 const { groupPath } = useStore().state;
 const products = ref([]);
@@ -70,7 +70,7 @@ const getKeyword = (keyword: string) => {
   resetProducts();
 }
 
-const getSelVal = (selVal: selValType) => {
+const getSelVal = (selVal: Types.SelectValue) => {
   currentKey.value = selVal.query.key;
   currentValue.value = selVal.query.value;
   resetProducts();

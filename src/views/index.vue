@@ -18,16 +18,16 @@
 import { onMounted, ref, computed } from "vue";
 import { useStore } from "vuex";
 import { ajax, getAjax } from "../utils/common";
-import { categoryType } from "../utils/interface";
 import IndexBanner from "../components/IndexBanner.vue";
 import NavTabs from "../components/NavTabs.vue";
 import IndexContent from "../components/IndexContent.vue";
+import { Types } from "@/types";
 
 const { groupPath } = useStore().state;
 const categories = ref([]);
 const nowId = ref(1);
 const isLoading = ref(false);
-const nowCategory = computed((): categoryType => categories.value[nowId.value - 1]);
+const nowCategory = computed((): Types.Category => categories.value[nowId.value - 1]);
 
 const getId = (id: number) => nowId.value = id;
 

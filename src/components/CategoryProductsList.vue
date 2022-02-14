@@ -29,12 +29,12 @@
 </template>
 
 <script setup lang="ts">
+import { Types } from '@/types';
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
-import { productType } from "../utils/interface";
 
 interface Props {
-  products: productType[];
+  products: Types.Product[];
   isLoading: boolean;
   loadMore?: boolean;
   isShowPrompt?: boolean;

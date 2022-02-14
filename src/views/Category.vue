@@ -13,13 +13,13 @@ import { useStore } from 'vuex';
 import { getAjax, ajax } from '../utils/common';
 import NavTabs from '../components/NavTabs.vue';
 import CategoryProducts from '../components/CategoryProducts.vue';
-import { queryType, categoryType } from '../utils/interface';
+import { Types } from '@/types';
 
 const store = useStore();
 const { groupPath } = store.state;
 const router = useRouter();
 const categories = ref([]);
-const category = ref({} as categoryType);
+const category = ref({} as Types.Category);
 const products = ref([]);
 const isLoading = ref(false);
 const currentPage = ref(1);
@@ -59,7 +59,7 @@ const getId = (id: number) => {
   router.push({ name: 'Category', params: { id } });
 };
 
-const getSelQuery = ({ key, value }: queryType) => {
+const getSelQuery = ({ key, value }: Types.RouteQuery) => {
   currentKey.value = key;
   currentValue.value = value;
   resetProducts()

@@ -35,10 +35,10 @@ import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import Stars from '../components/Stars.vue';
 import RatingList from '../components/RatingList.vue';
-import { productType } from "../utils/interface";
+import { Types } from '@/types';
 
 interface Props {
-  product: productType;
+  product: Types.Product;
   rating?: number;
 }
 

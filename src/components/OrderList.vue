@@ -36,10 +36,10 @@
 </template>
 
 <script setup lang="ts">
-import { orderType } from "../utils/interface";
+import { Types } from "@/types";
 
 interface Props {
-  orderList: orderType[];
+  orderList: Types.Order[];
   isLoading: boolean;
   nowSelect: number;
 }

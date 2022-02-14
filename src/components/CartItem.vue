@@ -35,12 +35,12 @@
 </template>
 
 <script setup lang="ts">
+import { Types } from '@/types';
 import { toRefs } from 'vue';
 import { showMsg } from '../utils/common';
-import { cartItem as cartItemType } from "../utils/interface";
 
 interface Props {
-  cartItem: cartItemType[];
+  cartItem: Types.CartItem[];
 }
 
 const props = defineProps<Props>();

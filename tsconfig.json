@@ -9,14 +9,14 @@
     "noImplicitAny": false,
     "resolveJsonModule": true,
     "moduleResolution": "node",
-    "types": ["node"],
+    "types": ["node", "vite/client"],
     "baseUrl": "src",
     "paths": {
       "@/*": ["*"],
     },
-    "esModuleInterop": true,   
+    "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
   "references": [{ "path": "./tsconfig.node.json" }]

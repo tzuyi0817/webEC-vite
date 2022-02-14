@@ -1,7 +1,7 @@
+import { Types } from '@/types';
 import mitt from 'mitt'
-import { busType } from './interface'
 
-const bus: busType = {
+const bus: Types.Bus = {
   $on: () => {},
   $off: () => {},
   $emit: () => {},

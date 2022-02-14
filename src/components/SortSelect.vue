@@ -15,20 +15,20 @@
 </template>
 
 <script setup lang="ts">
+import { Types } from '@/types';
 import { ref, onMounted } from 'vue';
-import { selValType } from "../utils/interface";
 
 interface Props {
-  options: selValType[];
+  options: Types.SelectValue[];
 }
 
 const props = defineProps<Props>();
 const emit = defineEmits(["getSelVal"]);
-const selectValue = ref({} as selValType);
+const selectValue = ref({} as Types.SelectValue);
 const isOpen = ref(false);
 
 const trigger = () => isOpen.value = !isOpen.value;
-const selectEvent = (select: selValType) => {
+const selectEvent = (select: Types.SelectValue) => {
   selectValue.value = select;
   isOpen.value = false;
   emit('getSelVal', select);
