@@ -1,3 +1,66 @@
+<script setup lang="ts">
+import {computed, ref } from 'vue';
+import Stars from '@/components/Stars.vue';
+import { useGroupPathStore, useCartStore } from '@/store';
+import { useRouter } from 'vue-router';
+import { ajax, getAjax, LocalStorage, showToast } from '@/utils/common';
+import { Types } from '@/types';
+import { storeToRefs } from 'pinia';
+
+interface Props {
+  product: Types.Product;
+  rating?: number;
+}
+
+const props = defineProps<Props>();
+const groupPathStore = useGroupPathStore();
+const cartStore = useCartStore();
+const router = useRouter();
+const { product } = props;
+const { groupPath } = storeToRefs(groupPathStore);
+const quantity = ref(1);
+const isLoading = ref(false);
+const disable = computed(() => quantity.value >= product.count);
+const facebook = computed(() => {
+  return `
+    https://www.facebook.com/plugins/share_button.php?
+    href=https%3A%2F%2Ftzuyi0817.github.io
+    %2Fac_s4_final_project_ecweb_vue%2F%23%2Fproduct%2F${product.id}
+    &layout=button&size=large&width=69&height=28&appId
+  `;
+});
+
+const handlerInput = (event: Event) => {
+  const { value } = <HTMLInputElement>event.target;
+  if (+value > product.count) quantity.value = product.count;
+  if (+value < 1) quantity.value = 1;
+};
+
+const quantityBtn = (type: string) => type == '+' ? quantity.value++ : quantity.value--;
+const goCategory = () => router.push({ name: 'Category', params: { id: product.ProductCategoryId } });
+const goRating = () => router.push({ name: 'Rating', params: { id: product.id } });
+
+const addCart = async () => {
+  const ajaxGroup = ajax(groupPath.value.platform + '/cart', 'post');
+  const data = { 
+    productId: product.id, 
+    quantity: quantity.value
+  };
+  isLoading.value = true;
+
+  const result = await getAjax(ajaxGroup, data);
+  isLoading.value = false;
+  if (result.status == 'success') {
+    LocalStorage('set', 'cartItem', { ...product, quantity: quantity.value });
+    cartStore.updateCartCount();
+    showToast('商品已加入購物車');
+    quantity.value = 1;
+  } else {
+    showToast('商品無法加入購物車，請稍後再試');
+  }
+};
+</script>
+
 <template>
   <div class="productContent">
     <h1>{{ product.name }}</h1>
@@ -69,67 +132,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import {computed, ref } from 'vue';
-import Stars from '../components/Stars.vue';
-import { useStore } from 'vuex';
-import { useRouter } from 'vue-router';
-import { ajax, getAjax, LocalStorage, showToast } from '../utils/common';
-import { Types } from '@/types';
-
-interface Props {
-  product: Types.Product;
-  rating?: number;
-}
-
-const props = defineProps<Props>();
-const store = useStore();
-const router = useRouter();
-const { groupPath } = store.state;
-const { product } = props;
-const quantity = ref(1);
-const isLoading = ref(false);
-const disable = computed(() => quantity.value >= product.count);
-const facebook = computed(() => {
-  return `
-    https://www.facebook.com/plugins/share_button.php?
-    href=https%3A%2F%2Ftzuyi0817.github.io
-    %2Fac_s4_final_project_ecweb_vue%2F%23%2Fproduct%2F${product.id}
-    &layout=button&size=large&width=69&height=28&appId
-  `;
-});
-
-const handlerInput = (event: Event) => {
-  const { value } = <HTMLInputElement>event.target;
-  if (+value > product.count) quantity.value = product.count;
-  if (+value < 1) quantity.value = 1;
-};
-
-const quantityBtn = (type: string) => type == '+' ? quantity.value++ : quantity.value--;
-const goCategory = () => router.push({ name: 'Category', params: { id: product.ProductCategoryId } });
-const goRating = () => router.push({ name: 'Rating', params: { id: product.id } });
-
-const addCart = async () => {
-  const ajaxGroup = ajax(groupPath.platform + '/cart', 'post');
-  const data = { 
-    productId: product.id, 
-    quantity: quantity.value
-  };
-  isLoading.value = true;
-
-  const result = await getAjax(ajaxGroup, data);
-  isLoading.value = false;
-  if (result.status == 'success') {
-    LocalStorage('set', 'cartItem', { ...product, quantity: quantity.value });
-    store.commit('updateCartCount');
-    showToast('商品已加入購物車');
-    quantity.value = 1;
-  } else {
-    showToast('商品無法加入購物車，請稍後再試');
-  }
-};
-</script>
 
 <style lang="scss" scoped>
 .productContent {

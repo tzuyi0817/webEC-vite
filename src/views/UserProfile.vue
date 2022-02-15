@@ -1,34 +1,15 @@
-<template>
-  <div class="userProfile container">
-    <header>
-      <img :src="actor" class="fade">
-      <p>{{ profile.name }}</p>
-      <button>
-        <icon type="fas" name="edit" />編輯
-      </button>
-    </header>
-
-    <ul class="userProfile__tab" role="tab">
-      <li :class="{ 'active': nowSelect == 1 }" role="button" @click="nowSelect = 1">排程中</li>
-      <li :class="{ 'active': nowSelect == 2 }" role="button" @click="nowSelect = 2">處理中</li>
-      <li :class="{ 'active': nowSelect == 3 }" role="button" @click="nowSelect = 3">已完成</li>
-      <li :class="{ 'active': nowSelect == 4 }" role="button" @click="nowSelect = 4">已取消</li>
-    </ul>
-
-    <order-list :orderList="orderList" :isLoading="isLoading" :nowSelect="nowSelect" />
-  </div>
-</template>
-
 <script setup lang="ts">
 import { Types } from '@/types';
 import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { useStore } from 'vuex';
+import { useGroupPathStore, useTitleStore } from '@/store';
+import { storeToRefs } from 'pinia';
 import OrderList from '../components/OrderList.vue';
 import { ajax, getAjax } from '../utils/common';
 
-const store = useStore();
-const { groupPath } = store.state;
+const groupPathStore = useGroupPathStore();
+const titleStore = useTitleStore();
+const { groupPath } = storeToRefs(groupPathStore);
 const actorImage = new URL("../assets/actor.jpg", import.meta.url);
 const orderStatus = {
   "schedule": 1,
@@ -49,7 +30,7 @@ const actor = computed(() => profile.value?.image ?? actorImage);
 
 const getUser = async () => {
   const { id } = useRoute().params;
-  const ajaxGroup = ajax(groupPath.platform + `/user/${id}/profile`, 'get');
+  const ajaxGroup = ajax(groupPath.value.platform + `/user/${id}/profile`, 'get');
   isLoading.value = true;
 
   const result = await getAjax(ajaxGroup);
@@ -57,9 +38,30 @@ const getUser = async () => {
   profile.value = result.profile;
 }
 
-store.commit('updateTitleName', '我的訂單');
+titleStore.updateTitleName('我的訂單');
 onMounted(getUser);
 </script>
+
+<template>
+  <div class="userProfile container">
+    <header>
+      <img :src="actor" class="fade">
+      <p>{{ profile.name }}</p>
+      <button>
+        <icon type="fas" name="edit" />編輯
+      </button>
+    </header>
+
+    <ul class="userProfile__tab" role="tab">
+      <li :class="{ 'active': nowSelect == 1 }" role="button" @click="nowSelect = 1">排程中</li>
+      <li :class="{ 'active': nowSelect == 2 }" role="button" @click="nowSelect = 2">處理中</li>
+      <li :class="{ 'active': nowSelect == 3 }" role="button" @click="nowSelect = 3">已完成</li>
+      <li :class="{ 'active': nowSelect == 4 }" role="button" @click="nowSelect = 4">已取消</li>
+    </ul>
+
+    <order-list :orderList="orderList" :isLoading="isLoading" :nowSelect="nowSelect" />
+  </div>
+</template>
 
 <style lang="scss" scoped>
 .userProfile {

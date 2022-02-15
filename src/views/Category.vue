@@ -1,22 +1,16 @@
-<template>
-  <div class="category container" @scroll.passive="handleScroll">
-    <nav-tabs :options="categories" @getId="getId" :isLoading="false" :nowId="categoryId" />
-
-    <category-products :category="category" :isLoading="isLoading" @getSelQuery="getSelQuery" :products="products" :loadMore="loadMore" />
-  </div>
-</template>
-
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router';
-import { useStore } from 'vuex';
+import { useGroupPathStore, useTitleStore } from '@/store';
+import { storeToRefs } from 'pinia';
 import { getAjax, ajax } from '../utils/common';
 import NavTabs from '../components/NavTabs.vue';
 import CategoryProducts from '../components/CategoryProducts.vue';
 import { Types } from '@/types';
 
-const store = useStore();
-const { groupPath } = store.state;
+const groupPathStore = useGroupPathStore();
+const titleStore = useTitleStore();
+const { groupPath } = storeToRefs(groupPathStore);
 const router = useRouter();
 const categories = ref([]);
 const category = ref({} as Types.Category);
@@ -36,7 +30,7 @@ const getCategory = async () => {
     value: currentValue.value, 
     page: `${currentPage.value}`
   });
-  const ajaxGroup = ajax(groupPath.platform + `/Category/${categoryId.value}?${searchParams.toString()}`, 'get');
+  const ajaxGroup = ajax(groupPath.value.platform + `/Category/${categoryId.value}?${searchParams.toString()}`, 'get');
   isLoading.value = true
 
   const result = await getAjax(ajaxGroup);
@@ -75,13 +69,21 @@ const handleScroll = (event: Event) => {
   }
 };
 
-store.commit('updateTitleName', '商品類別');
+titleStore.updateTitleName('商品類別');
 onBeforeRouteUpdate((to) => {
   categoryId.value = +to.params.id;
   resetProducts();
 });
 onMounted(getCategory);
 </script>
+
+<template>
+  <div class="category container" @scroll.passive="handleScroll">
+    <nav-tabs :options="categories" @getId="getId" :isLoading="false" :nowId="categoryId" />
+
+    <category-products :category="category" :isLoading="isLoading" @getSelQuery="getSelQuery" :products="products" :loadMore="loadMore" />
+  </div>
+</template>
 
 <style lang="scss" scoped>
 .category {

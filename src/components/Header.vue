@@ -1,7 +1,47 @@
+<script setup lang="ts">
+import { Types } from '@/types';
+import { computed, inject, onUnmounted, ref } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { useUserStore, useTitleStore } from '@/store';
+import { storeToRefs } from 'pinia';
+import { showToast } from '@/utils/common';
+
+const router = useRouter();
+const route = useRoute();
+const userStore = useUserStore();
+const titleStore = useTitleStore();
+const { titleName } = storeToRefs(titleStore);
+const $bus = inject('$bus') as Types.Bus;
+const notShow = ['Index', 'Search'];
+const scrollTop = ref(350);
+const isProfile = ref(false);
+
+const isShow = computed(() => {
+  isProfile.value = route.name == 'UserProfile';
+  scrollTop.value = route.name == 'Product' ? 0 : 350;
+  return !notShow.includes(route.name as string);
+})
+const buttonOpacity = computed(() => scrollTop.value < 175 ? 175 / (scrollTop.value + 175) : scrollTop.value / 350);
+const title = computed(() => {
+  const name = titleName.value;
+  return name.length > 15 ? name.slice(0, 15) + '...' : name;
+});
+
+$bus.$on('scroll', (top: number) => scrollTop.value = top);
+const goBack = () => router.back();
+const logout = () => {
+  userStore.emptyUser();
+  router.push({ name: 'Account' });
+  showToast('已成功登出');
+};
+
+onUnmounted(() => $bus.$off('scroll'));
+</script>
+
 <template>
   <div v-if="isShow">
     <div class="header" :style="`opacity: ${scrollTop / 350}`">
-      <span>{{ titleName }}</span>
+      <span>{{ title }}</span>
     </div>
 
     <button :class="{ 'defaultBtn': scrollTop < 175 }" @click="goBack" :style="`opacity: ${buttonOpacity}`">
@@ -13,48 +53,6 @@
     </button>
   </div>
 </template>
-
-<script lang="ts">
-import { Types } from '@/types'
-import { defineComponent, computed, inject, onUnmounted, ref } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import { useStore } from 'vuex'
-import * as common from '../utils/common'
-
-export default defineComponent ({
-  setup() {
-    const $router = useRouter()
-    const $route = useRoute()
-    const store = useStore()
-    const $bus = inject('$bus') as Types.Bus;
-    const notShow = ['Index', 'Search']
-    const scrollTop = ref(350)
-    const isProfile = ref(false)
-
-    const isShow = computed(() => {
-      isProfile.value = $route.name == 'UserProfile'
-      scrollTop.value = $route.name == 'Product' ? 0 : 350
-      return !notShow.includes($route.name as string)
-    })
-    const buttonOpacity = computed(() => scrollTop.value < 175 ? 175 / (scrollTop.value + 175) : scrollTop.value / 350)
-    const titleName = computed(() => {
-      const name = store.state.titleName
-      return name.length > 15 ? name.slice(0, 15) + '...' : name
-    })
-
-    $bus.$on('scroll', (top: number) => scrollTop.value = top)
-    const goBack = () => $router.back()
-    const logout = () => {
-      store.commit('emptyUser')
-      $router.push({ name: 'Account' })
-      common.showToast('已成功登出')
-    }
- 
-    onUnmounted(() => $bus.$off('scroll'))
-    return { goBack, isShow, titleName, scrollTop, buttonOpacity, isProfile, logout }
-  }
-})
-</script>
 
 <style lang="scss" scoped>
 .header {

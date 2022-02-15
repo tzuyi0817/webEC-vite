@@ -3,15 +3,16 @@ import App from '@/App.vue';
 import '@/scss/common.scss';
 import { getBus, evil } from '@/utils/common';
 import router from '@/router/index';
-import store from '@/store/index';
+import { createPinia } from 'pinia';
 import Loading from '@/components/Loading.vue';
 import axios from 'axios';
 import bus from '@/utils/bus';
 import { FontAwesomeIcon } from '@/utils/font-awesome';
 
 const app = createApp(App);
+const pinia = createPinia();
 app.use(router);
-app.use(store);
+app.use(pinia);
 app.component('Loading', Loading);
 app.component('icon', FontAwesomeIcon);
 app.provide('$bus', bus);

@@ -1,3 +1,29 @@
+<script setup lang="ts">
+import { inject, ref, watch } from 'vue';
+import { useGroupPathStore, useUserStore, useCartStore } from '@/store';
+import { useRoute } from 'vue-router';
+import ShowToast from '@/components/ShowToast.vue';
+import Header from '@/components/Header.vue';
+import Footer from '@/components/Footer.vue';
+import ShowMsg from '@/components/ShowMsg.vue';
+
+const $apiPrefixes = inject('$apiPrefixes');
+const groupPathStore = useGroupPathStore();
+const userStore = useUserStore();
+const cartStore = useCartStore();
+const route = useRoute();
+const transitionName = ref('');
+
+groupPathStore.updateGroupPath($apiPrefixes);
+localStorage.getItem('token') && userStore.getUser();
+localStorage.getItem('cartItem') && cartStore.updateCartCount();
+watch(() => route.path, (to, from) => {
+  const toDepth = to.split('/').length;
+  const fromDepth = from.split('/').length;
+  transitionName.value = toDepth < fromDepth ? 'slide-right' : 'slide-left';
+});
+</script>
+
 <template>
   <div id="app">
     <Header />
@@ -11,41 +37,6 @@
     <show-msg />
   </div>
 </template>
-
-<script lang="ts">
-import { defineComponent, inject, ref, watch } from 'vue'
-import { useStore } from 'vuex'
-import { useRoute } from 'vue-router'
-import ShowToast from './components/ShowToast.vue'
-import Header from './components/Header.vue'
-import Footer from './components/Footer.vue'
-import ShowMsg from './components/ShowMsg.vue'
-
-export default defineComponent ({
-  components: {
-    ShowToast,
-    Header,
-    Footer,
-    ShowMsg
-  },
-  setup() {
-    const $apiPrefixes = inject('$apiPrefixes')
-    const store = useStore()
-    const route = useRoute()
-    const transitionName = ref('')
-
-    store.commit('updateGroupPath', $apiPrefixes)
-    localStorage.getItem('token') && store.dispatch('getUser')
-    localStorage.getItem('cartItem') && store.commit('updateCartCount')
-    watch((): any => route.path, (to, from) => {
-      const toDepth = to.split('/').length
-      const fromDepth = from.split('/').length
-      transitionName.value = toDepth < fromDepth ? 'slide-right' : 'slide-left'
-    })
-    return { transitionName }
-  }
-})
-</script>
 
 <style lang="scss">
 #app {

@@ -7,9 +7,9 @@ import * as ItemType from '@/types/item';
 import * as OtherType from '@/types/other';
 
 export interface CommonType {
-  id: number;
-  createdAt: string;
-  updatedAt: string;
+  readonly id: number;
+  readonly createdAt: string;
+  readonly updatedAt: string;
 }
 
 declare namespace Types {
@@ -19,7 +19,7 @@ declare namespace Types {
   export type Category = ProductType.Category & CommonType;
   export type Product = ProductType.Product & CommonType;
   export type Comment = ProductType.Comment & CommonType;
-  export type User = UserType.User & CommonType;
+  export type User = Partial<UserType.User & CommonType>;
   export type UserProfile = UserType.UserProfile & CommonType;
   export type Order = OrderType.Order & CommonType;
   export type CartItem = ItemType.CartItem & CommonType;

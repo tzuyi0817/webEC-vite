@@ -1,36 +1,15 @@
-<template>
-  <div class="search container" @scroll.passive="handleScroll">
-    <search-bar :isLoading="isLoading" @getKeyword="getKeyword" />
-
-    <div class="search__sort">
-      <strong>商品排序</strong>
-      <sort-select :options="SortOptions" @getSelVal="getSelVal" />
-    </div>
-
-    <loading v-if="isLoading && !products.length" />
-    <div class="search__prompt" v-else>
-      <p v-if="products.length > 0">{{ getKeywordPrompt }}搜尋到 {{ products.length }} 件商品</p>
-
-      <template v-else>
-        <icon name="exclamation-triangle" type="fas" />
-        <p>找不到您所查詢「{{ currentKeyword }}」的相關商品</p>
-      </template>
-    </div>
-
-    <category-products-list v-if="products.length > 0" :products="products" :isLoading="isLoading" :loadMore="loadMore" />
-  </div>
-</template>
-
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
-import { useStore } from 'vuex';
+import { useGroupPathStore } from '@/store';
+import { storeToRefs } from 'pinia'
 import SearchBar from '../components/SearchBar.vue';
 import SortSelect from '../components/SortSelect.vue';
 import CategoryProductsList from '../components/CategoryProductsList.vue';
 import { SortOptions, ajax, getAjax } from '../utils/common';
 import { Types } from '@/types';
 
-const { groupPath } = useStore().state;
+const groupPathStore = useGroupPathStore();
+const { groupPath } = storeToRefs(groupPathStore);
 const products = ref([]);
 const currentPage = ref(1);
 const totalPage = ref(0);
@@ -49,7 +28,7 @@ const getSearch = async () => {
     page: currentPage.value.toString() 
   });
 
-  const ajaxGroup = ajax(groupPath.platform + `/ESHOP/search?${searchParams.toString()}`, 'get');
+  const ajaxGroup = ajax(groupPath.value.platform + `/ESHOP/search?${searchParams.toString()}`, 'get');
   isLoading.value = true;
 
   const result = await getAjax(ajaxGroup);
@@ -88,6 +67,29 @@ const handleScroll = (event: Event) => {
 
 onMounted(getSearch);
 </script>
+
+<template>
+  <div class="search container" @scroll.passive="handleScroll">
+    <search-bar :isLoading="isLoading" @getKeyword="getKeyword" />
+
+    <div class="search__sort">
+      <strong>商品排序</strong>
+      <sort-select :options="SortOptions" @getSelVal="getSelVal" />
+    </div>
+
+    <loading v-if="isLoading && !products.length" />
+    <div class="search__prompt" v-else>
+      <p v-if="products.length > 0">{{ getKeywordPrompt }}搜尋到 {{ products.length }} 件商品</p>
+
+      <template v-else>
+        <icon name="exclamation-triangle" type="fas" />
+        <p>找不到您所查詢「{{ currentKeyword }}」的相關商品</p>
+      </template>
+    </div>
+
+    <category-products-list v-if="products.length > 0" :products="products" :isLoading="isLoading" :loadMore="loadMore" />
+  </div>
+</template>
 
 <style lang="scss" scoped>
 .search {

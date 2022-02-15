@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import { Types } from '@/types';
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 
 interface Props {
   options: Types.SelectValue[];
@@ -24,7 +24,7 @@ interface Props {
 
 const props = defineProps<Props>();
 const emit = defineEmits(["getSelVal"]);
-const selectValue = ref({} as Types.SelectValue);
+const selectValue = ref<Types.SelectValue>(props.options[0]);
 const isOpen = ref(false);
 
 const trigger = () => isOpen.value = !isOpen.value;
@@ -33,8 +33,6 @@ const selectEvent = (select: Types.SelectValue) => {
   isOpen.value = false;
   emit('getSelVal', select);
 };
-
-onMounted(() => selectValue.value = props.options[0]);
 </script>
 
 <style lang="scss" scoped>

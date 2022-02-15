@@ -1,3 +1,40 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useCartStore, useUserStore } from '@/store';
+import { storeToRefs } from 'pinia';
+
+type pathListType = {
+  [key: string]: string;
+};
+
+const menu = [
+  { name: 'home', icon: 'home', type: 'fas', route: 'Index' },
+  { name: 'search', icon: 'search-location', type: 'fas', route: 'Search' },
+  { name: 'profile', icon: 'user-circle', type: 'fas', route: 'UserProfile' },
+  { name: 'cart', icon: 'shopping-cart', type: 'fas', route: 'Cart' },
+];
+const cartStore = useCartStore();
+const userStore = useUserStore();
+const { cartCount } = storeToRefs(cartStore);
+const { user } = storeToRefs(userStore);
+const route = useRoute();
+const router = useRouter();
+const nowSelect = computed(() => {
+  const path = route.path.split('/')[1];
+  const pathList: pathListType = {
+    index: 'home',
+    search: 'search',
+    user: 'profile',
+    cart: 'cart'
+  };
+  return pathList[path] ?? path;
+});
+const isShow = computed(() => route.name !== 'Account');
+
+const select = (route: string) => router.push({ name: route, params: { id: route === 'UserProfile' ? `${user.value.id}` : '' } });
+</script>
+
 <template>
   <ul class="footer" v-if="isShow">
     <div :class="['slider', nowSelect]"></div>
@@ -10,46 +47,6 @@
     </li>
   </ul>
 </template>
-
-<script lang="ts">
-import { defineComponent, computed, toRefs } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { useStore } from 'vuex'
-
-type pathListType = {
-  [key: string]: string
-}
-
-export default defineComponent ({
-  setup() {
-    const menu = [
-      { name: 'home', icon: 'home', type: 'fas', route: 'Index' },
-      { name: 'search', icon: 'search-location', type: 'fas', route: 'Search' },
-      { name: 'profile', icon: 'user-circle', type: 'fas', route: 'UserProfile' },
-      { name: 'cart', icon: 'shopping-cart', type: 'fas', route: 'Cart' }
-    ]
-
-    const store = useStore()
-    const { user, cartCount } = toRefs(store.state)
-    const route = useRoute()
-    const $router = useRouter()
-    const nowSelect = computed(() => {
-      const path = route.path.split('/')[1]
-      const pathList: pathListType = {
-        index: 'home',
-        search: 'search',
-        user: 'profile',
-        cart: 'cart'
-      }
-      return pathList[path] || path
-    })
-    const isShow = computed(() => route.name !== 'Account')
-
-    const select = (route: string) => $router.push({ name: route, params: { id: route === 'UserProfile' ? `${user.value.id}` : '' } })
-    return { menu, select, nowSelect, cartCount, isShow }
-  }
-})
-</script>
 
 <style lang="scss" scoped>
 .footer {

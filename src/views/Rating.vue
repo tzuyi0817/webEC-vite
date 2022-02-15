@@ -1,21 +1,15 @@
-<template>
-  <div class="rating container" @scroll.passive="handleScroll">
-    <h1 v-if="!isLoading">{{ `${ratingLength}則評價` }}</h1>
-
-    <rating-list :ratingList="ratingList" :isLoading="isLoading" :ratingLength="ratingLength" />
-  </div>
-</template>
-
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { useStore } from 'vuex';
+import { useGroupPathStore, useTitleStore } from '@/store';
+import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router';
 import { ajax, getAjax } from '../utils/common';
 import RatingList from '../components/RatingList.vue';
 // import { faCommentsDollar } from '@fortawesome/free-solid-svg-icons';
 
-const store = useStore();
-const { groupPath } = store.state;
+const groupPathStore = useGroupPathStore();
+const titleStore = useTitleStore();
+const { groupPath } = storeToRefs(groupPathStore);
 const { id } = useRoute().params;
 const isLoading = ref(false);
 const ratingList = ref([]);
@@ -26,7 +20,7 @@ const loadMore = ref(false);
 
 const getRating = async () => {
   const searchParams = new URLSearchParams({ page: `${currentPage.value}` });
-  const ajaxGroup = ajax(groupPath.platform + `/product/${id}?${searchParams.toString()}`, 'get');
+  const ajaxGroup = ajax(groupPath.value.platform + `/product/${id}?${searchParams.toString()}`, 'get');
   isLoading.value = true;
 
   const result = await getAjax(ajaxGroup);
@@ -47,9 +41,17 @@ const handleScroll = (event: Event) => {
   }
 };
 
-store.commit('updateTitleName', '評價');
+titleStore.updateTitleName('評價');
 onMounted(getRating);
 </script>
+
+<template>
+  <div class="rating container" @scroll.passive="handleScroll">
+    <h1 v-if="!isLoading">{{ `${ratingLength}則評價` }}</h1>
+
+    <rating-list :ratingList="ratingList" :isLoading="isLoading" :ratingLength="ratingLength" />
+  </div>
+</template>
 
 <style lang="scss" scoped>
 .rating {
