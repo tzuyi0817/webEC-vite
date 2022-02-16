@@ -1,13 +1,3 @@
-<template>
-  <div class="account container">
-    <div class="account__box">
-      <header>- {{ nowPage }} -</header>
-      <component :is="nowComponent" @changePage="changePage" :linkPrompt="linkPrompt" />
-      <p><a @click="changePage">{{ linkPrompt }}</a></p>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import AccountLogin from "../components/AccountLogin.vue";
@@ -25,6 +15,16 @@ const changePage = () => {
   nowPage.value = nowPage.value === 'Login' ? 'Register' : 'Login';
 };
 </script>
+
+<template>
+  <div class="account container">
+    <div class="account__box">
+      <header>- {{ nowPage }} -</header>
+      <component :is="nowComponent" @changePage="changePage" :linkPrompt="linkPrompt" />
+      <p><a @click="changePage">{{ linkPrompt }}</a></p>
+    </div>
+  </div>
+</template>
 
 <style lang="scss">
 @import "../scss/rwd.scss";

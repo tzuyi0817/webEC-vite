@@ -1,6 +1,7 @@
 import { User } from "./user";
 
 export interface Category {
+  Products: Product[];
   StoreId: number;
   image: string;
   name: string;

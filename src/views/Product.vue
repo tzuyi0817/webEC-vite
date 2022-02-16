@@ -15,10 +15,10 @@ const titleStore = useTitleStore();
 const { groupPath } = storeToRefs(groupPathStore);
 const $bus = inject('$bus') as Types.Bus;
 const isLoading = ref(false);
-const product = ref({} as Types.Product);
+const product = ref<Types.Product>({});
 const moreProducts = ref([]);
 const rating = ref(0);
-const productImage = ref([] as string[]);
+const productImage = ref<string[]>([]);
 const productScroll = ref();
 
 const getProduct = async (id: string | null | string[] = null) => {

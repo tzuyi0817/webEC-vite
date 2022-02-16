@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, reactive } from 'vue';
 import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router';
 import { useGroupPathStore, useTitleStore } from '@/store';
 import { storeToRefs } from 'pinia';
@@ -13,7 +13,7 @@ const titleStore = useTitleStore();
 const { groupPath } = storeToRefs(groupPathStore);
 const router = useRouter();
 const categories = ref([]);
-const category = ref({} as Types.Category);
+const category = ref({});
 const products = ref([]);
 const isLoading = ref(false);
 const currentPage = ref(1);

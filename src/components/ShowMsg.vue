@@ -1,7 +1,37 @@
+<script setup lang="ts">
+import { Types } from '@/types';
+import { inject, onUnmounted, ref } from 'vue';
+
+const $bus = inject('$bus') as Types.Bus;
+const content = ref<HTMLElement | null>(null);
+const showMsg = ref(false);
+const func = ref<Function | null>(null);
+const showCancel = ref(false);
+
+$bus.$on('showMsg',({ html, fun, cancel }: { html: HTMLElement, fun: Function, cancel: boolean }) => {
+  content.value = html;
+  showMsg.value = true;
+  func.value = fun;
+  showCancel.value = cancel;
+});
+
+const showMsgFun = () => {
+  func.value && func.value();
+  showMsg.value = false;
+  content.value = null;
+  func.value = null;
+  const body = document.getElementsByTagName('body')[0];
+  body.setAttribute('style', 'overflow:hidden;');
+};
+const closeMsgFun = () => showMsg.value = false;
+
+onUnmounted(() => $bus.$off('showMsg'));
+</script>
+
 <template>
   <div class="showMsg lightBox" v-if="showMsg">
       <div class="showMsg__info">
-        <div class="showMsg__content" v-html="html"></div>
+        <div class="showMsg__content" v-html="content"></div>
         <div class="showMsg__btn">
           <button v-if="showCancel" @click="closeMsgFun">取消</button>
           <button @click="showMsgFun">確認</button>
@@ -9,44 +39,6 @@
       </div>
   </div>
 </template>
-
-<script lang="ts">
-import { Types } from '@/types';
-import { defineComponent, inject, reactive, toRefs, onUnmounted } from 'vue'
-
-export default defineComponent({
-  setup() {
-    const $bus = inject('$bus') as Types.Bus;
-    const data = reactive({
-      html: undefined as unknown as HTMLElement,
-      showMsg: false,
-      fun: undefined as unknown as Function,
-      showCancel: false
-    })
-
-    $bus.$on('showMsg',({ html, fun, cancel }: { html: HTMLElement, fun: Function, cancel: boolean }) => {
-      data.html = html
-      data.showMsg = true
-      data.fun = fun
-      data.showCancel = cancel
-    })
-
-    const showMsgFun = () => {
-      data.fun && data.fun()
-      data.showMsg = false
-      data.html = undefined as unknown as HTMLElement
-      data.fun = undefined as unknown as Function
-      const body = document.getElementsByTagName('body')[0]
-      body.setAttribute('style', 'overflow:hidden;')
-    }
-    const closeMsgFun = () => data.showMsg = false
-
-    onUnmounted(() => $bus.$off('showMsg'))
-
-    return { ...toRefs(data), showMsgFun, closeMsgFun }
-  }
-})
-</script>
 
 <style lang="scss">
 .showMsg {

@@ -1,28 +1,41 @@
+<script setup lang="ts">
+import { Types } from "@/types";
+
+interface Props {
+  orderList: Types.Order[];
+  isLoading: boolean;
+  nowSelect: number;
+}
+
+defineProps<Props>();
+const subName = (name: string = '') => name.length > 20 ? name.slice(0, 20) + '...' : name;
+</script>
+
 <template>
   <loading v-if="isLoading" />
 
   <div class="orderList" v-else>
     <ul v-if="orderList.length">
       <li v-for="(order, index) in orderList" :key="index">
-        <p class="orderList__status amount">{{ order.Order_status.orderStatus }}</p>
+        <p class="orderList__status amount">{{ order.Order_status?.orderStatus }}</p>
         <div class="orderList__box">
-          <router-link :to="`/product/${order.items[0].id}`">
-            <img :src="order.items[0].image">
+          <router-link :to="`/product/${order.items?.[0].id}`">
+            <img :src="order.items?.[0].image">
           </router-link>
 
           <div class="orderList__content">
-            <router-link :to="`/product/${order.items[0].id}`">
-              <p>{{ subName(order.items[0].name) }}</p>
+            <router-link :to="`/product/${order.items?.[0].id}`">
+              <p>{{ subName(order.items?.[0].name) }}</p>
             </router-link>
-            <p>{{ `x${order.items[0].Order_item.quantity}` }}</p>
-            <p class="amount">{{ `$${order.items[0].Order_item.price}` }}</p>
+            <p>{{ `x${order.items?.[0].Order_item.quantity}` }}</p>
+            <p class="amount">{{ `$${order.items?.[0].Order_item.price}` }}</p>
           </div>
         </div>
 
         <hr />
 
         <div class="orderList__amount">
-          <span>{{ `${order.items.length} 商品` }}</span>
+          <span>{{ `${order.items?.length} 商品` }}</span>
           <p>付款金額:<span class="amount">{{ `$${order.amount}` }}</span></p>
         </div>
       </li>
@@ -34,19 +47,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { Types } from "@/types";
-
-interface Props {
-  orderList: Types.Order[];
-  isLoading: boolean;
-  nowSelect: number;
-}
-
-defineProps<Props>();
-const subName = (name: string) => name.length > 20 ? name.slice(0, 20) + '...' : name;
-</script>
 
 <style lang="scss" scoped>
 .orderList {

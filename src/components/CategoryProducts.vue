@@ -1,16 +1,3 @@
-<template>
-  <div class="categoryProducts">
-    <loading v-if="isLoading && !products.length" />
-    <img v-else :src="category.image" class="fade" />
-
-    <strong>商品排序</strong>
-    <sort-select :options="SortOptions" @getSelVal="getSelVal" />
-    <p>{{ category.name }}</p>
-
-    <category-products-list :products="products" :isLoading="isLoading" :loadMore="loadMore" />
-  </div>
-</template>
-
 <script setup lang="ts">
 import SortSelect from '../components/SortSelect.vue';
 import CategoryProductsList from '../components/CategoryProductsList.vue';
@@ -29,6 +16,19 @@ const emit = defineEmits(["getSelQuery"]);
 
 const getSelVal = (selVal: Types.SelectValue) => emit('getSelQuery', selVal.query);
 </script>
+
+<template>
+  <div class="categoryProducts">
+    <loading v-if="isLoading && !products.length" />
+    <img v-else :src="category.image" class="fade" />
+
+    <strong>商品排序</strong>
+    <sort-select :options="SortOptions" @getSelVal="getSelVal" />
+    <p>{{ category.name }}</p>
+
+    <category-products-list :products="products" :isLoading="isLoading" :loadMore="loadMore" />
+  </div>
+</template>
 
 <style lang="scss" scoped>
 .categoryProducts {

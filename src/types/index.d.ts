@@ -16,12 +16,12 @@ declare namespace Types {
   export type AxiosMethod = AxiosType.AxiosMethod;
   export type AjaxType = AxiosType.AjaxType;
   export type Bus = BusType.Bus;
-  export type Category = ProductType.Category & CommonType;
-  export type Product = ProductType.Product & CommonType;
+  export type Category = Partial<ProductType.Category & CommonType>;
+  export type Product = Partial<ProductType.Product & CommonType>;
   export type Comment = ProductType.Comment & CommonType;
   export type User = Partial<UserType.User & CommonType>;
-  export type UserProfile = UserType.UserProfile & CommonType;
-  export type Order = OrderType.Order & CommonType;
+  export type UserProfile = Partial<UserType.UserProfile & CommonType>;
+  export type Order = Partial<OrderType.Order & CommonType>;
   export type CartItem = ItemType.CartItem & CommonType;
   export type SelectValue = OtherType.SelectValue;
   export type RouteQuery = OtherType.RouteQuery;

@@ -10,7 +10,7 @@ import { ajax, getAjax } from '../utils/common';
 const groupPathStore = useGroupPathStore();
 const titleStore = useTitleStore();
 const { groupPath } = storeToRefs(groupPathStore);
-const actorImage = new URL("../assets/actor.jpg", import.meta.url);
+const actorImage = new URL("../assets/actor.jpg", import.meta.url).toString();
 const orderStatus = {
   "schedule": 1,
   "process": 2,
@@ -18,13 +18,13 @@ const orderStatus = {
   "cancel": 4,
 };
 
-const profile = ref({} as Types.UserProfile);
+const profile = ref<Types.UserProfile>({});
 const isLoading = ref(false);
 const nowSelect = ref(orderStatus.schedule);
 const orderList = computed(() => {
   if (!profile.value?.Orders) return [];
   const orders = profile.value.Orders;
-  return orders.filter(order => order.OrderStatusId === nowSelect.value) as Types.Order[];
+  return orders.filter(order => order.OrderStatusId === nowSelect.value);
 });
 const actor = computed(() => profile.value?.image ?? actorImage);
 
