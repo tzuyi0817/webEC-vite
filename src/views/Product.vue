@@ -3,11 +3,11 @@ import { onMounted, inject, ref } from 'vue';
 import { useRoute, onBeforeRouteUpdate } from 'vue-router';
 import { useGroupPathStore, useTitleStore } from '@/store';
 import { storeToRefs } from 'pinia';
-import { ajax, getAjax } from '../utils/common';
-import ProductBanner from '../components/ProductBanner.vue';
-import ProductContent from '../components/ProductContent.vue';
-import ProductRating from '../components/ProductRating.vue';
-import CategoryProductsList from '../components/CategoryProductsList.vue';
+import { ajax, getAjax } from '@/utils/common';
+import ProductBanner from '@/components/ProductBanner.vue';
+import ProductContent from '@/components/ProductContent.vue';
+import ProductRating from '@/components/ProductRating.vue';
+import CategoryProductsList from '@/components/CategoryProductsList.vue';
 import { Types } from '@/types';
 
 const groupPathStore = useGroupPathStore();

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { onMounted, ref, reactive } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router';
 import { useGroupPathStore, useTitleStore } from '@/store';
 import { storeToRefs } from 'pinia';
-import { getAjax, ajax } from '../utils/common';
-import NavTabs from '../components/NavTabs.vue';
-import CategoryProducts from '../components/CategoryProducts.vue';
+import { getAjax, ajax } from '@/utils/common';
+import NavTabs from '@/components/NavTabs.vue';
+import CategoryProducts from '@/components/CategoryProducts.vue';
 import { Types } from '@/types';
 
 const groupPathStore = useGroupPathStore();
@@ -56,7 +56,7 @@ const getId = (id: number) => {
 const getSelQuery = ({ key, value }: Types.RouteQuery) => {
   currentKey.value = key;
   currentValue.value = value;
-  resetProducts()
+  resetProducts();
 };
 
 const handleScroll = (event: Event) => {

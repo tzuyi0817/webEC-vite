@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import AccountLogin from "../components/AccountLogin.vue";
-import AccountRegister from "../components/AccountRegister.vue";
+import AccountLogin from "@/components/AccountLogin.vue";
+import AccountRegister from "@/components/AccountRegister.vue";
 
 const nowPage = ref('Login');
 const nowComponent = computed(() => nowPage.value === 'Login' ? AccountLogin : AccountRegister);

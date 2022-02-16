@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, ref } from 'vue';
+import {computed, ref, toRefs } from 'vue';
 import Stars from '@/components/Stars.vue';
 import { useGroupPathStore, useCartStore } from '@/store';
 import { useRouter } from 'vue-router';
@@ -16,34 +16,34 @@ const props = defineProps<Props>();
 const groupPathStore = useGroupPathStore();
 const cartStore = useCartStore();
 const router = useRouter();
-const { product } = props;
+const { product } = toRefs(props);
 const { groupPath } = storeToRefs(groupPathStore);
 const quantity = ref(1);
 const isLoading = ref(false);
-const disable = computed(() => quantity.value >= product.count);
+const disable = computed(() => quantity.value >= (product.value.count ?? 0));
 const facebook = computed(() => {
   return `
     https://www.facebook.com/plugins/share_button.php?
     href=https%3A%2F%2Ftzuyi0817.github.io
-    %2Fac_s4_final_project_ecweb_vue%2F%23%2Fproduct%2F${product.id}
+    %2Fac_s4_final_project_ecweb_vue%2F%23%2Fproduct%2F${product.value.id}
     &layout=button&size=large&width=69&height=28&appId
   `;
 });
 
 const handlerInput = (event: Event) => {
   const { value } = <HTMLInputElement>event.target;
-  if (+value > product.count) quantity.value = product.count;
+  if (+value > (product.value.count ?? 0)) quantity.value = product.value.count ?? 1;
   if (+value < 1) quantity.value = 1;
 };
 
 const quantityBtn = (type: string) => type == '+' ? quantity.value++ : quantity.value--;
-const goCategory = () => router.push({ name: 'Category', params: { id: product.ProductCategoryId } });
-const goRating = () => router.push({ name: 'Rating', params: { id: product.id } });
+const goCategory = () => router.push({ name: 'Category', params: { id: product.value.ProductCategoryId } });
+const goRating = () => router.push({ name: 'Rating', params: { id: product.value.id } });
 
 const addCart = async () => {
   const ajaxGroup = ajax(groupPath.value.platform + '/cart', 'post');
   const data = { 
-    productId: product.id, 
+    productId: product.value.id, 
     quantity: quantity.value
   };
   isLoading.value = true;
@@ -122,7 +122,7 @@ const addCart = async () => {
       <div>
         <p>類別</p>
         <button @click="goCategory">
-          {{ product.Product_category && product.Product_category.name }} 
+          {{ product.Product_category?.name }} 
           <icon name="chevron-right" type="fas" />
         </button>
       </div>

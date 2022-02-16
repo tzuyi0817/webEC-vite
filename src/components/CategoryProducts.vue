@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import SortSelect from '../components/SortSelect.vue';
-import CategoryProductsList from '../components/CategoryProductsList.vue';
-import { SortOptions } from '../utils/common';
+import SortSelect from '@/components/SortSelect.vue';
+import CategoryProductsList from '@/components/CategoryProductsList.vue';
+import { SortOptions } from '@/utils/common';
 import { Types } from '@/types';
 
 interface Props {

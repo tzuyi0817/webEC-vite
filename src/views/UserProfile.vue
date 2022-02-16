@@ -4,8 +4,8 @@ import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useGroupPathStore, useTitleStore } from '@/store';
 import { storeToRefs } from 'pinia';
-import OrderList from '../components/OrderList.vue';
-import { ajax, getAjax } from '../utils/common';
+import OrderList from '@/components/OrderList.vue';
+import { ajax, getAjax } from '@/utils/common';
 
 const groupPathStore = useGroupPathStore();
 const titleStore = useTitleStore();

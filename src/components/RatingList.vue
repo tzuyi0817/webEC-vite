@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import { Types } from '@/types';
 import { computed } from 'vue';
-import Stars from '../components/Stars.vue';
+import Stars from '@/components/Stars.vue';
 
 interface Props {
   ratingList: Types.Comment[];

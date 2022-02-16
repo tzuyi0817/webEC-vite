@@ -3,8 +3,8 @@ import { ref, onMounted } from 'vue';
 import { useGroupPathStore, useTitleStore } from '@/store';
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router';
-import { ajax, getAjax } from '../utils/common';
-import RatingList from '../components/RatingList.vue';
+import { ajax, getAjax } from '@/utils/common';
+import RatingList from '@/components/RatingList.vue';
 // import { faCommentsDollar } from '@fortawesome/free-solid-svg-icons';
 
 const groupPathStore = useGroupPathStore();

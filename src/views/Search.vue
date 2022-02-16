@@ -2,10 +2,10 @@
 import { ref, onMounted, computed } from 'vue';
 import { useGroupPathStore } from '@/store';
 import { storeToRefs } from 'pinia'
-import SearchBar from '../components/SearchBar.vue';
-import SortSelect from '../components/SortSelect.vue';
-import CategoryProductsList from '../components/CategoryProductsList.vue';
-import { SortOptions, ajax, getAjax } from '../utils/common';
+import SearchBar from '@/components/SearchBar.vue';
+import SortSelect from '@/components/SortSelect.vue';
+import CategoryProductsList from '@/components/CategoryProductsList.vue';
+import { SortOptions, ajax, getAjax } from '@/utils/common';
 import { Types } from '@/types';
 
 const groupPathStore = useGroupPathStore();

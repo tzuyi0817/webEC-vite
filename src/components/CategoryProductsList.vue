@@ -53,12 +53,16 @@ const getPrompt = computed(() => {
     : loadMore ? '' : '已無更多商品'
 });
 
-const subContent = (str: String, num: number) => {
+const subContent = (str: string | undefined, num: number) => {
+  if (str === undefined) return '';
   const length = str.length;
   return length > num ? str.slice(0, num + 1) + '...' : str;
 };
 
-const goLink = (id: number) => router.push({ name: 'Product', params: { id } });
+const goLink = (id: number | undefined) => {
+  if (id === undefined) return;
+  router.push({ name: 'Product', params: { id } });
+};
 </script>
 
 <style lang="scss" scoped>

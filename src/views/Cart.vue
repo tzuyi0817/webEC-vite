@@ -2,8 +2,8 @@
 import { ref, onMounted, computed } from 'vue';
 import { useCartStore, useTitleStore } from '@/store';
 import { useRouter } from 'vue-router';
-import CartItem from '../components/CartItem.vue';
-import { showToast, LocalStorage, getCartItem } from '../utils/common';
+import CartItem from '@/components/CartItem.vue';
+import { showToast, LocalStorage, getCartItem } from '@/utils/common';
 import { Types } from '@/types';
 
 const cartStore = useCartStore();

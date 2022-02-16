@@ -2,10 +2,10 @@
 import { onMounted, ref, computed } from "vue";
 import { useGroupPathStore } from '@/store';
 import { storeToRefs } from 'pinia';
-import { ajax, getAjax } from "../utils/common";
-import IndexBanner from "../components/IndexBanner.vue";
-import NavTabs from "../components/NavTabs.vue";
-import IndexContent from "../components/IndexContent.vue";
+import { ajax, getAjax } from "@/utils/common";
+import IndexBanner from "@/components/IndexBanner.vue";
+import NavTabs from "@/components/NavTabs.vue";
+import IndexContent from "@/components/IndexContent.vue";
 import { Types } from "@/types";
 
 const groupPathStore = useGroupPathStore();

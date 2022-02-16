@@ -6,7 +6,7 @@
       <li v-for="item in options" :key="item.id">
         <button 
           :class="['navTabs__item', { 'navTabs__item--active': nowId === item.id }]"
-          @click="selOption(item.id)"
+          @click="selOption(item?.id)"
         >{{ item.name }}
         </button>
       </li>
@@ -26,7 +26,7 @@ interface Props {
 defineProps<Props>();
 const emit = defineEmits(["getId"]);
 
-const selOption = (id: number) => emit('getId', id);
+const selOption = (id: number | undefined) => emit('getId', id);
 </script>
 
 <style lang="scss" scoped>

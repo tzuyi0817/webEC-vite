@@ -30,7 +30,7 @@ const contentData = [
 
 const goLink = (url: string) => router.push(url);
 
-watch(() => props.category, (val: Types.Category) => nowId.value = val.id);
+watch(() => props.category, (val: Types.Category) => nowId.value = val.id ?? 1);
 </script>
 
 <style lang="scss" scoped>

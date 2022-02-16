@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia';
 import { LocalStorage, ajax, getAjax } from '@/utils/common';
 import useGroupPathStore from '@/store/groupPath';
+import { Types } from '@/types';
 
 export default defineStore('user', {
   state: () => ({
-    user: {},
+    user: <Types.User>{},
   }),
   actions: {
     updateUser(currentUser) {

@@ -94,7 +94,11 @@ export function getCartItem() {
 
 declare global {
   interface Date {
-    Format (fmt?: string) : string
+    Format(fmt?: string): string;
+  }
+  
+  interface ObjectConstructor {
+    hasOwn(instance, prop): boolean;
   }
 };
 
