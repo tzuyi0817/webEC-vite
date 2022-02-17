@@ -1,3 +1,31 @@
+<script setup lang="ts">
+import { Types } from '@/types';
+import { computed } from 'vue';
+import Stars from '@/components/Stars.vue';
+
+interface Props {
+  ratingList: Types.Comment[];
+  isLoading?: boolean;
+  ratingLength?: number;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  isLoading: false,
+  ratingLength: -1,
+});
+
+const getPrompt = computed(() => {
+  const { ratingList, ratingLength } = props;
+  const nowLength = ratingList.length;
+  return nowLength === 0
+    ? '此商品尚未有人評價'
+    : nowLength === ratingLength ? '已無更多評價' : '';
+});
+
+const hideName = (name: string) => name?.slice(0, 1) + '*****' + name?.slice(-1);
+const conversionTime = (time: string) => new Date(time).Format('yyyy-MM-dd hh:mm:ss');
+</script>
+
 <template>
   <ul class="ratingList">
     <li v-for="item in ratingList" :key="item.id" class="fade">
@@ -19,35 +47,6 @@
     <loading v-if="isLoading" />
   </ul>
 </template>
-
-<script setup lang="ts">
-import { Types } from '@/types';
-import { computed } from 'vue';
-import Stars from '@/components/Stars.vue';
-
-interface Props {
-  ratingList: Types.Comment[];
-  isLoading?: boolean;
-  ratingLength?: number;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  isLoading: false,
-  ratingLength: -1,
-});
-
-const getPrompt = computed(() => {
-  const { ratingList, ratingLength } = props;
-  const nowLength = ratingList?.length ?? 0;
-  return nowLength === 0
-    ? '此商品尚未有人評價'
-    : nowLength === ratingLength ? '已無更多評價' : '';
-});
-
-const hideName = (name: string) => name?.slice(0, 1) + '*****' + name?.slice(-1);
-const conversionTime = (time: string) => new Date(time).Format('yyyy-MM-dd hh:mm:ss');
-
-</script>
 
 <style lang="scss" scoped>
 .ratingList {

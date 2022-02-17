@@ -1,39 +1,3 @@
-<template>
-  <transition-group name="list" tag="ul" class="cartItem">
-    <li v-for="(item, index) in cartItem" :key="item.id" class="fade">
-      <div class="cartItem__box">
-        <router-link :to="`/product/${item.id}`"><img :src="item.image"></router-link>
-
-        <div class="cartItem__content">
-          <router-link :to="`/product/${item.id}`">
-            <p>{{ subName(item.name) }}</p>
-          </router-link>
-          <span>較長備貨</span>
-          <div>
-            <h6>{{ `$${item.price}` }}</h6>
-            <h6>{{ `[剩餘 ${item.count} 件]` }}</h6>
-          </div>
-
-          <div class="cartItem__quantity">
-            <button @click="minusBtn(index)">
-              <icon name="minus" type="fas" />
-            </button>
-
-            <input type="number" v-model.number="item.quantity" @input="handleInput($event, index)" :disabled="item.quantity == item.count" />
-
-            <button @click="plusBtn(index)" :disabled="item.quantity == item.count">
-              <icon name="plus" type="fas" />
-            </button>
-          </div>
-        </div>
-
-        <icon class="cross" name="times-circle" type="fas" role="button" @click="confirmDelete(index)" />
-      </div>
-      <hr />
-    </li>
-  </transition-group>
-</template>
-
 <script setup lang="ts">
 import { Types } from '@/types';
 import { toRefs } from 'vue';
@@ -72,6 +36,42 @@ const confirmDelete = (deleteIndex: number) =>
 
 const deleteProduct = (deleteIndex: number) => emit('deleteProduct', deleteIndex);
 </script>
+
+<template>
+  <transition-group name="list" tag="ul" class="cartItem">
+    <li v-for="(item, index) in cartItem" :key="item.id" class="fade">
+      <div class="cartItem__box">
+        <router-link :to="`/product/${item.id}`"><img :src="item.image"></router-link>
+
+        <div class="cartItem__content">
+          <router-link :to="`/product/${item.id}`">
+            <p>{{ subName(item.name) }}</p>
+          </router-link>
+          <span>較長備貨</span>
+          <div>
+            <h6>{{ `$${item.price}` }}</h6>
+            <h6>{{ `[剩餘 ${item.count} 件]` }}</h6>
+          </div>
+
+          <div class="cartItem__quantity">
+            <button @click="minusBtn(index)">
+              <icon name="minus" type="fas" />
+            </button>
+
+            <input type="number" v-model.number="item.quantity" @input="handleInput($event, index)" :disabled="item.quantity == item.count" />
+
+            <button @click="plusBtn(index)" :disabled="item.quantity == item.count">
+              <icon name="plus" type="fas" />
+            </button>
+          </div>
+        </div>
+
+        <icon class="cross" name="times-circle" type="fas" role="button" @click="confirmDelete(index)" />
+      </div>
+      <hr />
+    </li>
+  </transition-group>
+</template>
 
 <style lang="scss" scoped>
 .cartItem {

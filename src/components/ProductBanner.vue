@@ -1,15 +1,3 @@
-<template>
-  <div class="productBanner">
-    <loading v-if="isLoading" />
-    <carousel v-else class="fade" @touchend="touch">
-      <slide v-for="(image, index) in productImage" :key="index">
-        <img :src="image">
-        <span>{{ `${currentPage}/${productImage.length}` }}</span>
-      </slide>
-    </carousel>
-  </div>
-</template>
-
 <script setup lang="ts">
 import 'vue3-carousel/dist/carousel.css';
 import { Carousel, Slide } from 'vue3-carousel';
@@ -35,6 +23,18 @@ const touch = async (event) => {
   });
 };
 </script>
+
+<template>
+  <div class="productBanner">
+    <loading v-if="isLoading" />
+    <carousel v-else class="fade" @touchend="touch">
+      <slide v-for="(image, index) in productImage" :key="index">
+        <img :src="image">
+        <span>{{ `${currentPage}/${productImage.length}` }}</span>
+      </slide>
+    </carousel>
+  </div>
+</template>
 
 <style lang="scss" scoped>
 .productBanner {

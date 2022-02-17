@@ -1,13 +1,3 @@
-<template>
-  <div class="indexContent fade">
-    <p>{{ content }}</p>
-    <a @click="goLink(url)">
-      <img :src="category && category.image">
-      <p>前往 {{ category && category.name }} 頁面 >></p>
-    </a>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { Types } from '@/types';
 import { computed, ref, watch } from 'vue';
@@ -32,6 +22,16 @@ const goLink = (url: string) => router.push(url);
 
 watch(() => props.category, (val: Types.Category) => nowId.value = val.id ?? 1);
 </script>
+
+<template>
+  <div class="indexContent fade">
+    <p>{{ content }}</p>
+    <a @click="goLink(url)">
+      <img :src="category && category.image">
+      <p>前往 {{ category && category.name }} 頁面 >></p>
+    </a>
+  </div>
+</template>
 
 <style lang="scss" scoped>
 .indexContent {

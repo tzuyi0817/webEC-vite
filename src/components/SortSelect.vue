@@ -1,19 +1,3 @@
-<template>
-  <div class="cusSelBlock">
-    <select class="s-hidden" v-model="selectValue"></select>
-    <div :class="['selectLabel', { 'active': isOpen }]" @click="trigger">{{ selectValue.name }}</div>
-      <ul class="options">
-        <li 
-          v-for="(item, index) in options" 
-          :key="index"
-          :class="{ 'open': isOpen, 'active': selectValue.value == item.value && isOpen }"
-          :tabindex="index"
-          @click.prevent="selectEvent(item)"
-        >{{ item.name }}</li>
-      </ul>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { Types } from '@/types';
 import { ref } from 'vue';
@@ -34,6 +18,22 @@ const selectEvent = (select: Types.SelectValue) => {
   emit('getSelVal', select);
 };
 </script>
+
+<template>
+  <div class="cusSelBlock">
+    <select class="s-hidden" v-model="selectValue"></select>
+    <div :class="['selectLabel', { 'active': isOpen }]" @click="trigger">{{ selectValue.name }}</div>
+      <ul class="options">
+        <li 
+          v-for="(item, index) in options" 
+          :key="index"
+          :class="{ 'open': isOpen, 'active': selectValue.value == item.value && isOpen }"
+          :tabindex="index"
+          @click.prevent="selectEvent(item)"
+        >{{ item.name }}</li>
+      </ul>
+  </div>
+</template>
 
 <style lang="scss" scoped>
 select {

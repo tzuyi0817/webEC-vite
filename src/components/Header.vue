@@ -11,7 +11,7 @@ const route = useRoute();
 const userStore = useUserStore();
 const titleStore = useTitleStore();
 const { titleName } = storeToRefs(titleStore);
-const $bus = inject('$bus') as Types.Bus;
+const $bus = inject<Types.Bus>('$bus');
 const notShow = ['Index', 'Search'];
 const scrollTop = ref(350);
 const isProfile = ref(false);
@@ -27,7 +27,7 @@ const title = computed(() => {
   return name.length > 15 ? name.slice(0, 15) + '...' : name;
 });
 
-$bus.$on('scroll', (top: number) => scrollTop.value = top);
+$bus?.$on('scroll', (top: number) => scrollTop.value = top);
 const goBack = () => router.back();
 const logout = () => {
   userStore.emptyUser();
@@ -35,7 +35,7 @@ const logout = () => {
   showToast('已成功登出');
 };
 
-onUnmounted(() => $bus.$off('scroll'));
+onUnmounted(() => $bus?.$off('scroll'));
 </script>
 
 <template>

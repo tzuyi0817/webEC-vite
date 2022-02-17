@@ -1,3 +1,25 @@
+<script setup lang="ts">
+import { computed } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import Stars from '@/components/Stars.vue';
+import RatingList from '@/components/RatingList.vue';
+import { Types } from '@/types';
+
+interface Props {
+  product: Types.Product;
+  rating?: number;
+}
+
+const props = defineProps<Props>();
+const route = useRoute();
+const router = useRouter();
+const { product } = props;
+const ratingLength = computed(() => product.Comments?.length ?? 0);
+const ratingList = computed(() => product.Comments?.slice(0, 3) ?? []);
+
+const goRating = () => router.push({ name: 'Rating', params: { id: route.params.id } });
+</script>
+
 <template>
   <div class="productRating">
     <div class="productRating__title">
@@ -29,28 +51,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { computed } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import Stars from '@/components/Stars.vue';
-import RatingList from '@/components/RatingList.vue';
-import { Types } from '@/types';
-
-interface Props {
-  product: Types.Product;
-  rating?: number;
-}
-
-const props = defineProps<Props>();
-const route = useRoute();
-const router = useRouter();
-const { product } = props;
-const ratingLength = computed(() => product.Comments?.length);
-const ratingList = computed(() => product.Comments?.slice(0, 3) ?? []);
-
-const goRating = () => router.push({ name: 'Rating', params: { id: route.params.id } });
-</script>
 
 <style lang="scss" scoped>
 .productRating {

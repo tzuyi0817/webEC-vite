@@ -1,6 +1,7 @@
-import { Order } from './order'; 
+import { Order } from './order';
+import { CommonType } from './index';
 
-export interface User {
+export interface User extends CommonType {
   StoreId: number;
   address: string;
   email: string;

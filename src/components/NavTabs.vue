@@ -1,3 +1,18 @@
+<script setup lang="ts">
+import { Types } from "@/types";
+
+interface Props {
+  options: Types.Category[];
+  isLoading: boolean;
+  nowId: number;
+}
+
+defineProps<Props>();
+const emit = defineEmits(["getId"]);
+
+const selOption = (id: number | undefined) => emit('getId', id);
+</script>
+
 <template>
   <div class="navTabs">
     <loading v-if="isLoading" />
@@ -13,21 +28,6 @@
     </ul>
   </div>
 </template>
-
-<script setup lang="ts">
-import { Types } from "@/types";
-
-interface Props {
-  options: Types.Category[];
-  isLoading: boolean;
-  nowId: number;
-}
-
-defineProps<Props>();
-const emit = defineEmits(["getId"]);
-
-const selOption = (id: number | undefined) => emit('getId', id);
-</script>
 
 <style lang="scss" scoped>
 .navTabs {

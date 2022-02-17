@@ -1,14 +1,3 @@
-<template>
-  <div class="search__bar">
-    <label>
-      <input type="search" placeholder="Search for goods..."  v-model="keyword" />
-    </label>
-    <button @click="search" :disabled="Boolean(isLoading)">
-      <icon :name="svg" type="fas" :class="{ 'loading': isLoading }" />
-    </button>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 
@@ -23,6 +12,17 @@ const svg = computed(() => props.isLoading ? 'spinner' : 'search');
 
 const search = () => emit('getKeyword', keyword.value);
 </script>
+
+<template>
+  <div class="search__bar">
+    <label>
+      <input type="search" placeholder="Search for goods..."  v-model="keyword" />
+    </label>
+    <button @click="search" :disabled="Boolean(isLoading)">
+      <icon :name="svg" type="fas" :class="{ 'loading': isLoading }" />
+    </button>
+  </div>
+</template>
 
 <style lang="scss" scoped>
 .search__bar {

@@ -1,36 +1,32 @@
+<script setup lang="ts">
+import { Types } from '@/types';
+import { inject, ref, onUnmounted } from 'vue'
+
+const $bus = inject<Types.Bus>('$bus');
+const content = ref('');
+const showToast = ref(false);
+
+$bus?.$on('toast', (msg: string, callback: Function | undefined) => {
+  content.value = msg;
+  showToast.value = true;
+  const time = msg.length > 15 ? 1500 : 1000;
+
+  setTimeout(() => {
+    showToast.value = false;
+    content.value = '';
+  }, time);
+
+  callback && callback();
+})
+
+onUnmounted(() => $bus?.$off('toast'));
+</script>
+
 <template>
   <div class="showToast lightBox" v-if="showToast">
-    <div class="showToast__info">{{ msg }}</div>
+    <div class="showToast__info">{{ content }}</div>
   </div>
 </template>
-
-<script lang="ts">
-import { Types } from '@/types';
-import { defineComponent, inject, reactive, toRefs, onUnmounted } from 'vue'
-
-export default defineComponent ({
-  setup() {
-    const $bus = inject('$bus') as Types.Bus;
-    const data = reactive({ msg: '', showToast: false })
-
-    $bus.$on('toast', (msg: string, callback: any) => {
-      data.msg = msg
-      data.showToast = true
-      const time = msg.length > 15 ? 1500 : 1000
-
-      setTimeout(() => {
-        data.showToast = false
-        data.msg = ''
-      }, time)
-
-      if (callback) callback()
-    })
-
-    onUnmounted(() => $bus.$off('toast'))
-    return { ...toRefs(data) }
-  }
-})
-</script>
 
 <style lang="scss">
 .showToast{

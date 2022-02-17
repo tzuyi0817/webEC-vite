@@ -1,18 +1,3 @@
-<template>
-  <div class="indexBanner">
-    <carousel>
-      <slide v-for="item in banner" :key="item.id">
-        <a @click="goLink(item.url)"><img :src="item.src"></a>
-      </slide>
-      
-      <template #addons>
-        <!-- <navigation /> -->
-        <pagination />
-      </template>
-    </carousel>
-  </div>
-</template>
-
 <script setup lang="ts">
 import 'vue3-carousel/dist/carousel.css';
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
@@ -45,8 +30,22 @@ const banner = [
 const goLink = (link: string) => router.push(link);
 </script>
 
-<style lang="scss" scoped>
+<template>
+  <div class="indexBanner">
+    <carousel>
+      <slide v-for="item in banner" :key="item.id">
+        <a @click="goLink(item.url)"><img :src="item.src"></a>
+      </slide>
+      
+      <template #addons>
+        <!-- <navigation /> -->
+        <pagination />
+      </template>
+    </carousel>
+  </div>
+</template>
 
+<style lang="scss" scoped>
 .indexBanner {
   position: relative;
   a {

@@ -13,7 +13,7 @@ import { Types } from '@/types';
 const groupPathStore = useGroupPathStore();
 const titleStore = useTitleStore();
 const { groupPath } = storeToRefs(groupPathStore);
-const $bus = inject('$bus') as Types.Bus;
+const $bus = inject<Types.Bus>('$bus');
 const isLoading = ref(false);
 const product = ref<Types.Product>({});
 const moreProducts = ref([]);
@@ -36,7 +36,7 @@ const getProduct = async (id: string | null | string[] = null) => {
   titleStore.updateTitleName(result.product.name);
 };
 
-const handleScroll = (event: Event) => $bus.$emit('scroll', (<HTMLDivElement>event.target).scrollTop);
+const handleScroll = (event: Event) => $bus?.$emit('scroll', (<HTMLDivElement>event.target).scrollTop);
 
 onBeforeRouteUpdate((to) => {
   getProduct(to.params.id as string);

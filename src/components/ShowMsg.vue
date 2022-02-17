@@ -2,13 +2,13 @@
 import { Types } from '@/types';
 import { inject, onUnmounted, ref } from 'vue';
 
-const $bus = inject('$bus') as Types.Bus;
+const $bus = inject<Types.Bus>('$bus');
 const content = ref<HTMLElement | null>(null);
 const showMsg = ref(false);
 const func = ref<Function | null>(null);
 const showCancel = ref(false);
 
-$bus.$on('showMsg',({ html, fun, cancel }: { html: HTMLElement, fun: Function, cancel: boolean }) => {
+$bus?.$on('showMsg',({ html, fun, cancel }: { html: HTMLElement, fun: Function, cancel: boolean }) => {
   content.value = html;
   showMsg.value = true;
   func.value = fun;
@@ -25,7 +25,7 @@ const showMsgFun = () => {
 };
 const closeMsgFun = () => showMsg.value = false;
 
-onUnmounted(() => $bus.$off('showMsg'));
+onUnmounted(() => $bus?.$off('showMsg'));
 </script>
 
 <template>

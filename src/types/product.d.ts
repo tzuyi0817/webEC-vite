@@ -1,13 +1,14 @@
 import { User } from "./user";
+import { CommonType } from "./index";
 
-export interface Category {
+export interface Category extends CommonType {
   Products: Product[];
   StoreId: number;
   image: string;
   name: string;
 }
 
-export interface Product {
+export interface Product extends CommonType {
   ProductCategoryId: number;
   Product_category: Category;
   StoreId: number;
@@ -22,11 +23,13 @@ export interface Product {
   Comments: Comment[];
 }
 
-export interface Comment {
-  Product: Product;
+export interface Comment extends CommonType {
+  Product: CommentProduct;
   ProductId: number;
   User: User;
   UserId: number;
   comment: string;
   rating: number;
 }
+
+type CommentProduct = Omit<Product, 'Comments' | 'Product_category'> & CommonType;

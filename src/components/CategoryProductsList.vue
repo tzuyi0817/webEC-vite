@@ -1,33 +1,3 @@
-<template>
-  <div class="categoryProductsList">
-    <ul>
-      <li v-for="item in products" :key="item.id" class="fade">
-        <div class="card">
-          <div class="post">
-            <img :src="item.image" />
-      
-            <div class="post-content">
-              <p class="post-header" @click="goLink(item.id)">{{ subContent(item.name, 19) }}</p>
-              <p class="post-text">{{ subContent(item.description, 35) }}</p>
-              <div class="post-footer">
-                <div>
-                  <p>$ {{ item.price }}</p>
-                  <p>還剩{{ item.count }}件</p>
-                </div>
-
-                <button class="btnStyle" @click="goLink(item.id)">Detail</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </li>
-    </ul>
-
-    <p class="categoryProductsList__Prompt" v-if="!isLoading && isShowPrompt">{{ getPrompt }}</p>
-    <loading v-if="isLoading" />
-  </div>
-</template>
-
 <script setup lang="ts">
 import { Types } from '@/types';
 import { computed } from 'vue';
@@ -64,6 +34,36 @@ const goLink = (id: number | undefined) => {
   router.push({ name: 'Product', params: { id } });
 };
 </script>
+
+<template>
+  <div class="categoryProductsList">
+    <ul>
+      <li v-for="item in products" :key="item.id" class="fade">
+        <div class="card">
+          <div class="post">
+            <img :src="item.image" />
+      
+            <div class="post-content">
+              <p class="post-header" @click="goLink(item.id)">{{ subContent(item.name, 19) }}</p>
+              <p class="post-text">{{ subContent(item.description, 35) }}</p>
+              <div class="post-footer">
+                <div>
+                  <p>$ {{ item.price }}</p>
+                  <p>還剩{{ item.count }}件</p>
+                </div>
+
+                <button class="btnStyle" @click="goLink(item.id)">Detail</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+
+    <p class="categoryProductsList__Prompt" v-if="!isLoading && isShowPrompt">{{ getPrompt }}</p>
+    <loading v-if="isLoading" />
+  </div>
+</template>
 
 <style lang="scss" scoped>
 .categoryProductsList {
