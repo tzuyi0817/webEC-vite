@@ -34,28 +34,28 @@ export function LocalStorage(set: string, key: string, value: any = '') {
     let setValue: string
 
     if (key === 'cartItem') {
-      const user = JSON.parse(LocalStorage('get', 'email') as string)
-      let localData = JSON.parse(localStorage.getItem(key) as string)
-      !localData && (localData = {})
-      !(user in localData) && (localData[user] = [])
+      const user = JSON.parse(LocalStorage('get', 'email') as string);
+      const localData = JSON.parse(LocalStorage('get', key) as string) ?? {};
 
-      if (Object.prototype.toString.call(value) === '[object Object]') {
-        const valueId: number = value?.id
-        const index = localData[user].findIndex((item: Types.CartItem) => item.id == valueId)
+      !Object.hasOwn(localData, user) && (localData[user] = []);
 
-        ~index 
-          ? localData[user][index].quantity += (value?.quantity ?? 0)
-          : localData[user] = [...localData[user], value]
+      if (typeOf(value) === 'object') {
+        const valueId: number = value?.id;
+        const cartItem = localData[user].find((item: Types.CartItem) => item.id == valueId);
+
+        cartItem
+          ? cartItem.quantity += (value?.quantity ?? 0)
+          : localData[user].push(value);
       } else {
-        localData[user] = [...value]
+        localData[user] = [...value];
       }
-      setValue = JSON.stringify(localData)
-    } 
-    else setValue = JSON.stringify(value)
-    localStorage.setItem(key, setValue)
+      setValue = JSON.stringify(localData);
+    }
+    else setValue = JSON.stringify(value);
+    localStorage.setItem(key, setValue);
   }
-  else if (set === 'remove') localStorage.removeItem(key)
-  else return localStorage.getItem(key)
+  else if (set === 'remove') localStorage.removeItem(key);
+  else return localStorage.getItem(key);
 }
 
 export function evil(str: string) {
@@ -90,6 +90,10 @@ export function getCartItem() {
   return localCartItem
     ? user in localCartItem ? localCartItem[user] : []
     : [];
+}
+
+export function typeOf(obj) {
+  return Object.prototype.toString.call(obj).slice(8, -1).toLowerCase();
 }
 
 declare global {

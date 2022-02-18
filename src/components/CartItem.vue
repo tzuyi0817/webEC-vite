@@ -11,7 +11,6 @@ const props = defineProps<Props>();
 const emit = defineEmits(['deleteProduct', 'saveCartItem']);
 const { cartItem } = toRefs(props);
 
-const subName = (name: string) => name.length > 20 ? name.slice(0, 20) + '...' : name;
 const minusBtn = (index: number) => {
   cartItem.value[index].quantity == 1 
     ? confirmDelete(index)
@@ -45,7 +44,7 @@ const deleteProduct = (deleteIndex: number) => emit('deleteProduct', deleteIndex
 
         <div class="cartItem__content">
           <router-link :to="`/product/${item.id}`">
-            <p>{{ subName(item.name) }}</p>
+            <p>{{ item.name }}</p>
           </router-link>
           <span>較長備貨</span>
           <div>
@@ -58,7 +57,12 @@ const deleteProduct = (deleteIndex: number) => emit('deleteProduct', deleteIndex
               <icon name="minus" type="fas" />
             </button>
 
-            <input type="number" v-model.number="item.quantity" @input="handleInput($event, index)" :disabled="item.quantity == item.count" />
+            <input
+              type="number"
+              v-model.number="item.quantity"
+              @input="handleInput($event, index)"
+              :disabled="item.quantity == item.count"
+            />
 
             <button @click="plusBtn(index)" :disabled="item.quantity == item.count">
               <icon name="plus" type="fas" />
@@ -82,8 +86,8 @@ const deleteProduct = (deleteIndex: number) => emit('deleteProduct', deleteIndex
     font-size: 0.875rem;
     text-align: left;
     position: relative;
+    width: 100%;
     img {
-      min-width: 80px;
       width: 80px;
       height: 80px;
       object-fit: center;
@@ -99,10 +103,14 @@ const deleteProduct = (deleteIndex: number) => emit('deleteProduct', deleteIndex
   }
 
   &__content {
-    margin-left: 15px;
+    padding-left: 15px;
+    width: calc(100% - 90px);
     p {
       &:first-child {
         margin-bottom: 10px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
       }
     }
 

@@ -33,7 +33,6 @@ const nowSelect = computed(() => {
 const isShow = computed(() => route.name !== 'Account');
 
 const select = (route: string) => {
-  if (!Object.hasOwn(user.value, 'id')) return;
   router.push({ name: route, params: { id: route === 'UserProfile' ? `${user.value.id}` : '' } });
 };
 </script>

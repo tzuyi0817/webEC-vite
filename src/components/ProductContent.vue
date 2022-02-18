@@ -51,7 +51,7 @@ const addCart = async () => {
   const result = await getAjax(ajaxGroup, data);
   isLoading.value = false;
   if (result.status == 'success') {
-    LocalStorage('set', 'cartItem', { ...product, quantity: quantity.value });
+    LocalStorage('set', 'cartItem', { ...product.value, quantity: quantity.value });
     cartStore.updateCartCount();
     showToast('商品已加入購物車');
     quantity.value = 1;

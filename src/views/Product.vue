@@ -21,9 +21,9 @@ const rating = ref(0);
 const productImage = ref<string[]>([]);
 const productScroll = ref();
 
-const getProduct = async (id: string | null | string[] = null) => {
-  id = id ?? useRoute().params.id;
-  const ajaxGroup = ajax(groupPath.value.platform + `/product/${id}`, 'get');
+const getProduct = async (id: string | null = null) => {
+  const productId = id ?? useRoute().params.id;
+  const ajaxGroup = ajax(groupPath.value.platform + `/product/${productId}`, 'get');
   isLoading.value = true;
 
   const result = await getAjax(ajaxGroup);

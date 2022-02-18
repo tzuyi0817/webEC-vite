@@ -26,7 +26,7 @@ const setApiConfig = (path: string) => {
     getBus(bus);
     app.mount('#app');
   })).catch(() => {
-    !path && setApiConfig(`/@/configs/groups/${import.meta.env.VITE_APP_BASIC_TYPE}.ts`);
+    !path && setApiConfig(`@/configs/groups/${import.meta.env.VITE_APP_BASIC_TYPE}.ts`);
   })
 };
 setApiConfig(path);
