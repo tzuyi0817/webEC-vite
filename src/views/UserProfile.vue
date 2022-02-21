@@ -36,7 +36,7 @@ const getUser = async () => {
   const result = await getAjax(ajaxGroup);
   isLoading.value = false;
   profile.value = result.profile;
-}
+};
 
 titleStore.updateTitleName('我的訂單');
 onMounted(getUser);

@@ -29,4 +29,5 @@ const setApiConfig = (path: string) => {
     !path && setApiConfig(`@/configs/groups/${import.meta.env.VITE_APP_BASIC_TYPE}.ts`);
   })
 };
+
 setApiConfig(path);

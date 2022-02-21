@@ -30,7 +30,7 @@ const login = async () => {
 
   const result = await getAjax(ajaxGroup, data);
   isLoading.value = false;
-  if (result.status == 'success') {
+  if (result?.status == 'success') {
     LocalStorage('set', 'token', result.token);
     LocalStorage('set', 'email', result.user.email);
     userStore.updateUser(result.user);
