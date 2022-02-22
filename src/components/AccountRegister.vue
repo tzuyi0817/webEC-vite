@@ -17,12 +17,13 @@ const isLoading = ref(false);
 const register = async () => {
   if (!name.value || !email.value || !password.value) {
     showToast('請輸入 Name 、 Email 和 Password');
-    return
+    return;
   }
 
   if (password.value !== confirmPassword.value) {
     password.value = confirmPassword.value = '';
     showToast('輸入的 Password 和 Confirm Password 不相同');
+    return;
   }
 
   const ajaxGroup = ajax(groupPath.value.platform + '/users/signUp', 'post');
