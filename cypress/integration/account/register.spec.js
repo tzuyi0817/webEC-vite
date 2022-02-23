@@ -11,15 +11,15 @@ describe('Register', () => {
   });
 
   it('UI Form', () => {
-    cy.get('fieldset').find('input[name=name]');
-    cy.get('fieldset').find('input[name=email]');
-    cy.get('fieldset').find('input[name=password]');
-    cy.get('fieldset').find('input[name=confirmPassword]');
+    cy.get('input[name=name]').should('be.visible');
+    cy.get('input[name=email]').should('be.visible');
+    cy.get('input[name=password]').should('be.visible');
+    cy.get('input[name=confirmPassword]').should('be.visible');
   });
 
   it('點擊 Already have an account? 導到登入頁', () => {
     cy.get('.account__box > p > a').click();
-    cy.get('.header > span').should('have.text' ,'登入');
+    cy.get('.header > span').should('have.text', '登入');
     cy.get('.account__box > p > a').click();
   });
 
@@ -65,10 +65,10 @@ describe('Register', () => {
     const random = `${Math.random()}`.slice(-5);
     cy.register({
       name: `fake${random}`,
-      email: 'fake@email.com',
+      email: `fake${random}@email.com`,
       password: 12345678,
       confirmPassword: 12345678,
     });
-    cy.get('.header > span').should('have.text' ,'登入'); // API 壞了
+    cy.get('.header > span').should('have.text' ,'登入');
   });
 });

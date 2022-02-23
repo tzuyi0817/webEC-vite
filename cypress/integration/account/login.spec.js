@@ -11,8 +11,8 @@ describe('Login', () => {
   });
 
   it('UI Form', () => {
-    cy.get('fieldset').find('input[name=email]');
-    cy.get('fieldset').find('input[name=password]');
+    cy.get('input[name=email]').should('be.visible');
+    cy.get('input[name=password]').should('be.visible');
   });
 
   it('點擊 view as guest 導到首頁', () => {
