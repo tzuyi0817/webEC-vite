@@ -1,4 +1,5 @@
 /// <reference types="cypress" />
+const tabs = [];
 
 describe('Index', () => {
   before(() => {
@@ -19,7 +20,7 @@ describe('Index', () => {
     );
   });
 
-  it('類別標籤', () => {
+  it('類別標籤名稱', () => {
     cy.fixture('ajax.json').then(({ apiUrl, contentData }) => {
       cy.request(apiUrl + '/index').then(({ status, body: data }) => {
         const { categories } = data;
@@ -27,25 +28,27 @@ describe('Index', () => {
 
         cy.get('.navTabs > ul').children().each((li, index, collection) => {
           const { name, id } = categories[index];
-          const button = li.children();
+          const button = li.find('button');
+          tabs.push({ id, contentData: contentData[index] });
 
-          context('確認內容', () => {
-            expect(collection.length).to.eq(categories.length);
-            expect(button).to.have.text(name);
-          });
-
-          context('標籤互動', () => {
-            console.log('button', button)
-            cy.wrap(button).click().should('have.class', 'navTabs__item navTabs__item--active');
-            cy.get('.indexContent > p').should('have.text', contentData[index]);
-          });
-
-          context('點擊圖片導到各類別頁面', () => {
-            cy.get('.indexContent > a').click();
-            cy.location('pathname').should('eq', `/category/${id}`);
-            cy.go(-1);
-          });
+          index === 0 && expect(collection.length).to.eq(categories.length);
+          expect(button).to.have.text(name);
         });
+      });
+    });
+  });
+
+  it('類別標籤互動', () => {
+    tabs.forEach(({ id, contentData }, index) => {
+      context('點擊標籤', () => {
+        cy.get('.navTabs > ul > li > button').eq(index).click().should('have.class', 'navTabs__item navTabs__item--active');
+        cy.get('.indexContent > p').should('have.text', contentData);
+      });
+
+      context('點擊圖片或文字導到各類別頁面', () => {
+        cy.get('.indexContent > a').click();
+        cy.location('pathname').should('eq', `/category/${id}`);
+        cy.go(-1);
       });
     });
   });
