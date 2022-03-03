@@ -18,16 +18,15 @@ app.component('icon', FontAwesomeIcon);
 app.provide('$bus', bus);
 
 const getConfig = (filePath: string) => axios.get(filePath);
-const path = `./src/configs/groups/${import.meta.env.VITE_APP_BASIC_TYPE}.ts`;
 
 const setApiConfig = (path: string) => {
   axios.all([getConfig(path)]).then(axios.spread(apiData => {
     app.provide('$apiPrefixes', evil(apiData.data)());
     getBus(bus);
     app.mount('#app');
-  })).catch(() => {
-    !path && setApiConfig(`@/configs/groups/${import.meta.env.VITE_APP_BASIC_TYPE}.ts`);
+  })).catch(error => {
+    throw new Error(error);
   })
 };
 
-setApiConfig(path);
+setApiConfig('/myConfig.ts');

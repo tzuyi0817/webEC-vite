@@ -7,7 +7,7 @@ describe('Login', () => {
   });
 
   it('UI Title', () => {
-    cy.get('.header > span').should('have.text' ,'登入');
+    cy.get('.header > span').should('have.text', '登入');
   });
 
   it('UI Form', () => {
