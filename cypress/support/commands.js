@@ -8,6 +8,7 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+const subPrice = (str) => +str.replace('$ ', '');
 
 Cypress.Commands.add('login', ({ email, password } = { email: null, password: null }) => {
   // cy.visit('/account');
@@ -35,3 +36,14 @@ Cypress.Commands.add('register', ({ name, email, password, confirmPassword }) =>
 Cypress.Commands.add('checkToastContent', (content) => {
   cy.get('.showToast__info').should('have.text', content);
 });
+
+Cypress.Commands.add('sortProduct', (type) => {
+  // 2:價格:高至低 3:價格:低至高
+  cy.get('.cusSelBlock').click();
+  cy.get('.cusSelBlock > .options > li').eq(type).click();
+  cy.get('.post-footer').eq(0).find('p:first').invoke('text').then(priceA => {
+    cy.get('.post-footer').eq(1).find('p:first').invoke('text').then(priceB => {
+      return { priceA: subPrice(priceA), priceB: subPrice(priceB) };
+    });
+  });
+})
