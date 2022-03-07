@@ -9,15 +9,15 @@
     "noImplicitAny": false,
     "resolveJsonModule": true,
     "moduleResolution": "node",
-    "types": ["node", "vite/client"],
-    "baseUrl": "src",
+    "types": ["node", "vite/client", "cypress"],
+    "baseUrl": "./",
     "paths": {
-      "@/*": ["*"],
+      "@/*": ["src/*"],
     },
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "cypress/**/**/*.spec.js"],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "cypress/**/**/*.ts"],
   "references": [{ "path": "tsconfig.node.json" }]
 }

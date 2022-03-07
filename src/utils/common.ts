@@ -98,7 +98,7 @@ export function typeOf(obj) {
 
 export function subContent(str: string | undefined, num: number) {
   if (str === undefined) return '';
-  const length = str.length;
+  const { length } = str;
   return length > num ? str.slice(0, num + 1) + '...' : str;
 };
 

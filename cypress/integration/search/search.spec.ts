@@ -1,8 +1,9 @@
 /// <reference types="cypress" />
 import { subContent } from '@/utils/common';
+import { Types } from '@/types';
 
 describe('search', () => {
-  const products = [];
+  const products: Types.Product[] = [];
 
   before(() => {
     cy.visit('/search');
@@ -15,9 +16,9 @@ describe('search', () => {
   });
 
   it('初進頁面商品顯示驗證', () => {
-    const [product] = products ?? [];
+    const [product] = products as Iterable<Types.Product>;
     cy.get('.post-header:first').should(header => {
-      expect(header).to.have.text(subContent(product.name));
+      expect(header).to.have.text(subContent(product.name, 19));
     });
   });
 });

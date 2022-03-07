@@ -22,6 +22,8 @@
     "vue3-carousel": "^0.1.35"
   },
   "devDependencies": {
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.1.2",
+    "@cypress/vite-dev-server": "^2.2.2",
     "@types/node": "^14.18.9",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
