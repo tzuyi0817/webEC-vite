@@ -2,6 +2,7 @@
 import { Types } from '@/types';
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
+import { subContent } from '@/utils/common';
 
 interface Props {
   products: Types.Product[];
@@ -22,12 +23,6 @@ const getPrompt = computed(() => {
     ? '此類別暫無商品'
     : loadMore ? '' : '已無更多商品'
 });
-
-const subContent = (str: string | undefined, num: number) => {
-  if (str === undefined) return '';
-  const length = str.length;
-  return length > num ? str.slice(0, num + 1) + '...' : str;
-};
 
 const goLink = (id: number | undefined) => {
   if (id === undefined) return;

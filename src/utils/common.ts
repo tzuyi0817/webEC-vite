@@ -96,6 +96,12 @@ export function typeOf(obj) {
   return Object.prototype.toString.call(obj).slice(8, -1).toLowerCase();
 }
 
+export function subContent(str: string | undefined, num: number) {
+  if (str === undefined) return '';
+  const length = str.length;
+  return length > num ? str.slice(0, num + 1) + '...' : str;
+};
+
 declare global {
   interface Date {
     Format(fmt?: string): string;
