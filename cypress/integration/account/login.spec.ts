@@ -1,5 +1,4 @@
 /// <reference types="cypress" />
-// import { useUserStore } from '@/store';
 
 describe('Login', () => {
   before(() => {
@@ -43,8 +42,8 @@ describe('Login', () => {
       cy.login({ email, password }).should(() => {
         expect(localStorage.getItem('token')).to.be.not.null;
         expect(localStorage.getItem('email')).to.have.string(email);
-        // console.log(useUserStore());
       });
+      cy.window().its('store').invoke('useUserStore').its('user').its('email').should('eq', email);
       cy.checkToastContent('登入成功');
       cy.location('pathname').should('eq', '/index');
     });

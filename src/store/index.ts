@@ -9,3 +9,14 @@ export {
   useTitleStore,
   useUserStore,
 };
+  
+const store = {
+  useCartStore,
+  useGroupPathStore,
+  useTitleStore,
+  useUserStore,
+};
+  
+if (window['Cypress']) {
+  window['store'] = store;
+}

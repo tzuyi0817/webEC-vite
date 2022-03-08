@@ -1,9 +1,10 @@
 import './commands';
-// import { setActivePinia, createPinia } from 'pinia';
+import { setActivePinia, createPinia } from 'pinia';
+import { createApp } from 'vue'
 
-beforeEach(() => {
-  // setActivePinia(createPinia());
-  // cy.intercept('https://pure-retreat-22270.herokuapp.com/api', ({ headers }) => {
-  //   headers.ContentType = 'application/x-www-form-urlencoded';
-  // });
+before(() => {
+  // const app = createApp({});
+  // const pinua = createPinia()
+  // app.use(pinua);
+  // setActivePinia(pinua);
 });

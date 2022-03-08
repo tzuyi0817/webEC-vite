@@ -12,6 +12,11 @@ module.exports = (on: Cypress.PluginEvents, config: Cypress.PluginConfigOptions)
     tsconfig: resolve(__dirname, '../../tsconfig.json'),
   }));
 
-  on('dev-server:start', async (options) => startDevServer({ options }));
+  on('dev-server:start', async (options) => startDevServer({
+    options,
+    viteConfig: {
+      configFile: resolve(__dirname, '..', '..', 'vite.config.ts'),
+    },
+  }));
   return config;
 }
