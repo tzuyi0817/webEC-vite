@@ -1,8 +1,16 @@
 /// <reference types="cypress" />
+import { Types } from '@/types';
+
+interface DataType {
+  category: Types.Category;
+  products: Types.Product[];
+  totalPage: number[];
+  categories: Types.Category[];
+}
 
 describe('category', () => {
   const categoryId = 1;
-  const resultData = {};
+  const resultData: Partial<DataType> = {};
 
   before(() => {
     cy.visit(`/category/${categoryId}`);
@@ -22,20 +30,20 @@ describe('category', () => {
     const { categories: tabs } = resultData;
 
     cy.get('.navTabs > ul > li').each((li, index, collection) => {
-      const { name } = tabs[index];
+      const { name } = tabs?.[index] ?? {};
       const button = li.find('button');
-      index === 0 && expect(collection).to.have.length(tabs.length);
-      expect(button).to.have.text(name);
+      index === 0 && expect(collection).to.have.length(tabs?.length ?? 0);
+      expect(button).to.have.text(name ?? '');
     });
   });
 
   it('類別名稱是否正確', () => {
-    const { name } = resultData.category;
+    const { name } = resultData.category ?? {};
     cy.get('.categoryProducts > p').first().should('have.text', name);
   });
 
   it('點擊商品 card 進入商品詳情', () => {
-    const [product] = resultData.products;
+    const [product] = resultData.products as Iterable<Types.Product>;
     cy.get('.btnStyle:first').click();
     cy.location('pathname').should('eq', `/product/${product.id}`);
     cy.go(-1);
@@ -53,7 +61,7 @@ describe('category', () => {
 
   it('scroll 無限加載商品資訊', () => {
     cy.get('.category.container').scrollTo('bottom');
-    const lastPage = resultData.totalPage.slice(-1);
+    const lastPage = resultData?.totalPage?.slice(-1) ?? 1;
 
     cy.fixture('ajax.json').then(({ apiUrl }) => {
       cy.request(`${apiUrl}/Category/${categoryId}?key=price&value=desc&page=${lastPage}`).then(({ status, body: data }) => {

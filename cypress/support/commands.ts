@@ -8,9 +8,22 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-const subPrice = (str) => +str.replace('$ ', '');
+import { Types } from '@/types';
 
-Cypress.Commands.add('login', ({ email, password } = { email: null, password: null }) => {
+declare global {
+  namespace Cypress {
+    interface Chainable<Subject> {
+      login(form: Types.LoginForm): Chainable<Subject>;
+      register(form: Types.RegisterForm): Chainable<Subject>;
+      checkToastContent(content: string):  Chainable<Subject>;
+      sortProduct(type: number): Chainable<{ priceA: string, priceB: string }>;
+    }
+  }
+}
+
+const subPrice = (str: string) => +str.replace('$ ', '');
+
+Cypress.Commands.add('login', ({ email, password }) => {
   // cy.visit('/account');
   cy.get('input[name=email]').clear();
   cy.get('input[name=password]').clear();
@@ -46,4 +59,4 @@ Cypress.Commands.add('sortProduct', (type) => {
       return { priceA: subPrice(priceA), priceB: subPrice(priceB) };
     });
   });
-})
+});

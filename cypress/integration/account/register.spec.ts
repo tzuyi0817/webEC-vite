@@ -66,8 +66,8 @@ describe('Register', () => {
     cy.register({
       name: `fake${random}`,
       email: `fake${random}@email.com`,
-      password: 12345678,
-      confirmPassword: 12345678,
+      password: '12345678',
+      confirmPassword: '12345678',
     });
     cy.get('.header > span').should('have.text' ,'登入');
   });

@@ -5,6 +5,7 @@ import * as UserType from '@/types/user';
 import * as OrderType from '@/types/order';
 import * as ItemType from '@/types/item';
 import * as OtherType from '@/types/other';
+import * as CypressType from '@/types/cypress';
 
 export interface CommonType {
   readonly id: number;
@@ -27,4 +28,6 @@ declare namespace Types {
   export type RouteQuery = OtherType.RouteQuery;
   export type RouteParams = OtherType.RouteParams;
   export type TimeKeys = OtherType.TimeKeys;
+  export type LoginForm = CypressType.LoginForm;
+  export type RegisterForm = CypressType.RegisterForm;
 }

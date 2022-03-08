@@ -7,7 +7,7 @@ const { resolve } = require('path');
  * @type {Cypress.PluginConfig}
  */
 // eslint-disable-next-line no-unused-vars
-module.exports = (on, config) => {
+module.exports = (on: Cypress.PluginEvents, config: Cypress.PluginConfigOptions) => {
   on('file:preprocessor', createdBundler({
     tsconfig: resolve(__dirname, '../../tsconfig.json'),
   }));

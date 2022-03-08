@@ -28,7 +28,7 @@ describe('Login', () => {
   });
 
   it('未輸入帳密', () => {
-    cy.login();
+    cy.login({ email: null, password: null });
     cy.checkToastContent('請輸入 Email 和 Password');
   });
 

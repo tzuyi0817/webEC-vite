@@ -1,5 +1,5 @@
 /// <reference types="cypress" />
-const tabs = [];
+const tabs: { id: number, contentData: string }[] = [];
 
 describe('Index', () => {
   before(() => {
