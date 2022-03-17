@@ -26,4 +26,23 @@ describe('product', () => {
       cy.get('.productContent__detail > .description').should('have.text', description);
     });
   });
+
+  it('返回上頁按鈕', function () {
+    cy.visit(`/search`);
+    cy.visit(`/product/${productId}`);
+    cy.get('.defaultBtn').click();
+    cy.location('pathname').should('eq', '/search');
+    cy.visit(`/product/${productId}`);
+  });
+
+  it('頁面 header 顯示正確商品名稱', function () {
+    cy.request(`${this.ajax.apiUrl}/product/${productId}`).then(({ status, body: data }) => {
+      if (status !== 200) return;
+      const { product: { name } } = data;
+      const sliceTitle = (name) => name.length > 15 ? name.slice(0, 15) + '...' : name;
+
+      cy.get('.product.container').scrollTo(0, 350);
+      cy.get('.header').should('have.text', sliceTitle(name));
+    });
+  });
 });
