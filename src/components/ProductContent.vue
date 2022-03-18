@@ -100,7 +100,7 @@ const addCart = async () => {
     </div>
 
     <div class="productContent__quantity">
-      <input type="number" min="1" v-model.number="quantity" :disabled="disable" @input="handlerInput($event)" />
+      <input type="number" min="1" v-model.number="quantity" @input="handlerInput($event)" />
       <div class="nav">
         <button class="up" @click="quantityBtn('+')" :disabled="disable"><icon name="plus" type="fas" /></button>
         <button class="down" @click="quantityBtn('-')" :disabled="quantity <= 1"><icon name="minus" type="fas" /></button>

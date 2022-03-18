@@ -9,6 +9,7 @@ describe('product', () => {
 
   beforeEach(() => {
     cy.fixture('ajax.json').as('ajax');
+    cy.get('.productContent__quantity > input').as('qualityInput');
   });
 
   it('確認商品資訊', function () {
@@ -43,6 +44,32 @@ describe('product', () => {
 
       cy.get('.product.container').scrollTo(0, 350);
       cy.get('.header').should('have.text', sliceTitle(name));
+    });
+  });
+
+  it('數量加減按鍵', () => {
+    cy.get('.productContent__quantity > .nav > .up').click();
+    cy.get('@qualityInput').should('have.value', 2);
+    cy.get('.productContent__quantity > .nav > .down').click();
+    cy.get('@qualityInput').should('have.value', 1);
+    cy.get('.productContent__quantity > .nav > .down').should('have.attr', 'disabled');
+  });
+
+  it('數量輸入上限和下限判斷', function () {
+    cy.request(`${this.ajax.apiUrl}/product/${productId}`).then(({ status, body: data }) => {
+      if (status !== 200) return;
+      const { product: { count } } = data;
+
+      cy.get('@qualityInput').type('99');
+      cy.get('@qualityInput').should('have.value', count);
+      cy.get('.productContent__quantity > .nav > .up').should('have.attr', 'disabled');
+    });
+  });
+
+  it('加入購物車按鈕', () => {
+    cy.get('.productContent__quantity > .btnStyle').click();
+    cy.get('.footer > li').eq(3).should(li => {
+      expect(li.find('div')).have.text('1');
     });
   });
 });
