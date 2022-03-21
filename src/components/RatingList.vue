@@ -2,6 +2,7 @@
 import { Types } from '@/types';
 import { computed } from 'vue';
 import Stars from '@/components/Stars.vue';
+import { hideName, conversionTime } from '@/utils/common';
 
 interface Props {
   ratingList: Types.Comment[];
@@ -21,9 +22,6 @@ const getPrompt = computed(() => {
     ? '此商品尚未有人評價'
     : nowLength === ratingLength ? '已無更多評價' : '';
 });
-
-const hideName = (name: string) => name?.slice(0, 1) + '*****' + name?.slice(-1);
-const conversionTime = (time: string) => new Date(time).Format('yyyy-MM-dd hh:mm:ss');
 </script>
 
 <template>

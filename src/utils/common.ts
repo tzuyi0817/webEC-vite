@@ -102,6 +102,14 @@ export function subContent(str: string | undefined, num: number) {
   return length > num ? str.slice(0, num + 1) + '...' : str;
 };
 
+export function hideName(name: string) {
+  return name?.slice(0, 1) + '*****' + name?.slice(-1);
+}
+
+export function conversionTime(time: string) {
+  return new Date(time).Format('yyyy-MM-dd hh:mm:ss');
+}
+
 declare global {
   interface Date {
     Format(fmt?: string): string;
