@@ -89,6 +89,9 @@ describe('product', () => {
       expect(div.find('.ratingList__content > p').eq(1)).have.text(firstComment.comment);
       expect(div.find('.ratingList__content > p:last')).have.text(conversionTime(firstComment.updatedAt));
     });
+    cy.get('.productRating__footer > button').click();
+    cy.location('pathname').should('eq', `${localStorage.getItem('token') ? `/rating/${productId}` : '/account'}`);
+    cy.visit(`/product/${productId}`);
   });
 
   it('相似商品資訊', () => {
@@ -98,7 +101,7 @@ describe('product', () => {
     if (!length) return;
     const randomIndex = Math.random() * length | 0;
     cy.get('.categoryProductsList > ul > li').then(li => {
-      const { image, name, description, price, count } = productsFilter[randomIndex];
+      const { image, name, description, price, count, id } = productsFilter[randomIndex];
       const randomLi = li.eq(randomIndex);
       const post = randomLi.find('.card > .post');
 
@@ -107,6 +110,8 @@ describe('product', () => {
       expect(post.find('.post-content > .post-text')).have.text(subContent(description, 35));
       expect(post.find('.post-content > .post-footer > div > p:first')).have.text(`$ ${price}`);
       expect(post.find('.post-content > .post-footer > div > p:last')).have.text(`還剩${count}件`);
+      cy.wrap(post.find('.post-content > .post-footer > .btnStyle')).click();
+      cy.location('pathname').should('eq', `/product/${id}`);
     });
   });
 });
