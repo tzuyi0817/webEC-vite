@@ -90,7 +90,9 @@ describe('product', () => {
       expect(div.find('.ratingList__content > p:last')).have.text(conversionTime(firstComment.updatedAt));
     });
     cy.get('.productRating__footer > button').click();
-    cy.location('pathname').should('eq', `${localStorage.getItem('token') ? `/rating/${productId}` : '/account'}`);
+
+    const jumpURL = localStorage.getItem('token') ? `/rating/${productId}` : '/account';
+    cy.location('pathname').should('eq', `${jumpURL}`);
     cy.visit(`/product/${productId}`);
   });
 
