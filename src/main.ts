@@ -20,9 +20,9 @@ app.provide('$bus', bus);
 const getConfig = (filePath: string) => axios.get(filePath);
 
 const setApiConfig = (path: string) => {
+  getBus(bus);
   axios.all([getConfig(path)]).then(axios.spread(apiData => {
     app.provide('$apiPrefixes', evil(apiData.data)());
-    getBus(bus);
     app.mount('#app');
   })).catch(error => {
     throw new Error(error);
