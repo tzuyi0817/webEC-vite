@@ -20,7 +20,7 @@ const isShow = computed(() => {
   isProfile.value = route.name == 'UserProfile';
   scrollTop.value = route.name == 'Product' ? 0 : 350;
   return !notShow.includes(route.name as string);
-})
+});
 const buttonOpacity = computed(() => scrollTop.value < 175 ? 175 / (scrollTop.value + 175) : scrollTop.value / 350);
 const title = computed(() => {
   const name = titleName.value;

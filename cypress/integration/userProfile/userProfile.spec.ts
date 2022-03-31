@@ -1,7 +1,5 @@
 /// <reference types="cypress" />
 
-import { LocalStorage } from "@/utils/common";
-
 describe('userProfile', () => {
   let userId;
 
@@ -17,7 +15,7 @@ describe('userProfile', () => {
     cy.fixture('ajax.json').as('ajax');
   });
 
-  it('確認是否進入正確的個人詳情', function() {
+  it('確認是否進入正確的個人詳情', function () {
     cy.visit(`/user/${userId}`);
     cy.request({
       url: `${this.ajax.apiUrl}/get_current_user`,
@@ -31,5 +29,13 @@ describe('userProfile', () => {
       cy.get('.userProfile > header > p').should('have.text', name);
       cy.get('.userProfile > header > img').should('have.attr', 'src', image);
     });
+  });
+
+  it('登出', function () {
+    cy.get('.logoutBtn').click();
+    cy.wrap(localStorage.getItem('token')).should('be.null');
+    cy.window().its('store').invoke('useUserStore').its('user').its('id').should('not.exist');
+    cy.location('pathname').should('eq', '/account');
+    cy.checkToastContent('已成功登出');
   });
 });
