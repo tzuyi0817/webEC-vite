@@ -25,9 +25,22 @@ describe('userProfile', () => {
     }).then(({ status, body: data }) => {
       if (status !== 200) return;
       const { name, image } = data;
+      const actor = image ?? location.origin + '/src/assets/actor.jpg';
 
       cy.get('.userProfile > header > p').should('have.text', name);
-      cy.get('.userProfile > header > img').should('have.attr', 'src', image);
+      cy.get('.userProfile > header > img').should('have.attr', 'src', actor);
+    });
+  });
+
+  it('標籤點擊後樣式', () => {
+    const tab = ['排程中', '處理中', '已完成', '已取消'];
+
+    tab.forEach((item, index) => {
+      const li = cy.get('.userProfile__tab > li').eq(index);
+
+      li.click();
+      li.should('have.class', 'active');
+      li.should('have.text', item);
     });
   });
 
