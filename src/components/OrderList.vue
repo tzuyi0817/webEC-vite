@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Types } from "@/types";
+import { subContent } from '@/utils/common';
 
 interface Props {
   orderList: Types.Order[];
@@ -8,7 +9,6 @@ interface Props {
 }
 
 defineProps<Props>();
-const subName = (name: string = '') => name.length > 20 ? name.slice(0, 20) + '...' : name;
 </script>
 
 <template>
@@ -25,7 +25,7 @@ const subName = (name: string = '') => name.length > 20 ? name.slice(0, 20) + '.
 
           <div class="orderList__content">
             <router-link :to="`/product/${order.items?.[0].id}`">
-              <p>{{ subName(order.items?.[0].name) }}</p>
+              <p>{{ subContent(order.items?.[0].name, 20) }}</p>
             </router-link>
             <p>{{ `x${order.items?.[0].Order_item.quantity}` }}</p>
             <p class="amount">{{ `$${order.items?.[0].Order_item.price}` }}</p>
