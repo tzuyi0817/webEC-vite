@@ -9,14 +9,16 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 import { Types } from '@/types';
+import { subContent } from '@/utils/common';
 
 declare global {
   namespace Cypress {
     interface Chainable<Subject> {
       login(form: Types.LoginForm): Chainable<Subject>;
       register(form: Types.RegisterForm): Chainable<Subject>;
-      checkToastContent(content: string):  Chainable<Subject>;
+      checkToastContent(content: string): Chainable<Subject>;
       sortProduct(type: number): Chainable<{ priceA: string, priceB: string }>;
+      checkOrderData(args: Types.CheckOrderArguments): Chainable<Subject>;
     }
   }
 }
@@ -59,4 +61,24 @@ Cypress.Commands.add('sortProduct', (type) => {
       return { priceA: subPrice(priceA), priceB: subPrice(priceB) };
     });
   });
+});
+
+Cypress.Commands.add('checkOrderData', ({ orders, type }: Types.CheckOrderArguments) => {
+  const filterOrders = orders.filter(order => order.Order_status?.id === type);
+
+  if (filterOrders.length) {
+    const [order] = filterOrders;
+    cy.get('.orderList > ul > li:first').should(li => {
+      const orderListBox = li.find('.orderList__box');
+      expect(li.find('.orderList__status')).have.text(order.Order_status?.orderStatus ?? '');
+      expect(orderListBox.find('a > img')).have.attr('src', order.items?.[0].image ?? '');
+      expect(orderListBox.find('.orderList__content > a > p')).have.text(subContent(order.items?.[0].name, 20) ?? '');
+      expect(orderListBox.find('.orderList__content > p:first')).have.text(`x${order.items?.[0].Order_item.quantity}` ?? '');
+      expect(orderListBox.find('.orderList__content > .amount')).have.text(`$${order.items?.[0].Order_item.price}` ?? '');
+      expect(li.find('.orderList__amount > span')).have.text(`${order.items?.length} 商品`);
+      expect(li.find('.orderList__amount > p > .amount')).have.text(`$${order.amount}`);
+    });
+  } else {
+    cy.get('.orderList__none > p').should('have.text', '找不到訂單');
+  }
 });

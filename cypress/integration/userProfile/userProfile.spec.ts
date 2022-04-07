@@ -1,6 +1,5 @@
 /// <reference types="cypress" />
 import { Types } from '@/types';
-import { subContent } from '@/utils/common';
 
 describe('userProfile', () => {
   let userId;
@@ -57,7 +56,7 @@ describe('userProfile', () => {
   });
 
   it('排程中訂單資料', function () {
-    cy.get('.userProfile__tab > li').eq(0).click();
+    cy.get('.userProfile__tab > li').eq(OrderStatus.Scheduled - 1).click();
     cy.request({
       url: `${this.ajax.apiUrl}/user/${userId}/profile`,
       headers: {
@@ -67,24 +66,14 @@ describe('userProfile', () => {
       if (status !== 200) return;
       const { orderInfo } = data;
       orders.push(...orderInfo);
-      const scheduled = orders.filter(order => order.Order_status?.id === OrderStatus.Scheduled);
 
-      if (scheduled) {
-        const [order] = scheduled;
-        cy.get('.orderList > ul > li:first').should(li => {
-          const orderListBox = li.find('.orderList__box');
-          expect(li.find('.orderList__status')).have.text(order.Order_status?.orderStatus ?? '');
-          expect(orderListBox.find('a > img')).have.attr('src', order.items?.[0].image ?? '');
-          expect(orderListBox.find('.orderList__content > a > p')).have.text(subContent(order.items?.[0].name, 20) ?? '');
-          expect(orderListBox.find('.orderList__content > p:first')).have.text(`x${order.items?.[0].Order_item.quantity}` ?? '');
-          expect(orderListBox.find('.orderList__content > .amount')).have.text(`$${order.items?.[0].Order_item.price}` ?? '');
-          expect(li.find('.orderList__amount > span')).have.text(`${order.items?.length} 商品`);
-          expect(li.find('.orderList__amount > p > .amount')).have.text(`$${order.amount}`);
-        });
-      } else {
-        cy.get('.orderList__none > p').should('have.text', '找不到訂單');
-      }
+      cy.checkOrderData({ orders, type: OrderStatus.Scheduled });
     })
+  });
+
+  it('處理中訂單資料', function () {
+    cy.get('.userProfile__tab > li').eq(OrderStatus.Processing - 1).click();
+    cy.checkOrderData({ orders, type: OrderStatus.Processing });
   });
 
   it('登出', function () {

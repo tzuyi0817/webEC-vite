@@ -30,4 +30,5 @@ declare namespace Types {
   export type TimeKeys = OtherType.TimeKeys;
   export type LoginForm = CypressType.LoginForm;
   export type RegisterForm = CypressType.RegisterForm;
+  export type CheckOrderArguments = CypressType.CheckOrderArguments;
 }
