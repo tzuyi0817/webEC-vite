@@ -76,6 +76,16 @@ describe('userProfile', () => {
     cy.checkOrderData({ orders, type: OrderStatus.Processing });
   });
 
+  it('已完成訂單資料', function () {
+    cy.get('.userProfile__tab > li').eq(OrderStatus.Completed - 1).click();
+    cy.checkOrderData({ orders, type: OrderStatus.Completed });
+  })
+
+  it('已取消訂單資料', function () {
+    cy.get('.userProfile__tab > li').eq(OrderStatus.Cancelled - 1).click();
+    cy.checkOrderData({ orders, type: OrderStatus.Cancelled });
+  })
+
   it('登出', function () {
     cy.get('.logoutBtn').click();
     cy.wrap(localStorage.getItem('token')).should('be.null');
