@@ -1,4 +1,4 @@
-import { CommonType } from './index';
+import type { CommonType } from './index';
 
 export interface Payment extends CommonType {
   OrderId: number;

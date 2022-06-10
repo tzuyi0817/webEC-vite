@@ -6,7 +6,7 @@ import { storeToRefs } from 'pinia';
 import { getAjax, ajax } from '@/utils/common';
 import NavTabs from '@/components/NavTabs.vue';
 import CategoryProducts from '@/components/CategoryProducts.vue';
-import { Types } from '@/types';
+import type { Types } from '@/types';
 
 const groupPathStore = useGroupPathStore();
 const titleStore = useTitleStore();

@@ -1,11 +1,11 @@
-import * as AxiosType from '@/types/axios';
-import * as BusType from '@/types/bus';
-import * as ProductType from '@/types/product';
-import * as UserType from '@/types/user';
-import * as OrderType from '@/types/order';
-import * as ItemType from '@/types/item';
-import * as OtherType from '@/types/other';
-import * as CypressType from '@/types/cypress';
+import type * as AxiosType from '@/types/axios';
+import type * as BusType from '@/types/bus';
+import type * as ProductType from '@/types/product';
+import type * as UserType from '@/types/user';
+import type * as OrderType from '@/types/order';
+import type * as ItemType from '@/types/item';
+import type * as OtherType from '@/types/other';
+import type * as CypressType from '@/types/cypress';
 
 export interface CommonType {
   readonly id: number;

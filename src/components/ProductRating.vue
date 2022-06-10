@@ -3,7 +3,7 @@ import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import Stars from '@/components/Stars.vue';
 import RatingList from '@/components/RatingList.vue';
-import { Types } from '@/types';
+import type { Types } from '@/types';
 
 interface Props {
   product: Types.Product;

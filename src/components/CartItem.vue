@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Types } from '@/types';
+import type { Types } from '@/types';
 import { toRefs } from 'vue';
 import { showMsg } from '../utils/common';
 

@@ -1,4 +1,4 @@
-import { Types } from '@/types';
+import type { Types } from '@/types';
 import axios from 'axios';
 import qs from 'qs'
 

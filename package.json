@@ -1,5 +1,5 @@
 {
-  "name": "webEC-vite",
+  "name": "web-e-commerce-vite",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",

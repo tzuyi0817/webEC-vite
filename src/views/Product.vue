@@ -8,7 +8,7 @@ import ProductBanner from '@/components/ProductBanner.vue';
 import ProductContent from '@/components/ProductContent.vue';
 import ProductRating from '@/components/ProductRating.vue';
 import CategoryProductsList from '@/components/CategoryProductsList.vue';
-import { Types } from '@/types';
+import type { Types } from '@/types';
 
 const groupPathStore = useGroupPathStore();
 const titleStore = useTitleStore();

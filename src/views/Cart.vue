@@ -4,7 +4,7 @@ import { useCartStore, useTitleStore } from '@/store';
 import { useRouter } from 'vue-router';
 import CartItem from '@/components/CartItem.vue';
 import { showToast, LocalStorage, getCartItem } from '@/utils/common';
-import { Types } from '@/types';
+import type { Types } from '@/types';
 
 const cartStore = useCartStore();
 const titleStore = useTitleStore();

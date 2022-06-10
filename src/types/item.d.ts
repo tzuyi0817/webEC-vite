@@ -1,6 +1,6 @@
-import { CommonType } from './index';
-import { Order } from './order';
-import { Product } from './product'
+import type { CommonType } from './index';
+import type { Order } from './order';
+import type { Product } from './product'
 
 export interface Item extends CommonType {
   Order_item: OrderItem;

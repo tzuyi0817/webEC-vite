@@ -1,5 +1,5 @@
 /// <reference types="cypress" />
-import { Types } from '@/types';
+import type { Types } from '@/types';
 
 describe('userProfile', () => {
   let userId;

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Types } from '@/types';
+import type { Types } from '@/types';
 import { inject, ref, onUnmounted } from 'vue'
 
 const $bus = inject<Types.Bus>('$bus');

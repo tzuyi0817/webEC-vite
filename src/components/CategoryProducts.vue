@@ -2,7 +2,7 @@
 import SortSelect from '@/components/SortSelect.vue';
 import CategoryProductsList from '@/components/CategoryProductsList.vue';
 import { SortOptions } from '@/utils/common';
-import { Types } from '@/types';
+import type { Types } from '@/types';
 
 interface Props {
   category: Types.Category;

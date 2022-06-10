@@ -1,4 +1,4 @@
-import { Method, AxiosInstance } from 'axios';
+import type { Method, AxiosInstance } from 'axios';
 
 export type AxiosMethod = Extract<Method, keyof AxiosInstance>;
 

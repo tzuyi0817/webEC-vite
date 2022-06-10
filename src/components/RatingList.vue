@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Types } from '@/types';
+import type { Types } from '@/types';
 import { computed } from 'vue';
 import Stars from '@/components/Stars.vue';
 import { hideName, conversionTime } from '@/utils/common';

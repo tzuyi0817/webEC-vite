@@ -4,7 +4,7 @@ import Stars from '@/components/Stars.vue';
 import { useGroupPathStore, useCartStore } from '@/store';
 import { useRouter } from 'vue-router';
 import { ajax, getAjax, LocalStorage, showToast } from '@/utils/common';
-import { Types } from '@/types';
+import type { Types } from '@/types';
 import { storeToRefs } from 'pinia';
 
 interface Props {

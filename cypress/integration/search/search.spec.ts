@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 import { subContent } from '@/utils/common';
-import { Types } from '@/types';
+import type { Types } from '@/types';
 
 describe('search', () => {
   before(() => {

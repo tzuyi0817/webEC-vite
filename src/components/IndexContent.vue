@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Types } from '@/types';
+import type { Types } from '@/types';
 import { computed, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 

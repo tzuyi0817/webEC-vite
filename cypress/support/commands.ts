@@ -8,7 +8,7 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-import { Types } from '@/types';
+import type { Types } from '@/types';
 import { subContent } from '@/utils/common';
 
 declare global {

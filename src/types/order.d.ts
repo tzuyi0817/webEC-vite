@@ -1,7 +1,7 @@
-import { CommonType } from './index';
-import { Payment } from './payment';
-import { ShipmentType, ShipmentConvenienceStore } from './shipment';
-import { Item } from './item';
+import type { CommonType } from './index';
+import type { Payment } from './payment';
+import type { ShipmentType, ShipmentConvenienceStore } from './shipment';
+import type { Item } from './item';
 
 export interface Order {
   OrderStatusId: number;

@@ -1,4 +1,4 @@
-import { OrderType } from '@/types';
+import type { OrderType } from '@/types';
 
 export interface LoginForm {
   email: string | null;

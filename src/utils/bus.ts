@@ -1,4 +1,4 @@
-import { Types } from '@/types';
+import type { Types } from '@/types';
 import mitt from 'mitt'
 
 const bus: Types.Bus = {

@@ -28,6 +28,7 @@ export default ({ mode }) => {
       alias: {
         "@": resolve(__dirname, "src"),
       },
+      dedupe: ['vue'],
     },
     css: {
       preprocessorOptions: {

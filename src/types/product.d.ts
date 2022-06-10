@@ -1,5 +1,5 @@
-import { User } from "./user";
-import { CommonType } from "./index";
+import type { User } from "./user";
+import type { CommonType } from "./index";
 
 export interface Category extends CommonType {
   Products: Product[];

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Types } from '@/types';
+import type { Types } from '@/types';
 import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useGroupPathStore, useTitleStore } from '@/store';
